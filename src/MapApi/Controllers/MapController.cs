@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net.Mime;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using System.Xml;
 using MapApi.Models;
 using MapApi.Repositories;
+using MapApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MapApi.Controllers
