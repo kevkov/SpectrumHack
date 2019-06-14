@@ -1,10 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net.Mime;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using System.Xml;
 using MapApi.Models;
 using MapApi.Repositories;
@@ -19,8 +16,7 @@ namespace MapApi.Controllers
         private IMarkerRepository _markerRepo;
         private IJourneyRepository _journeyRepo;
         private IIntersectionService _interactionService;
-
-
+        
         public MapController(IMarkerRepository markerRepo, IJourneyRepository journeyRepo, IIntersectionService interactionService)
         {
             _markerRepo = markerRepo;
@@ -32,20 +28,12 @@ namespace MapApi.Controllers
         [HttpGet]
         public ActionResult<string> Get(int journeyId)
         {
-            var journeyOptions = _journeyRepo.GetRoutesForJourney(journeyId);
-            var pollutionMarkers = _markerRepo.GetMarkers();
 
-            IList<EnrichedRoute> enrichedRoute = new List<EnrichedRoute>();
-            foreach (var journeyOption in journeyOptions)
-            {
-                enrichedRoute.Add(new EnrichedRoute() {
-                    PollutionScore = 100,
-                    RouteMarkers = _interactionService.FindMarkersOnRoute(journeyOption.Coordinates, pollutionMarkers)
-                });
-            }
-
+            IList<EnrichedRoute> fullJourneyOptions = processJourney(journeyId);
             /*
-             4. Create kml object to return kev and assala formats - route and route enriched info & source of enriched info (for overlay)
+             Kev - List of layers + color
+                    List of route + score + color
+              Assala - KML file https://stackoverflow.com/questions/952667/how-do-i-generate-a-kml-file-in-asp-net
             */
 
             var filePath = Path.Combine(Environment.CurrentDirectory, "Test.kml");
@@ -53,6 +41,24 @@ namespace MapApi.Controllers
             kml.Load(filePath);
             
             return kml.OuterXml;
+        }
+
+        private IList<EnrichedRoute> processJourney(int journeyId)
+        {
+            var journeyOptions = _journeyRepo.GetRoutesForJourney(journeyId);
+            var pollutionMarkers = _markerRepo.GetMarkers();
+
+            IList<EnrichedRoute> enrichedRoute = new List<EnrichedRoute>();
+            foreach (var journeyOption in journeyOptions)
+            {
+                enrichedRoute.Add(new EnrichedRoute()
+                {
+                    PollutionScore = 100,
+                    RouteMarkers = _interactionService.FindMarkersOnRoute(journeyOption.Coordinates, pollutionMarkers)
+                });
+            }
+
+            return enrichedRoute;
         }
     }
 }
