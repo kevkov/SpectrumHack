@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections;
+﻿using MapApi.Repositories;
+using MapApiCore.Models;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
-using MapApi.Models;
-using MapApi.Repositories;
-using Microsoft.AspNetCore.Mvc;
 
 namespace MapApi.Controllers
 {
@@ -16,7 +15,7 @@ namespace MapApi.Controllers
         private IMarkerRepository _markerRepo;
         private IJourneyRepository _journeyRepo;
         private IIntersectionService _interactionService;
-        
+
         public MapController(IMarkerRepository markerRepo, IJourneyRepository journeyRepo, IIntersectionService interactionService)
         {
             _markerRepo = markerRepo;
@@ -39,7 +38,7 @@ namespace MapApi.Controllers
             var filePath = Path.Combine(Environment.CurrentDirectory, "Test.kml");
             var kml = new XmlDocument();
             kml.Load(filePath);
-            
+
             return kml.OuterXml;
         }
 

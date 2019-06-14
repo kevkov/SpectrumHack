@@ -11,6 +11,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\MapApiCore\MapApiCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="Test.kml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
