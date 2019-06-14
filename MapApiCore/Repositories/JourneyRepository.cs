@@ -1,7 +1,7 @@
-﻿using MapApiCore.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using MapApiCore.Models;
 
-namespace MapApi.Repositories
+namespace MapApiCore.Repositories
 {
     public interface IJourneyRepository
     {

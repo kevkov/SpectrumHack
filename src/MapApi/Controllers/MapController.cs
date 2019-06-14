@@ -1,11 +1,11 @@
-﻿using MapApi.Repositories;
-using MapApiCore.Models;
+﻿using MapApiCore.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using MapApi.Services;
+using MapApiCore.Repositories;
 
 namespace MapApi.Controllers
 {
@@ -24,11 +24,17 @@ namespace MapApi.Controllers
             _interactionService = interactionService;
         }
 
-        // GET api/values
+        // GET api/journey
         [HttpGet]
+        public ActionResult<string> Get()
+        {
+            return Get(1);
+        }
+
+        // GET api/journey
+        [HttpGet("{journeyId}")]
         public ActionResult<string> Get(int journeyId)
         {
-
             IList<EnrichedRoute> fullJourneyOptions = ProcessJourney(journeyId);
             /*
              Kev - List of layers + color
