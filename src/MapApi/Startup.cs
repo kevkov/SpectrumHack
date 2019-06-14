@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using MapApi.Services;
 using MapApiCore.Repositories;
@@ -30,7 +31,15 @@ namespace MapApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddScoped<IMarkerRepository, PollutionRepository>();
+            services.AddScoped<IPollutionRepository, PollutionRepository>(
+                s =>
+                {
+                    return new PollutionRepository(new HttpClient
+                    {
+                        BaseAddress = new Uri("http://api.airvisual.com/v2") 
+
+                    });
+                });
             services.AddScoped<IJourneyRepository, JourneyRepository>();
             services.AddScoped<IIntersectionService, IntersectionService>();
         }
