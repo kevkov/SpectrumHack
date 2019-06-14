@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MapApi.Models
+namespace MapApiCore.Models
 {
     public class Route
     {

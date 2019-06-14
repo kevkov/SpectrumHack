@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using MapApi.Models;
+﻿using MapApiCore.Models;
+using System.Collections.Generic;
 
 namespace MapApi.Repositories
 {

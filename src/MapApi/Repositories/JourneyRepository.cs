@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using MapApi.Models;
+﻿using MapApiCore.Models;
+using System.Collections.Generic;
 
 namespace MapApi.Repositories
 {
@@ -36,7 +36,7 @@ namespace MapApi.Repositories
                     new Coordinate(0.00496, 51.49869)
                 });
 
-            return new List<Route> {route1, route2, route3};
+            return new List<Route> { route1, route2, route3 };
         }
     }
 }

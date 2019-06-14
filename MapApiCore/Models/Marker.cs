@@ -1,5 +1,5 @@
 ﻿
-namespace MapApi.Models
+namespace MapApiCore.Models
 {
     public class Marker
     {
