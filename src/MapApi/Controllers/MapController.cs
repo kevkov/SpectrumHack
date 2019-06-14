@@ -35,10 +35,13 @@ namespace MapApi.Controllers
             var journeyOptions = _journeyRepo.GetRoutesForJourney(journeyId);
             var pollutionMarkers = _markerRepo.GetMarkers();
 
-            //EnrichedRoute enrichedRoute =
+            IList<EnrichedRoute> enrichedRoute = new List<EnrichedRoute>();
             foreach (var journeyOption in journeyOptions)
             {
-                _interactionService.FindMarkersOnRoute(journeyOption.Coordinates, pollutionMarkers);
+                enrichedRoute.Add(new EnrichedRoute() {
+                    PollutionScore = 100,
+                    RouteMarkers = _interactionService.FindMarkersOnRoute(journeyOption.Coordinates, pollutionMarkers)
+                });
             }
 
             /*
