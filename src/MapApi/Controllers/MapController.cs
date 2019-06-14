@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
+using MapApi.Services;
 
 namespace MapApi.Controllers
 {
@@ -12,9 +13,9 @@ namespace MapApi.Controllers
     [ApiController]
     public class MapController : ControllerBase
     {
-        private IMarkerRepository _markerRepo;
-        private IJourneyRepository _journeyRepo;
-        private IIntersectionService _interactionService;
+        private readonly IMarkerRepository _markerRepo;
+        private readonly IJourneyRepository _journeyRepo;
+        private readonly IIntersectionService _interactionService;
 
         public MapController(IMarkerRepository markerRepo, IJourneyRepository journeyRepo, IIntersectionService interactionService)
         {
@@ -28,7 +29,7 @@ namespace MapApi.Controllers
         public ActionResult<string> Get(int journeyId)
         {
 
-            IList<EnrichedRoute> fullJourneyOptions = processJourney(journeyId);
+            IList<EnrichedRoute> fullJourneyOptions = ProcessJourney(journeyId);
             /*
              Kev - List of layers + color
                     List of route + score + color
@@ -42,7 +43,7 @@ namespace MapApi.Controllers
             return kml.OuterXml;
         }
 
-        private IList<EnrichedRoute> processJourney(int journeyId)
+        private IList<EnrichedRoute> ProcessJourney(int journeyId)
         {
             var journeyOptions = _journeyRepo.GetRoutesForJourney(journeyId);
             var pollutionMarkers = _markerRepo.GetMarkers();
