@@ -5,10 +5,7 @@ using GeoCoordinatePortable;
 
 namespace MapApi.Services
 {
-    public interface IIntersectionService
-    {
-        List<Marker> FindMarkersOnRoute(List<Coordinate> route, List<Marker> markers);
-    }
+    using Interfaces;
 
     public class IntersectionService : IIntersectionService
     {

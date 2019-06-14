@@ -2,10 +2,10 @@
 {
     public struct Coordinate
     {
-        public Coordinate(double latitude, double longitude)
+        public Coordinate(double longitude, double latitude)
         {
-            this.Latitude = latitude;
             this.Longitude = longitude;
+            this.Latitude = latitude;
         }
 
         public double Latitude { get; set; }

@@ -4,22 +4,25 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
-using MapApi.Services;
 using MapApiCore.Repositories;
 
 namespace MapApi.Controllers
 {
+    using MapApiCore.Interfaces;
+    using MapApiDataFeeder.Interfaces;
+    using Services.Interfaces;
+
     [Route("api/[controller]")]
     [ApiController]
     public class MapController : ControllerBase
     {
-        private readonly IMarkerRepository _markerRepo;
+        private readonly IPollutionRepository _pollutionRepo;
         private readonly IJourneyRepository _journeyRepo;
         private readonly IIntersectionService _interactionService;
 
-        public MapController(IMarkerRepository markerRepo, IJourneyRepository journeyRepo, IIntersectionService interactionService)
+        public MapController(IPollutionRepository pollutionRepo, IJourneyRepository journeyRepo, IIntersectionService interactionService)
         {
-            _markerRepo = markerRepo;
+            _pollutionRepo = pollutionRepo;
             _journeyRepo = journeyRepo;
             _interactionService = interactionService;
         }
@@ -35,6 +38,7 @@ namespace MapApi.Controllers
         [HttpGet("{journeyId}")]
         public ActionResult<string> Get(int journeyId)
         {
+            
             IList<EnrichedRoute> fullJourneyOptions = ProcessJourney(journeyId);
             /*
              Kev - List of layers + color
@@ -52,7 +56,7 @@ namespace MapApi.Controllers
         private IList<EnrichedRoute> ProcessJourney(int journeyId)
         {
             var journeyOptions = _journeyRepo.GetRoutesForJourney(journeyId);
-            var pollutionMarkers = _markerRepo.GetMarkers();
+            var pollutionMarkers = _pollutionRepo.GetMarkers();
 
             IList<EnrichedRoute> enrichedRoute = new List<EnrichedRoute>();
             foreach (var journeyOption in journeyOptions)
