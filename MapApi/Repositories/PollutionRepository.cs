@@ -3,19 +3,14 @@ using MapApi.Models;
 
 namespace MapApi.Repositories
 {
-    public interface IMarkerRepository
-    {
-        List<PollutionMarker> GetMarkers();
-    }
-
     public class PollutionRepository : IMarkerRepository
     {
-        public List<PollutionMarker> GetMarkers()
+        public List<Marker> GetMarkers()
         {
-            return new List<PollutionMarker>
+            return new List<Marker>
             {
-                new PollutionMarker(10, new Coordinate(0.00447, 51.49847)),
-                new PollutionMarker(50, new Coordinate(0.00496, 51.49869))
+                new Marker(new Coordinate(0.00447, 51.49847), 10, "Low"),
+                new Marker(new Coordinate(0.00496, 51.49869), 50, "Med")
             };
         }
     }

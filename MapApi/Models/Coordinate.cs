@@ -1,6 +1,6 @@
 ﻿namespace MapApi.Models
 {
-    public class Coordinate
+    public struct Coordinate
     {
         public Coordinate(double latitude, double longitude)
         {
