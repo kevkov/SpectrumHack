@@ -1,8 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventStore", "src\EventStore\EventStore.csproj", "{38E22966-DE25-40DA-85DB-C37A2B2DE505}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadModel1", "src\ReadModel1\ReadModel1.csproj", "{B5AC2ABC-B8DF-468A-9EDC-B0BB6E81236E}"
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.645
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapApi", "MapApi\MapApi.csproj", "{048E14DF-8828-46B6-B16D-6CAB6C9FEE2B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -10,13 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{38E22966-DE25-40DA-85DB-C37A2B2DE505}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{38E22966-DE25-40DA-85DB-C37A2B2DE505}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{38E22966-DE25-40DA-85DB-C37A2B2DE505}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{38E22966-DE25-40DA-85DB-C37A2B2DE505}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B5AC2ABC-B8DF-468A-9EDC-B0BB6E81236E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B5AC2ABC-B8DF-468A-9EDC-B0BB6E81236E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B5AC2ABC-B8DF-468A-9EDC-B0BB6E81236E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B5AC2ABC-B8DF-468A-9EDC-B0BB6E81236E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{048E14DF-8828-46B6-B16D-6CAB6C9FEE2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{048E14DF-8828-46B6-B16D-6CAB6C9FEE2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{048E14DF-8828-46B6-B16D-6CAB6C9FEE2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{048E14DF-8828-46B6-B16D-6CAB6C9FEE2B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {022D4D82-CC9C-4A67-9187-080E79A74E0F}
 	EndGlobalSection
 EndGlobal
