@@ -55,11 +55,11 @@ namespace MapApi.Controllers
 
         private IList<EnrichedRoute> ProcessJourney(int journeyId)
         {
-            var journeyOptions = _journeyRepo.GetRoutesForJourney(journeyId);
+            var journeyOptions = _journeyRepo.GetJourney(journeyId);
             var pollutionMarkers = _pollutionRepo.GetMarkers();
 
             IList<EnrichedRoute> enrichedRoute = new List<EnrichedRoute>();
-            foreach (var journeyOption in journeyOptions)
+            foreach (var journeyOption in journeyOptions.Routes)
             {
                 enrichedRoute.Add(new EnrichedRoute()
                 {

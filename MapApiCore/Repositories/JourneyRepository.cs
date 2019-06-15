@@ -16,11 +16,9 @@
             _journeys = ReadData<Journey>(fileName);
         }
 
-        public List<Route> GetRoutesForJourney(int journeyId)
+        public Journey GetJourney(int journeyId)
         {
-            var journey = this._journeys.FirstOrDefault(j => j.JourneyId == journeyId);
-
-            return journey?.Routes;
+            return this._journeys.FirstOrDefault(j => j.JourneyId == journeyId);
         }
     }
 }
