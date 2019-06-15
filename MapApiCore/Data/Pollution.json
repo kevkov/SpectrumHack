@@ -1,30 +1,60 @@
 ﻿[{
-	"Coordinate": {
-		"Latitude": 51.49847,
-		"Longitude": 0.00447
-	},
-	"Value": 10,
-	"Description": "Low",
-	"StartTime": "00:00:00",
-	"EndTime": "23:59:59"
-},
-{
-	"Coordinate": {
-		"Latitude": 51.49869,
-		"Longitude": 0.00496
-	},
-	"Value": 50,
-	"Description": "Med",
-	"StartTime": "00:00:00",
-	"EndTime": "23:59:59"
-},
-{
-	"Coordinate": {
-		"Latitude": 51.456356048583984,
-		"Longitude": 0.040725000202655792
-	},
-	"Value": 21,
-	"Description": "London",
-	"StartTime": "00:00:00",
-	"EndTime": "23:59:59"
-}]
+    "Coordinate": {
+      "Latitude": 51.464113541162,
+      "Longitude": -0.11458102695123
+    },
+    "Value": 2,
+    "Description": "Lambeth - Brixton Road",
+    "StartTime": "00:00:00",
+    "EndTime": "23:59:59"
+  },
+  {
+    "Coordinate": {
+      "Latitude": 51.513847178423,
+      "Longitude": -0.077765681752
+    },
+    "Value": 1,
+    "Description": "City of London - Sir John Cass School",
+    "StartTime": "00:00:00",
+    "EndTime": "23:59:59"
+  },
+  {
+    "Coordinate": {
+      "Latitude": 51.520225273171,
+      "Longitude": -0.0961060474176381
+    },
+    "Value": 1,
+    "Description": "City of London - Beech Street",
+    "StartTime": "00:00:00",
+    "EndTime": "23:59:59"
+  },
+  {
+    "Coordinate": {
+      "Latitude": 51.510499,
+      "Longitude": -0.091634
+    },
+    "Value": 3,
+    "Description": "City of London - Walbrook Wharf",
+    "StartTime": "00:00:00",
+    "EndTime": "23:59:59"
+  },
+  {
+    "Coordinate": {
+      "Latitude": 51.4937746695818,
+      "Longitude": 0.0107796237032558
+    },
+    "Value": 1,
+    "Description": "Greenwich - John Harrison Way",
+    "StartTime": "00:00:00",
+    "EndTime": "23:59:59"
+  },
+  {
+    "Coordinate": {
+      "Latitude": 51.4931557048667,
+      "Longitude": -0.101527038274853
+    },
+    "Value": 1,
+    "Description": "Southwark - Elephant and Castle",
+    "StartTime": "00:00:00",
+    "EndTime": "23:59:59"
+  }]

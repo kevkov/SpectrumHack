@@ -19,8 +19,6 @@ using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 namespace MapApi
 {
     using MapApiCore.Interfaces;
-    using MapApiDataFeeder.Interfaces;
-    using MapApiDataFeeder.Services;
     using Services.Interfaces;
 
     public class Startup
@@ -39,7 +37,8 @@ namespace MapApi
             services.AddScoped<IPollutionRepository, PollutionRepository>();
             services.AddScoped<IJourneyRepository, JourneyRepository>();
             services.AddScoped<IIntersectionService, IntersectionService>();
-            services.AddScoped<IAirPollutionService, AirPollutionService>();
+            //services.AddScoped<IPollutionService, AirVisualService>();
+            services.AddScoped<IPollutionService, LondonAirService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

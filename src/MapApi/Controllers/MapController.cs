@@ -9,7 +9,6 @@ using MapApiCore.Repositories;
 namespace MapApi.Controllers
 {
     using MapApiCore.Interfaces;
-    using MapApiDataFeeder.Interfaces;
     using Services.Interfaces;
 
     [Route("api/[controller]")]

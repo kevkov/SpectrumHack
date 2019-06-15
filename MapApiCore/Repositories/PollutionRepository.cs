@@ -3,10 +3,8 @@ using MapApiCore.Models;
 
 namespace MapApiCore.Repositories
 {
-    using System.Linq;
     using Interfaces;
-    using Newtonsoft.Json;
-
+    
     public class PollutionRepository : RepositoryBase, IPollutionRepository
     {
         private const string fileName = "Pollution.json";
@@ -23,16 +21,12 @@ namespace MapApiCore.Repositories
             return _markers;
         }
 
-        public void InsertMarker(Marker marker)
+        public void CreateMarkers(List<Marker> markers)
         {
-            var markerExists = this._markers.Any(m => m.Coordinate.Longitude == marker.Coordinate.Longitude && m.Coordinate.Latitude == marker.Coordinate.Latitude);
+            _markers.Clear();
+            _markers.AddRange(markers);
 
-            if (markerExists == false)
-            {
-                _markers.Add(marker);
-                WriteData(fileName, this._markers);
-            }
-            
+            WriteData(fileName, markers);
         }
     }
 }
