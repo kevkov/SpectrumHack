@@ -10,11 +10,12 @@ import {
     Right,
     Badge
 } from "native-base";
-import {DrawerItemsProps} from "react-navigation";
+import { DrawerItemsProps} from "react-navigation";
+import { Constants } from 'expo';
 
 export const SideBar = (props:DrawerItemsProps) => {
     return (
-        <Container>
+        <Container style={{paddingTop: Constants.statusBarHeight}}>
             <Content>
                 <Text>Sidebar</Text>
             </Content>
