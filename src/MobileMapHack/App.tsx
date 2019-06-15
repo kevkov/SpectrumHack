@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet} from "react-native";
-import { Map } from './components/Map'
+import { Map } from './components/map'
 import { createDrawerNavigator, createStackNavigator, createAppContainer } from "react-navigation";
 import { SideBar } from "./components/sidebar";
 import { Home } from './screens/home'
@@ -9,7 +9,8 @@ import {Root} from "native-base";
 
 const Drawer = createDrawerNavigator(
     {
-        Home: { screen: Home }
+        Home: { screen: Home },
+        Map: { screen: Map }
     },
     {
         initialRouteName: "Home",
