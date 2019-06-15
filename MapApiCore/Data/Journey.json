@@ -1,0 +1,43 @@
+[
+  {
+    "JourneyId": 1,
+    "Routes": [
+      {
+        "Coordinates": [
+          {
+            "Latitude": 51.49847,
+            "Longitude": 0.00447
+          },
+          {
+            "Latitude": 51.49869,
+            "Longitude": 0.00496
+          }
+        ]
+      },
+      {
+        "Coordinates": [
+          {
+            "Latitude": 51.49847,
+            "Longitude": 0.00447
+          },
+          {
+            "Latitude": 51.49869,
+            "Longitude": 0.00496
+          }
+        ]
+      },
+      {
+        "Coordinates": [
+          {
+            "Latitude": 51.49847,
+            "Longitude": 0.00447
+          },
+          {
+            "Latitude": 51.49869,
+            "Longitude": 0.00496
+          }
+        ]
+      }
+    ]
+  }
+]

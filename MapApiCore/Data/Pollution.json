@@ -1,0 +1,18 @@
+﻿[
+  {
+    "Coordinate": {
+      "Latitude": 51.49847,
+      "Longitude": 0.00447
+    },
+    "Value": 10,
+    "Description": "Low"
+  },
+  {
+    "Coordinate": {
+      "Latitude": 51.49869,
+      "Longitude": 0.00496
+    },
+    "Value": 50,
+    "Description": "Med"
+  }
+]
