@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MapApi", "src\MapApi\MapApi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoogleMapAPIWeb", "src\GoogleMapAPIWeb\GoogleMapAPIWeb.csproj", "{EA5799B5-2949-418C-B860-F000DA40178C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MapApiCore", "MapApiCore\MapApiCore.csproj", "{F0FA2B43-135F-4706-A161-663E6EB41E57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MapApiCore", "src\MapApiCore\MapApiCore.csproj", "{603D186A-8024-4E23-ABC6-9E1FC6952DC4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{EA5799B5-2949-418C-B860-F000DA40178C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA5799B5-2949-418C-B860-F000DA40178C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA5799B5-2949-418C-B860-F000DA40178C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F0FA2B43-135F-4706-A161-663E6EB41E57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F0FA2B43-135F-4706-A161-663E6EB41E57}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F0FA2B43-135F-4706-A161-663E6EB41E57}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F0FA2B43-135F-4706-A161-663E6EB41E57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{603D186A-8024-4E23-ABC6-9E1FC6952DC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{603D186A-8024-4E23-ABC6-9E1FC6952DC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{603D186A-8024-4E23-ABC6-9E1FC6952DC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{603D186A-8024-4E23-ABC6-9E1FC6952DC4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
