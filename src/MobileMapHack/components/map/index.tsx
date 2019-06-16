@@ -4,7 +4,7 @@ import {Text, View} from "react-native";
 import React from "react";
 import {Location} from "../../domain/types";
 
-const GOOGLE_MAPS_APIKEY = 'some key';
+const GOOGLE_MAPS_APIKEY = '';
 
 export const  Map = (props) => {
     let origin:Location = props.navigation.getParam("origin");

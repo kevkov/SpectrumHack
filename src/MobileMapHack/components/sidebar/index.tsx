@@ -13,23 +13,26 @@ import {
 import { DrawerItemsProps} from "react-navigation";
 import { Constants } from 'expo';
 import { Location} from "../../domain/types";
+import styles from './styles';
 
 const data =  [
     {
-        "name": "Home to Work",
-        "start": {
+        name: "Home to Work",
+        icon: "business",
+        start: {
             latitude: 51.4511732, longitude: -0.2138706
         },
-        "end": {
+        end: {
             latitude: 51.5250836, longitude: -0.0769465
         }
     },
     {
-        "name": "Work to Heathrow",
-        "start": {
+        name: "Work to Heathrow",
+        icon: "business",
+        start: {
             latitude: 51.4511732, longitude: -0.2138706
         },
-        "end": {
+        end: {
             latitude: 51.5250836, longitude: -0.0769465
         }
     },
@@ -47,10 +50,20 @@ export const SideBar = (props:DrawerItemsProps) => {
                             noBorder
                             onPress={() => props.navigation.navigate("Map",
                                 {origin: datum.start, destination: datum.end})}>
-                            <Text>{datum.name}</Text>
+                            <Left>
+                                <Icon
+                                    active
+                                    type={"MaterialIcons"}
+                                    name={datum.icon}
+                                    style={{ color: "#777", fontSize: 26, width: 30 }}
+                                />
+                                <Text style={styles.text}>
+                                    {datum.name}
+                                </Text>
+                            </Left>
                         </ListItem>}
                 />
             </Content>
         </Container>
     )
-}
+};
