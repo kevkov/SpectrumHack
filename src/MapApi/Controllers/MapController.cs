@@ -31,16 +31,14 @@
         [HttpGet]
         public ActionResult<string> Get()
         {
-            return Get(1);
+            return this.Get(1, new TimeSpan(9, 0, 0), true, true);
         }
 
         // GET api/journey
         [HttpGet("{journeyId}")]
-        public ActionResult<string> Get(int journeyId)
+        public ActionResult<string> Get(int journeyId, TimeSpan startTime, bool showPollution, bool showSchools)
         {
-            // TODO: Need to add start time as a parameter on the controller
-            var startTime = new TimeSpan(9, 0 ,0);
-            IList<EnrichedRoute> fullJourneyOptions = ProcessJourney(journeyId, startTime);
+            IList<EnrichedRoute> fullJourneyOptions = this.ProcessJourney(journeyId, startTime);
             /*
              Kev - List of layers + color
                     List of route + score + color
