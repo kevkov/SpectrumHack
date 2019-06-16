@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {StyleSheet} from "react-native";
-import { Map } from './components/map'
 import { createDrawerNavigator, createStackNavigator, createAppContainer } from "react-navigation";
 import { SideBar } from "./components/sidebar";
 import { Home } from './screens/home'
+import { Route } from './screens/route'
 import {Root} from "native-base";
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
@@ -17,7 +17,7 @@ import MaterialIcons from "native-base/Fonts/MaterialIcons.ttf";
 const Drawer = createDrawerNavigator(
     {
         Home: { screen: Home },
-        Map: { screen: Map }
+        Route: { screen: Route }
     },
     {
         initialRouteName: "Home",

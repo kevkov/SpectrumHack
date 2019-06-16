@@ -9,13 +9,13 @@ import {
     Right,
     Badge
 } from "native-base";
-import { DrawerItemsProps} from "react-navigation";
-import { Constants } from 'expo';
-import { Location} from "../../domain/types";
+import {DrawerItemsProps} from "react-navigation";
+import {Constants} from 'expo';
+import {Location} from "../../domain/types";
 import styles from './styles';
 import {FlatList} from "react-native";
 
-const data =  [
+const data = [
     {
         key: "Home to Work",
         icon: "business",
@@ -30,7 +30,7 @@ const data =  [
         key: "Work to Heathrow",
         icon: "business",
         start: {
-            latitude: 51.4511732, longitude: -0.2138706
+            latitude: 51.4511731, longitude: -0.2138706
         },
         end: {
             latitude: 51.5250836, longitude: -0.0769465
@@ -38,7 +38,7 @@ const data =  [
     },
 ];
 
-export const SideBar = (props:DrawerItemsProps) => {
+export const SideBar = (props: DrawerItemsProps) => {
     return (
         <Container style={{paddingTop: Constants.statusBarHeight}}>
             <Content>
@@ -48,14 +48,17 @@ export const SideBar = (props:DrawerItemsProps) => {
                         <ListItem
                             button
                             noBorder
-                            onPress={() => props.navigation.navigate("Map",
-                                {origin: datum.item.start, destination: datum.item.end})}>
+                            onPress={() => {
+                                props.navigation.navigate("Route",
+                                    {origin: datum.item.start, destination: datum.item.end});
+                                props.navigation.closeDrawer();
+                            }}>
                             <Left>
                                 <Icon
                                     active
                                     type={"MaterialIcons"}
                                     name={datum.item.icon}
-                                    style={{ color: "#777", fontSize: 26, width: 30 }}
+                                    style={{color: "#777", fontSize: 26, width: 30}}
                                 />
                                 <Text style={styles.text}>
                                     {datum.item.key}

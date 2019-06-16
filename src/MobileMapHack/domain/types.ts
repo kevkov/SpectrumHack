@@ -1,10 +1,10 @@
 
-export type Location = {
+export interface Location {
     latitude: number
     longitude: number
 }
 
-export type Journey = {
+export interface Journey {
     name: string
     start: Location
     end: Location
