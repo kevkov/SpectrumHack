@@ -12,6 +12,7 @@ import {
 } from "native-base";
 import { DrawerItemsProps} from "react-navigation";
 import { Constants } from 'expo';
+import { Location} from "../../domain/types";
 
 const data =  [
     {
@@ -44,7 +45,8 @@ export const SideBar = (props:DrawerItemsProps) => {
                         <ListItem
                             button
                             noBorder
-                            onPress={() => props.navigation.navigate("Map")}>
+                            onPress={() => props.navigation.navigate("Map",
+                                {origin: datum.start, destination: datum.end})}>
                             <Text>{datum.name}</Text>
                         </ListItem>}
                 />

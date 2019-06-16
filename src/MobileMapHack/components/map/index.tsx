@@ -7,7 +7,7 @@ const origin = {latitude: 51.4511732, longitude: -0.2138706};
 const destination = {latitude: 51.5250836, longitude: -0.0769465};
 const GOOGLE_MAPS_APIKEY = 'Some key';
 
-export const  Map = () => {
+export const  Map = (props) => {
     return(<>
         <MapView
             style={{flex: 1}}
@@ -18,8 +18,8 @@ export const  Map = () => {
                 longitudeDelta: 0.0421,
             }}>
             <MapViewDirections
-                origin={origin}
-                destination={destination}
+                origin={props.navigation.getParam("origin")}
+                destination={props.navigation.getParam("destination")}
                 apikey={GOOGLE_MAPS_APIKEY}
             />
         </MapView>
