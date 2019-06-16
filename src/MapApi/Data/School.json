@@ -1,0 +1,192 @@
+﻿[
+  {
+    "Coordinate": {
+      "Longitude": -0.127977900000019,
+      "Latitude": 51.4981706
+    },
+    "Value": 100,
+    "Description": "Westminster School",
+    "StartTime": "07:00:00",
+    "EndTime": "17:00:00"
+  },
+  {
+    "Coordinate": {
+      "Longitude": -0.200688500000069,
+      "Latitude": 51.5050051
+    },
+    "Value": 100,
+    "Description": "Holland Park School",
+    "StartTime": "07:00:00",
+    "EndTime": "17:00:00"
+  },
+  {
+    "Coordinate": {
+      "Longitude": -0.220924800000034,
+      "Latitude": 51.4147522
+    },
+    "Value": 100,
+    "Description": "Hall School Wimbledon (Senior School)",
+    "StartTime": "07:00:00",
+    "EndTime": "17:00:00"
+  },
+  {
+    "Coordinate": {
+      "Longitude": -0.108571900000015,
+      "Latitude": 51.5066996
+    },
+    "Value": 100,
+    "Description": "The London Nautical School",
+    "StartTime": "07:00:00",
+    "EndTime": "17:00:00"
+  },
+  {
+    "Coordinate": {
+      "Longitude": -0.17478600000004,
+      "Latitude": 51.49933
+    },
+    "Value": 100,
+    "Description": "Imperial College Business School",
+    "StartTime": "07:00:00",
+    "EndTime": "17:00:00"
+  },
+  {
+    "Coordinate": {
+      "Longitude": -0.252508199999966,
+      "Latitude": 51.4960426
+    },
+    "Value": 100,
+    "Description": "The Arts Educational School",
+    "StartTime": "07:00:00",
+    "EndTime": "17:00:00"
+  },
+  {
+    "Coordinate": {
+      "Longitude": -0.0943485999999893,
+      "Latitude": 51.5191688
+    },
+    "Value": 100,
+    "Description": "City of London School for Girls",
+    "StartTime": "07:00:00",
+    "EndTime": "17:00:00"
+  },
+  {
+    "Coordinate": {
+      "Longitude": -0.122222299999976,
+      "Latitude": 51.5904104
+    },
+    "Value": 100,
+    "Description": "Campsbourne School and Extended Services",
+    "StartTime": "07:00:00",
+    "EndTime": "17:00:00"
+  },
+  {
+    "Coordinate": {
+      "Longitude": -0.176674600000069,
+      "Latitude": 51.5348361
+    },
+    "Value": 100,
+    "Description": "The American School in London",
+    "StartTime": "07:00:00",
+    "EndTime": "17:00:00"
+  },
+  {
+    "Coordinate": {
+      "Longitude": -0.140574000000015,
+      "Latitude": 51.5278924
+    },
+    "Value": 100,
+    "Description": "Netley Primary School and Centre for Autism",
+    "StartTime": "07:00:00",
+    "EndTime": "17:00:00"
+  },
+  {
+    "Coordinate": {
+      "Longitude": -0.05108139999993,
+      "Latitude": 51.4752744
+    },
+    "Value": 100,
+    "Description": "Kender Primary School",
+    "StartTime": "07:00:00",
+    "EndTime": "17:00:00"
+  },
+  {
+    "Coordinate": {
+      "Longitude": -0.447955200000024,
+      "Latitude": 51.430355
+    },
+    "Value": 100,
+    "Description": "Echelford Primary School",
+    "StartTime": "07:00:00",
+    "EndTime": "17:00:00"
+  },
+  {
+    "Coordinate": {
+      "Longitude": -0.20318240000006,
+      "Latitude": 51.5147911
+    },
+    "Value": 100,
+    "Description": "Colville Primary School",
+    "StartTime": "07:00:00",
+    "EndTime": "17:00:00"
+  },
+  {
+    "Coordinate": {
+      "Longitude": -0.0704498000000058,
+      "Latitude": 51.5398487
+    },
+    "Value": 100,
+    "Description": "Queensbridge Primary School",
+    "StartTime": "07:00:00",
+    "EndTime": "17:00:00"
+  },
+  {
+    "Coordinate": {
+      "Longitude": -0.168318999999997,
+      "Latitude": 51.423285
+    },
+    "Value": 100,
+    "Description": "Sellincourt Primary School",
+    "StartTime": "07:00:00",
+    "EndTime": "17:00:00"
+  },
+  {
+    "Coordinate": {
+      "Longitude": -0.198402100000067,
+      "Latitude": 51.4835841
+    },
+    "Value": 100,
+    "Description": "Fulham Primary School",
+    "StartTime": "07:00:00",
+    "EndTime": "17:00:00"
+  },
+  {
+    "Coordinate": {
+      "Longitude": -0.0212632000000212,
+      "Latitude": 51.3920048
+    },
+    "Value": 100,
+    "Description": "Unicorn Primary School",
+    "StartTime": "07:00:00",
+    "EndTime": "17:00:00"
+  },
+  {
+    "Coordinate": {
+      "Longitude": -0.018880099999933,
+      "Latitude": 51.5125423
+    },
+    "Value": 100,
+    "Description": "Bygrove Primary School",
+    "StartTime": "07:00:00",
+    "EndTime": "17:00:00"
+  },
+  {
+    "Coordinate": {
+      "Longitude": 0.15321629999994,
+      "Latitude": 51.4672965
+    },
+    "Value": 100,
+    "Description": "Bursted Wood Primary School",
+    "StartTime": "07:00:00",
+    "EndTime": "17:00:00"
+  }
+]

@@ -10,13 +10,4 @@
     </Reference>
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="Data\Journey.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Data\Pollution.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

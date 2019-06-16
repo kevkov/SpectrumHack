@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using MapApi.Services;
-using MapApiCore.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -19,6 +18,7 @@ using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 namespace MapApi
 {
     using MapApiCore.Interfaces;
+    using Repositories;
     using Services.Interfaces;
 
     public class Startup
@@ -35,6 +35,7 @@ namespace MapApi
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddScoped<IPollutionRepository, PollutionRepository>();
+            services.AddScoped<ISchoolRepository, SchoolRepository>();
             services.AddScoped<IJourneyRepository, JourneyRepository>();
             services.AddScoped<IIntersectionService, IntersectionService>();
             //services.AddScoped<IPollutionService, AirVisualService>();

@@ -6,6 +6,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Data\Journey.json" />
+    <Content Remove="Data\Pollution.json" />
+    <Content Remove="Data\School.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Data\Journey.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Pollution.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\School.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="GeoCoordinate.NetCore" Version="1.0.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
