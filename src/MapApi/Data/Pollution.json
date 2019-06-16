@@ -1,60 +1,980 @@
 ﻿[{
-    "Coordinate": {
-      "Latitude": 51.464113541162,
-      "Longitude": -0.11458102695123
-    },
-    "Value": 2,
-    "Description": "Lambeth - Brixton Road",
-    "StartTime": "00:00:00",
-    "EndTime": "23:59:59"
+	"coordinate": {
+		"latitude": 51.563752,
+		"longitude": 0.177891
+	},
+	"value": 1,
+	"description": "Barking and Dagenham - Rush Green",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.529389,
+		"longitude": 0.132857
+	},
+	"value": 1,
+	"description": "Barking and Dagenham - Scrattons Farm",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.4906102082147,
+		"longitude": 0.158914493927518
+	},
+	"value": 1,
+	"description": "Bexley - Belvedere",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.4906102082147,
+		"longitude": 0.158914493927518
+	},
+	"value": 1,
+	"description": "Bexley - Belvedere FDMS",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.4946486813055,
+		"longitude": 0.137279111232178
+	},
+	"value": 1,
+	"description": "Bexley - Belvedere West",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.4946486813055,
+		"longitude": 0.137279111232178
+	},
+	"value": 1,
+	"description": "Bexley - Belvedere West FDMS",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.4659832746662,
+		"longitude": 0.184877126994369
+	},
+	"value": 1,
+	"description": "Bexley - Slade Green",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+  "coordinate": {
+    "latitude": 51.4659832746662,
+    "longitude": 0.184877126994369
   },
-  {
-    "Coordinate": {
-      "Latitude": 51.513847178423,
-      "Longitude": -0.077765681752
-    },
-    "Value": 1,
-    "Description": "City of London - Sir John Cass School",
-    "StartTime": "00:00:00",
-    "EndTime": "23:59:59"
-  },
-  {
-    "Coordinate": {
-      "Latitude": 51.520225273171,
-      "Longitude": -0.0961060474176381
-    },
-    "Value": 1,
-    "Description": "City of London - Beech Street",
-    "StartTime": "00:00:00",
-    "EndTime": "23:59:59"
-  },
-  {
-    "Coordinate": {
-      "Latitude": 51.510499,
-      "Longitude": -0.091634
-    },
-    "Value": 3,
-    "Description": "City of London - Walbrook Wharf",
-    "StartTime": "00:00:00",
-    "EndTime": "23:59:59"
-  },
-  {
-    "Coordinate": {
-      "Latitude": 51.4937746695818,
-      "Longitude": 0.0107796237032558
-    },
-    "Value": 1,
-    "Description": "Greenwich - John Harrison Way",
-    "StartTime": "00:00:00",
-    "EndTime": "23:59:59"
-  },
-  {
-    "Coordinate": {
-      "Latitude": 51.4931557048667,
-      "Longitude": -0.101527038274853
-    },
-    "Value": 1,
-    "Description": "Southwark - Elephant and Castle",
-    "StartTime": "00:00:00",
-    "EndTime": "23:59:59"
-  }]
+	"value": 1,
+	"description": "Bexley - Slade Green FDMS",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.5324054617809,
+		"longitude": -0.217718908639377
+	},
+	"value": 1,
+	"description": "Brent - ARK Franklin Primary Academy",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.552476,
+		"longitude": -0.258089
+	},
+	"value": 3,
+	"description": "Brent - Ikea",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.537799,
+		"longitude": -0.247793
+	},
+	"value": 1,
+	"description": "Brent - John Keble Primary School",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.552656,
+		"longitude": -0.248774
+	},
+	"value": 1,
+	"description": "Brent - Neasden Lane",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.522287,
+		"longitude": -0.125848
+	},
+	"value": 1,
+	"description": "Camden - Bloomsbury",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.533238,
+		"longitude": -0.129594
+	},
+	"value": 1,
+	"description": "Camden - Coopers Lane",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.527975,
+		"longitude": -0.1287742
+	},
+	"value": 1,
+	"description": "Camden - Euston Road",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.544219,
+		"longitude": -0.175284
+	},
+	"value": 1,
+	"description": "Camden - Swiss Cottage",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.520225273171,
+		"longitude": -0.0961060474176381
+	},
+	"value": 1,
+	"description": "City of London - Beech Street",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.5145253362314,
+		"longitude": -0.104515626337876
+	},
+	"value": 1,
+	"description": "City of London - Farringdon Street",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.513847178423,
+		"longitude": -0.077765681752
+	},
+	"value": 1,
+	"description": "City of London - Sir John Cass School",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.5095436853913,
+		"longitude": -0.0873571979556188
+	},
+	"value": 2,
+	"description": "City of London - Upper Thames Street",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.510499,
+		"longitude": -0.091634
+	},
+	"value": 3,
+	"description": "City of London - Walbrook Wharf",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.411349,
+		"longitude": -0.12311
+	},
+	"value": 1,
+	"description": "Croydon - Norbury",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.410039,
+		"longitude": -0.127523
+	},
+	"value": 1,
+	"description": "Croydon - Norbury Manor",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.3739530635378,
+		"longitude": -0.0967638468323854
+	},
+	"value": 2,
+	"description": "Croydon - Park Lane",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.3622305655403,
+		"longitude": -0.117604507351392
+	},
+	"value": 1,
+	"description": "Croydon - Purley Way A23",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.5038527919816,
+		"longitude": -0.254668101620372
+	},
+	"value": 1,
+	"description": "Ealing - Acton Vale ",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.53085,
+		"longitude": -0.292488
+	},
+	"value": 2,
+	"description": "Ealing - Hanger Lane Gyratory",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.518948,
+		"longitude": -0.265617
+	},
+	"value": 1,
+	"description": "Ealing - Horn Lane",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.5189160348806,
+		"longitude": -0.265652052386222
+	},
+	"value": 2,
+	"description": "Ealing - Horn Lane TEOM",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.5236078191481,
+		"longitude": -0.265502631799754
+	},
+	"value": 1,
+	"description": "Ealing - Western Avenue",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.613865,
+		"longitude": -0.125338
+	},
+	"value": 1,
+	"description": "Enfield - Bowes Primary School",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.6450367266602,
+		"longitude": -0.0661800662229116
+	},
+	"value": 1,
+	"description": "Enfield - Bush Hill Park",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.614864007,
+		"longitude": -0.0507658363689
+	},
+	"value": 2,
+	"description": "Enfield - Derby Road",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.66864334727,
+		"longitude": -0.02200720557
+	},
+	"value": 1,
+	"description": "Enfield - Prince of Wales School",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.490532,
+		"longitude": 0.074003
+	},
+	"value": 1,
+	"description": "Greenwich - A206 Burrage Grove",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.472504,
+		"longitude": -0.012381
+	},
+	"value": 1,
+	"description": "Greenwich - Blackheath",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.45258,
+		"longitude": 0.070766
+	},
+	"value": 1,
+	"description": "Greenwich - Eltham",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.4563,
+		"longitude": 0.085606
+	},
+	"value": 1,
+	"description": "Greenwich - Falconwood",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.4563,
+		"longitude": 0.085606
+	},
+	"value": 1,
+	"description": "Greenwich - Falconwood FDMS",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.4346627060562,
+		"longitude": 0.0642224671704697
+	},
+	"value": 1,
+	"description": "Greenwich - Fiveways Sidcup Rd A20",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.4937746695818,
+		"longitude": 0.0107796237032558
+	},
+	"value": 1,
+	"description": "Greenwich - John Harrison Way",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.486957,
+		"longitude": 0.095111
+	},
+	"value": 1,
+	"description": "Greenwich - Plumstead High Street",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.4839072533485,
+		"longitude": 0.000407396935849736
+	},
+	"value": 1,
+	"description": "Greenwich - Trafalgar Road (Hoskins St)",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.456357,
+		"longitude": 0.040725
+	},
+	"value": 1,
+	"description": "Greenwich - Westhorne Avenue",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.486884,
+		"longitude": 0.017901
+	},
+	"value": 2,
+	"description": "Greenwich - Woolwich Flyover",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.526454,
+		"longitude": -0.08491
+	},
+	"value": 1,
+	"description": "Hackney - Old Street",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.5839769007709,
+		"longitude": -0.125400278484885
+	},
+	"value": 1,
+	"description": "Haringey  - Priory Park South",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.599302,
+		"longitude": -0.068218
+	},
+	"value": 1,
+	"description": "Haringey - Haringey Town Hall",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.588417,
+		"longitude": -0.362989
+	},
+	"value": 1,
+	"description": "Harrow - Pinner Road",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.617327,
+		"longitude": -0.298775
+	},
+	"value": 1,
+	"description": "Harrow - Stanmore",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.520787459334,
+		"longitude": 0.205460705694044
+	},
+	"value": 1,
+	"description": "Havering - Rainham",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.572976,
+		"longitude": 0.179079
+	},
+	"value": 2,
+	"description": "Havering - Romford",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.496309,
+		"longitude": -0.460826
+	},
+	"value": 2,
+	"description": "Hillingdon - Keats Way",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.557895,
+		"longitude": -0.106989
+	},
+	"value": 1,
+	"description": "Islington - Arsenal",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.555378,
+		"longitude": -0.116146
+	},
+	"value": 1,
+	"description": "Islington - Holloway Road",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.5210467476039,
+		"longitude": -0.213492139585065
+	},
+	"value": 1,
+	"description": "Kensington and Chelsea - North Ken",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.5210467476039,
+		"longitude": -0.213492139585065
+	},
+	"value": 1,
+	"description": "Kensington and Chelsea - North Ken FIDAS",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.412308,
+		"longitude": -0.29658478
+	},
+	"value": 1,
+	"description": "Kingston Upon Thames - Cromwell Road",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.4355006647773,
+		"longitude": -0.257029893767993
+	},
+	"value": 1,
+	"description": "Kingston Upon Thames - Kingston Vale",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.379312,
+		"longitude": -0.281259
+	},
+	"value": 1,
+	"description": "Kingston Upon Thames - Tolworth Broadway",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.4854867739729,
+		"longitude": -0.124545234819213
+	},
+	"value": 2,
+	"description": "Lambeth - Bondway Interchange",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.464113541162,
+		"longitude": -0.11458102695123
+	},
+	"value": 2,
+	"description": "Lambeth - Brixton Road",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.4282131429499,
+		"longitude": -0.13186863879576
+	},
+	"value": 1,
+	"description": "Lambeth - Streatham Green",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.445468,
+		"longitude": -0.020266
+	},
+	"value": 1,
+	"description": "Lewisham - Catford",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.4496728960354,
+		"longitude": -0.0374153592115306
+	},
+	"value": 0,
+	"description": "Lewisham - Honor Oak Park",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.4646910611736,
+		"longitude": -0.0160682432041528
+	},
+	"value": 1,
+	"description": "Lewisham - Loampit Vale",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.474954,
+		"longitude": -0.039641
+	},
+	"value": 1,
+	"description": "Lewisham - New Cross",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.4252560360937,
+		"longitude": -0.345608290872898
+	},
+	"value": 1,
+	"description": "London Teddington Bushy Park ",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.4161384794862,
+		"longitude": -0.192230805042824
+	},
+	"value": 2,
+	"description": "Merton - Merton Road",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.40162,
+		"longitude": -0.19589212
+	},
+	"value": 2,
+	"description": "Merton - Morden Civic Centre 2",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.57661,
+		"longitude": 0.030858
+	},
+	"value": 1,
+	"description": "Redbridge - Gardner Close",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.5694843315237,
+		"longitude": 0.0829074748964946
+	},
+	"value": 1,
+	"description": "Redbridge - Ley Street",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.476168,
+		"longitude": -0.230427
+	},
+	"value": 1,
+	"description": "Richmond Upon Thames - Barnes Wetlands",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.480189,
+		"longitude": -0.237335
+	},
+	"value": 1,
+	"description": "Richmond Upon Thames - Castelnau",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.4531422511004,
+		"longitude": -0.341218138106469
+	},
+	"value": 1,
+	"description": "Richmond Upon Thames - Chertsey Road",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.4804994936467,
+		"longitude": -0.0595528932573422
+	},
+	"value": 1,
+	"description": "Southwark - A2 Old Kent Road",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.4931557048667,
+		"longitude": -0.101527038274853
+	},
+	"value": 1,
+	"description": "Southwark - Elephant and Castle",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.3835652277943,
+		"longitude": -0.1364178614733
+	},
+	"value": 1,
+	"description": "Sutton - Beddington Lane",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.389286904505,
+		"longitude": -0.141661524779893
+	},
+	"value": 1,
+	"description": "Sutton - Beddington Lane north",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.3586596124998,
+		"longitude": -0.149723946604927
+	},
+	"value": 1,
+	"description": "Sutton - Wallington",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.377923,
+		"longitude": -0.240414
+	},
+	"value": 2,
+	"description": "Sutton - Worcester Park",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.5150461674013,
+		"longitude": -0.00841849265642741
+	},
+	"value": 1,
+	"description": "Tower Hamlets - Blackwall",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.5225294860844,
+		"longitude": -0.0421550991900347
+	},
+	"value": 1,
+	"description": "Tower Hamlets - Mile End Road",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.4794395281222,
+		"longitude": -0.141786953606306
+	},
+	"value": 1,
+	"description": "Wandsworth - Battersea",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.4636903568111,
+		"longitude": -0.166713485994806
+	},
+	"value": 1,
+	"description": "Wandsworth - Lavender Hill (Clapham Jct)",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.4650325059122,
+		"longitude": -0.215824580947572
+	},
+	"value": 1,
+	"description": "Wandsworth - Putney",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.463429,
+		"longitude": -0.215871
+	},
+	"value": 2,
+	"description": "Wandsworth - Putney High Street",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.4637206047191,
+		"longitude": -0.215890144123119
+	},
+	"value": 2,
+	"description": "Wandsworth - Putney High Street Facade",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.429331,
+		"longitude": -0.166524
+	},
+	"value": 1,
+	"description": "Wandsworth - Tooting High Street",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.456962,
+		"longitude": -0.191074
+	},
+	"value": 1,
+	"description": "Wandsworth - Wandsworth Town Hall",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.4932327916861,
+		"longitude": -0.147391757027028
+	},
+	"value": 2,
+	"description": "Westminster - Buckingham Palace Road",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.5168016452062,
+		"longitude": -0.145657269364411
+	},
+	"value": 1,
+	"description": "Westminster - Cavendish Square",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.493492,
+		"longitude": -0.149906
+	},
+	"value": 1,
+	"description": "Westminster - Ebury Street (Grosvenor)",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.494681,
+		"longitude": -0.131938
+	},
+	"value": 1,
+	"description": "Westminster - Horseferry Road",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.52254,
+		"longitude": -0.15459
+	},
+	"value": 2,
+	"description": "Westminster - Marylebone Road FDMS",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.5139287404213,
+		"longitude": -0.152792701881935
+	},
+	"value": 1,
+	"description": "Westminster - Oxford Street",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.516066,
+		"longitude": -0.13516388
+	},
+	"value": 1,
+	"description": "Westminster - Oxford Street East",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+},
+{
+	"coordinate": {
+		"latitude": 51.5119701188277,
+		"longitude": -0.116713103528546
+	},
+	"value": 2,
+	"description": "Westminster - Strand (Northbank BID)",
+	"startTime": "00:00:00",
+	"endTime": "23:59:59"
+}]
