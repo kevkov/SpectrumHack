@@ -31,12 +31,12 @@
         [HttpGet]
         public ActionResult<string> Get()
         {
-            return this.Get(1, new TimeSpan(9, 0, 0), true, true);
+            return this.Get(1, true, true, new TimeSpan(9, 0, 0));
         }
 
         // GET api/journey
-        [HttpGet("{journeyId}")]
-        public ActionResult<string> Get(int journeyId, TimeSpan startTime, bool showPollution, bool showSchools)
+        [HttpGet("{journeyId}/{showPollution}/{showSchools}/{startTime}")]
+        public ActionResult<string> Get(int journeyId, bool showPollution, bool showSchools, TimeSpan startTime)
         {
             IList<EnrichedRoute> fullJourneyOptions = this.ProcessJourney(journeyId, startTime);
             /*
