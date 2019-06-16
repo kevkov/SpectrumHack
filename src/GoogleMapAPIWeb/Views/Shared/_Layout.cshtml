@@ -20,16 +20,6 @@
 </head>
 <body>
 <header>
-    @*<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow mb-3">
-            <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Company name</a>
-            <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
-            <ul class="navbar-nav px-3">
-                <li class="nav-item text-nowrap">
-                    <a class="nav-link" href="#">Sign out</a>
-                </li>
-            </ul>
-    </nav>*@
-
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
         <div class="container-fluid">
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Spectrum Hackathon</a>
@@ -45,8 +35,35 @@
                 </ul>
             </div>
             <form class="form-inline">
-                <span class="navbar-text text-white pr-2">From:</span>
-                <input class="form-control mr-sm-2" type="text" placeholder="From" aria-label="From"  value="North Greenwich" readonly>
+                <span class="navbar-text text-white pl-2 pr-2">Start Time:</span>
+                <select class="form-control mr-sm-2" >
+                    <option>00:00</option>
+                    <option>01:00</option>
+                    <option>02:00</option>
+                    <option>03:00</option>
+                    <option>04:00</option>
+                    <option>05:00</option>
+                    <option>06:00</option>
+                    <option>07:00</option>
+                    <option>08:00</option>
+                    <option selected="">09:00</option>
+                    <option>10:00</option>
+                    <option>11:00</option>
+                    <option>12:00</option>
+                    <option>13:00</option>
+                    <option>14:00</option>
+                    <option>15:00</option>
+                    <option>16:00</option>
+                    <option>17:00</option>
+                    <option>18:00</option>
+                    <option>19:00</option>
+                    <option>20:00</option>
+                    <option>21:00</option>
+                    <option>22:00</option>
+                    <option>23:00</option>
+                </select>
+                <span class="navbar-text text-white pl-2 pr-2">From:</span>
+                <input class="form-control mr-sm-2" type="text" placeholder="From" aria-label="From" value="North Greenwich" readonly>
                 <span class="navbar-text text-white pl-2 pr-2">To:</span>
                 <input class="form-control mr-sm-2" type="text" placeholder="To" aria-label="To" value="Westminster" readonly>
                 <button class="btn btn-success my-2 my-sm-0" type="submit">Show Route</button>
