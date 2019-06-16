@@ -2,7 +2,6 @@ import React from "react";
 import {
     Content,
     Text,
-    List,
     ListItem,
     Icon,
     Container,
@@ -14,10 +13,11 @@ import { DrawerItemsProps} from "react-navigation";
 import { Constants } from 'expo';
 import { Location} from "../../domain/types";
 import styles from './styles';
+import {FlatList} from "react-native";
 
 const data =  [
     {
-        name: "Home to Work",
+        key: "Home to Work",
         icon: "business",
         start: {
             latitude: 51.4511732, longitude: -0.2138706
@@ -27,7 +27,7 @@ const data =  [
         }
     },
     {
-        name: "Work to Heathrow",
+        key: "Work to Heathrow",
         icon: "business",
         start: {
             latitude: 51.4511732, longitude: -0.2138706
@@ -42,23 +42,23 @@ export const SideBar = (props:DrawerItemsProps) => {
     return (
         <Container style={{paddingTop: Constants.statusBarHeight}}>
             <Content>
-                <List
-                    dataArray={data}
-                    renderRow={datum =>
+                <FlatList
+                    data={data}
+                    renderItem={datum =>
                         <ListItem
                             button
                             noBorder
                             onPress={() => props.navigation.navigate("Map",
-                                {origin: datum.start, destination: datum.end})}>
+                                {origin: datum.item.start, destination: datum.item.end})}>
                             <Left>
                                 <Icon
                                     active
                                     type={"MaterialIcons"}
-                                    name={datum.icon}
+                                    name={datum.item.icon}
                                     style={{ color: "#777", fontSize: 26, width: 30 }}
                                 />
                                 <Text style={styles.text}>
-                                    {datum.name}
+                                    {datum.item.key}
                                 </Text>
                             </Left>
                         </ListItem>}
