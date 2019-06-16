@@ -10,7 +10,7 @@ namespace MapApi.Services
 
     public class IntersectionService : IIntersectionService
     {
-        private const double RangeInMeters = 1000;
+        private const double RangeInMeters = 200;
 
         public List<Marker> FindMarkersOnRoute(List<Coordinate> route, List<Marker> markers, TimeSpan startTime)
         {

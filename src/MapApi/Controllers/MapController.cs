@@ -3,10 +3,13 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
     using System.Xml;
+    using System.Xml.Serialization;
     using MapApiCore.Interfaces;
     using MapApiCore.Models;
+    using MapApiCore.Models.Kml;
     using Microsoft.AspNetCore.Mvc;
     using Services.Interfaces;
 
@@ -45,8 +48,53 @@
               Assala - KML file https://stackoverflow.com/questions/952667/how-do-i-generate-a-kml-file-in-asp-net
             */
 
+            var kmlString = this.CreateTestKmlString(showPollution, showSchools);
+            return kmlString;
+        }
+
+        private string CreateTestKmlString(bool showPollution, bool showSchools)
+        {
+            var kmlString = System.IO.File.ReadAllText(GetFilePath("Test.kml"));
+
+            if (showPollution)
+            {
+                var pollutionMarkers = this._pollutionRepo.GetMarkers();
+                var pollutionPlacemarks = this.CreatePlacemarks(pollutionMarkers);
+                var folder = new Folder { Name = "Pollution", Placemark = pollutionPlacemarks };
+                var serializer = new XmlSerializer(typeof(Folder));
+                var xout = new StringWriter();
+
+                serializer.Serialize(xout, folder);
+                var xml = xout.ToString()
+                    .Replace("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n", string.Empty)
+                    .Replace("<Folder xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">", "<Folder>");
+                
+                kmlString = kmlString.Replace("{AirQuality}", xml);
+            }
+            else
+            {
+                kmlString = kmlString.Replace("{AirQuality}", string.Empty);
+            }
+
+            //if (showSchools)
+            //{
+            //    var schoolMarkers = this._schoolRepo.GetMarkers();
+            //    var schoolPlacemarks = this.CreatePlacemarks(schoolMarkers);
+            //    var folder = new Folder { Name = "Schools", Placemark = schoolPlacemarks };
+            //    var serializer = new XmlSerializer(typeof(Folder));
+            //    var xout = new StringWriter();
+
+            //    serializer.Serialize(xout, folder);
+            //    var xml = xout.ToString().Replace("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n", string.Empty);
+            //    kmlString = kmlString.Replace("{Schools}", xml);
+            //}
+            //else
+            //{
+            //    kmlString = kmlString.Replace("{Schools}", string.Empty);
+            //}
+
             var kml = new XmlDocument();
-            kml.Load(GetFilePath("Test.kml"));
+            kml.LoadXml(kmlString);
 
             return kml.OuterXml;
         }
@@ -54,9 +102,8 @@
         private IList<EnrichedRoute> ProcessJourney(int journeyId, TimeSpan startTime)
         {
             var journeyOptions = _journeyRepo.GetJourney(journeyId);
-            var pollutionMarkers = _pollutionRepo.GetMarkers();
-            var schoolMarkers = _schoolRepo.GetMarkers();
-
+            var pollutionMarkers = this._pollutionRepo.GetMarkers();
+            
             IList<EnrichedRoute> enrichedRoute = new List<EnrichedRoute>();
             foreach (var journeyOption in journeyOptions.Routes)
             {
@@ -74,6 +121,23 @@
         {
             var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"", filename);
             return path;
+        }
+
+        private List<Placemark> CreatePlacemarks(List<Marker> markers)
+        {
+            var placemarks = new List<Placemark>();
+            
+            foreach (var marker in markers)
+            {
+                placemarks.Add(new Placemark
+                {
+                    Name = $"{marker.Description} ({marker.Value})",
+                    StyleUrl = "#icon-1769-0F9D58-nodesc",
+                    Point = new Point { Coordinates = $"{marker.Coordinate.Longitude},{marker.Coordinate.Latitude}"}
+                });    
+            }
+
+            return placemarks;
         }
     }
 }
