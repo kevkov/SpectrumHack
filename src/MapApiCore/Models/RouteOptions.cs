@@ -6,8 +6,8 @@ namespace MapApiCore.Models
 {
     public class RouteOptions
     {
-        public MapLocation StartLocation { get; set; }
-        public MapLocation EndLocation { get; set; }
+        public PointDetails StartLocation { get; set; }
+        public PointDetails EndLocation { get; set; }
         public IList<EnrichedRoute> EnrichedRoute { get; set; }
     }
 }

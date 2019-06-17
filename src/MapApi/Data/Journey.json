@@ -1,6 +1,16 @@
 [
   {
     "JourneyId": 1,
+    "Start": {
+      "Name": "North Greenwich",
+      "Longitude": 0.00447,
+      "Latitude": 51.49847
+    },
+    "End": {
+      "Name": "Westminster",
+      "Longitude": -0.13563,
+      "Latitude": 51.4975
+    },
     "Routes": [
       {
         "Coordinates": [

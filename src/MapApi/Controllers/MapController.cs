@@ -41,20 +41,7 @@
         [HttpGet("{journeyId}/{showPollution}/{showSchools}/{startTime}")]
         public ActionResult<string> Get(int journeyId, bool showPollution, bool showSchools, TimeSpan startTime)
         {
-            RouteOptions fullJourneyOptions = new RouteOptions()
-            {
-                StartLocation = new MapLocation()
-                {
-                    Name = "North Greenwich",
-                    Location = new Coordinate(0.004472, 51.498473)
-                },
-                EndLocation = new MapLocation()
-                {
-                    Name = "Westminster",
-                    Location = new Coordinate(-0.135628, 51.497496)
-                },
-                EnrichedRoute = this.ProcessJourney(journeyId, startTime)
-            };
+            RouteOptions fullJourneyOptions = this.ProcessJourney(journeyId, startTime);
 
             var kmlString = this.CreateTestKmlString(fullJourneyOptions, showPollution, showSchools);
             return kmlString;
@@ -155,7 +142,7 @@
                                 StyleUrl = "#icon-1899-DB4436-nodesc",
                                 Point = new Point()
                                 {
-                                    Coordinates = $"{routeOptions.StartLocation.Location.Longitude},{routeOptions.StartLocation.Location.Latitude},0"
+                                    Coordinates = $"{routeOptions.StartLocation.Longitude},{routeOptions.StartLocation.Latitude},0"
                                 }
                             },
                             // end placemark
@@ -165,7 +152,7 @@
                                 StyleUrl = "#icon-1899-DB4436-nodesc",
                                 Point = new Point()
                                 {
-                                    Coordinates = $"{routeOptions.EndLocation.Location.Longitude},{routeOptions.EndLocation.Location.Latitude},0"
+                                    Coordinates = $"{routeOptions.EndLocation.Longitude},{routeOptions.EndLocation.Latitude},0"
                                 }
                             }
                         }
@@ -175,7 +162,7 @@
             return folders;
         }
 
-        private IList<EnrichedRoute> ProcessJourney(int journeyId, TimeSpan startTime)
+        private RouteOptions ProcessJourney(int journeyId, TimeSpan startTime)
         {
             var journeyOptions = _journeyRepo.GetJourney(journeyId);
             var pollutionMarkers = this._pollutionRepo.GetMarkers();
@@ -191,7 +178,12 @@
                 });
             }
 
-            return enrichedRoute;
+            return new RouteOptions()
+            {
+                StartLocation = journeyOptions.Start,
+                EndLocation = journeyOptions.End,
+                EnrichedRoute = enrichedRoute
+            };
         }
 
         private static string GetFilePath(string filename)
