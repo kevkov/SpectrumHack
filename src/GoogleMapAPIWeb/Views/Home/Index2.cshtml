@@ -1,0 +1,128 @@
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Spectrum Hackathon";
+}
+
+<div class="container-fluid">
+
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">
+                            Placeholder <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            Placeholder
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            Placeholder
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            Placeholder
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-1 pb-1 mb-3 border-bottom">
+                <h3>Route Map</h3>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <div class="btn-group mr-2">
+                        <button type="button" id="btnPollution" class="btn btn-sm btn-outline-primary" data-toggle="button" aria-pressed="false" autocomplete="off">Pollution</button>
+                        <button type="button" id="btnSchools" class="btn btn-sm btn-outline-primary" data-toggle="button" aria-pressed="false" autocomplete="off">Schools</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="mapContainer" class="my-4 w-100 mb-2"></div>
+            <h3>Placeholder</h3>
+            <div class="table-responsive">
+                <table class="table table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Header</th>
+                            <th>Header</th>
+                            <th>Header</th>
+                            <th>Header</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1,001</td>
+                            <td>Lorem</td>
+                            <td>ipsum</td>
+                            <td>dolor</td>
+                            <td>sit</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+        </main>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script>
+        var map;
+        var showPollution = false;
+        var showSchools = false;
+        var startTime = '12:00';
+
+        var btnPollution = document.getElementById('btnPollution');
+        var btnSchools = document.getElementById('btnSchools');
+        var startTimeList = document.getElementById('startTimeList');
+
+        btnPollution.onclick = function () {
+            showPollution = !showPollution;
+            initMap();
+        };
+
+        btnSchools.onclick = function () {
+            showSchools = !showSchools;
+            initMap();
+        };
+
+        startTimeList.onchange = function () {
+            startTime = startTimeList.options[startTimeList.selectedIndex].value;
+
+            initMap();
+        };
+
+        function initMap() {
+            var src = 'https://spectrummapapi.azurewebsites.net/api/map/1/' + showPollution + '/' + showSchools + '/' + startTime;
+
+           
+
+            map = new google.maps.Map(document.getElementById('mapContainer'), {
+                center: new google.maps.LatLng(-19.257753, 146.823688),
+                zoom: 2,
+                mapTypeId: 'terrain'
+            });
+
+            var kmlLayer = new google.maps.KmlLayer(src, {
+                suppressInfoWindows: true,
+                preserveViewport: false,
+                map: map
+            });
+        }
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap">
+    </script>
+
+}
