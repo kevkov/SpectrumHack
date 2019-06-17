@@ -7,12 +7,10 @@ import {
     Container,
     Left,
     Right,
-    Badge
+    View
 } from "native-base";
 import {DrawerItemsProps} from "react-navigation";
 import {Constants} from 'expo';
-import {Location} from "../../domain/types";
-import styles from './styles';
 import {FlatList} from "react-native";
 
 const data = [
@@ -42,12 +40,24 @@ export const SideBar = (props: DrawerItemsProps) => {
     return (
         <Container style={{paddingTop: Constants.statusBarHeight}}>
             <Content>
-                <Icon name={"md-person"}
-                    style={
-                        {
-                            fontSize: 96
-                        }
-                    }/>
+                <View style={{
+                    alignSelf: 'center',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                }}>
+                    <Icon name={"md-person"}
+                          style={
+                              {
+                                  fontSize: 96
+                              }
+                          }/>
+                    <View style={{
+                        marginLeft: 15
+                    }}>
+                        <Text>Jane</Text>
+                        <Text>Public</Text>
+                    </View>
+                </View>
                 <FlatList
                     data={data}
                     renderItem={datum =>
@@ -58,7 +68,8 @@ export const SideBar = (props: DrawerItemsProps) => {
                                 props.navigation.navigate("Route",
                                     {origin: datum.item.start, destination: datum.item.end});
                                 props.navigation.closeDrawer();
-                            }}>
+                            }}
+                        >
                             <Left>
                                 <Icon
                                     active
@@ -66,10 +77,11 @@ export const SideBar = (props: DrawerItemsProps) => {
                                     name={datum.item.icon}
                                     style={{color: "#777", fontSize: 26, width: 30}}
                                 />
-                                <Text style={styles.text}>
+                                <Text>
                                     {datum.item.key}
                                 </Text>
                             </Left>
+                            <Right />
                         </ListItem>}
                 />
             </Content>

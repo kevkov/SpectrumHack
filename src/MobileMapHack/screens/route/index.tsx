@@ -6,7 +6,7 @@ import Constants from "expo-constants";
 export const Route = (props) => {
     return (
         <Container>
-            <Header> style={{paddingTop: Constants.statusBarHeight}}
+            <Header style={{paddingTop: Constants.statusBarHeight}}>
                 <Left>
                     <Button
                         transparent
