@@ -141,7 +141,7 @@
                             // route placemark
                             new Placemark()
                             {
-                                StyleUrl = "#line-12FF00-5000-nodesc",
+                                StyleUrl = "#line-12FF00-5000-nodesc-normal",
                                 LineString = new LineString()
                                 {
                                     Tessellate = 1,
@@ -152,7 +152,7 @@
                             new Placemark()
                             {
                                 Name = routeOptions.StartLocation.Name,
-                                StyleUrl = "#icon-1899-DB4436-nodesc",
+                                StyleUrl = "#icon-1899-DB4436-nodesc-normal",
                                 Point = new Point()
                                 {
                                     Coordinates = $"{routeOptions.StartLocation.Location.Longitude},{routeOptions.StartLocation.Location.Latitude},0"
@@ -162,7 +162,7 @@
                             new Placemark()
                             {
                                 Name = routeOptions.EndLocation.Name,
-                                StyleUrl = "#icon-1899-DB4436-nodesc",
+                                StyleUrl = "#icon-1899-DB4436-nodesc-normal",
                                 Point = new Point()
                                 {
                                     Coordinates = $"{routeOptions.EndLocation.Location.Longitude},{routeOptions.EndLocation.Location.Latitude},0"
@@ -209,7 +209,7 @@
                 placemarks.Add(new Placemark
                 {
                     Name = $"{marker.Description} ({marker.Value})",
-                    StyleUrl = "#icon-1769-0F9D58-nodesc",
+                    StyleUrl = "#icon-1769-0F9D58-nodesc-normal",
                     Point = new Point { Coordinates = $"{marker.Coordinate.Longitude},{marker.Coordinate.Latitude}"}
                 });    
             }
