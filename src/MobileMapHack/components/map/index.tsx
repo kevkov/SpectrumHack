@@ -1,8 +1,9 @@
 import MapView, {PROVIDER_GOOGLE} from "react-native-maps";
 //import MapViewDirections from "react-native-maps-directions";
-import {Text, View} from "react-native";
-import React from "react";
+import {View} from "react-native";
+import React, {useState} from "react";
 import {Location} from "../../domain/types";
+import {Button, Fab, Icon} from "native-base";
 
 const GOOGLE_MAPS_APIKEY = '';
 
@@ -20,7 +21,9 @@ export const Map = (props) => {
     let latDelta = maxLoc.latitude - minLoc.latitude;
     let lonDelta = maxLoc.longitude - minLoc.longitude;
     let centre = {latitude: minLoc.latitude + (0.5 * latDelta), longitude: minLoc.longitude + (0.5 * lonDelta)};
-    return (<>
+
+    const [fabActive, setFabActive] = useState(() => false);
+    return (<View style={{flex:1}}>
                 <MapView
                     provider={PROVIDER_GOOGLE}
                     style={{flex: 1}}
@@ -30,8 +33,18 @@ export const Map = (props) => {
                         latitudeDelta: 1.05 * latDelta,
                         longitudeDelta: 1.05 * lonDelta }}
                     kmlSrc={"https://spectrummapapi.azurewebsites.net/api/map"} />
-                <View>
-                    <Text style={{flex: 0}}>Stuff</Text>
-                </View>
-            </>)
+                <Fab
+                    direction="up"
+                    position="bottomRight"
+                    active={fabActive}
+                    onPress={() => setFabActive(!fabActive)}>
+                    <Icon name="playlist-add-check" type="MaterialIcons"/>
+                    <Button style={{backgroundColor: "#808080"}}>
+                        <Icon name="cloud-circle" type="MaterialIcons" />
+                    </Button>
+                    <Button style={{backgroundColor: "#B5651D"}}>
+                        <Icon name="school" type="MaterialIcons" />
+                    </Button>
+                </Fab>
+            </View>)
 };
