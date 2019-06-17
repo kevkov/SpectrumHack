@@ -10,7 +10,7 @@ import {
     View
 } from "native-base";
 import {DrawerItemsProps} from "react-navigation";
-import {Constants} from 'expo';
+import Constants from 'expo-constants';
 import {FlatList} from "react-native";
 
 const data = [
