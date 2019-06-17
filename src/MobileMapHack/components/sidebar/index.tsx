@@ -42,6 +42,12 @@ export const SideBar = (props: DrawerItemsProps) => {
     return (
         <Container style={{paddingTop: Constants.statusBarHeight}}>
             <Content>
+                <Icon name={"md-person"}
+                    style={
+                        {
+                            fontSize: 96
+                        }
+                    }/>
                 <FlatList
                     data={data}
                     renderItem={datum =>

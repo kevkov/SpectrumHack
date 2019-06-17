@@ -1,11 +1,12 @@
 import React from 'react';
 import {Body, Button, Container, Footer, FooterTab, Header, Icon, Left, Right, Title, Text} from "native-base";
 import { Map } from '../../components/map';
+import Constants from "expo-constants";
 
 export const Route = (props) => {
     return (
         <Container>
-            <Header>
+            <Header> style={{paddingTop: Constants.statusBarHeight}}
                 <Left>
                     <Button
                         transparent

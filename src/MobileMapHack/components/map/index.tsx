@@ -1,5 +1,5 @@
-import MapView from "react-native-maps";
-import MapViewDirections from "react-native-maps-directions";
+import MapView, {PROVIDER_GOOGLE} from "react-native-maps";
+//import MapViewDirections from "react-native-maps-directions";
 import {Text, View} from "react-native";
 import React from "react";
 import {Location} from "../../domain/types";
@@ -22,19 +22,14 @@ export const Map = (props) => {
     let centre = {latitude: minLoc.latitude + (0.5 * latDelta), longitude: minLoc.longitude + (0.5 * lonDelta)};
     return (<>
                 <MapView
+                    provider={PROVIDER_GOOGLE}
                     style={{flex: 1}}
-                    initialRegion={{
+                    region={{
                         latitude: centre.latitude,
                         longitude: centre.longitude,
                         latitudeDelta: 1.05 * latDelta,
-                        longitudeDelta: 1.05 * lonDelta,
-                    }}>
-                    <MapViewDirections
-                        origin={origin}
-                        destination={dest}
-                        apikey={GOOGLE_MAPS_APIKEY}
-                    />
-                </MapView>
+                        longitudeDelta: 1.05 * lonDelta }}
+                    kmlSrc={"https://spectrummapapi.azurewebsites.net/api/map"} />
                 <View>
                     <Text style={{flex: 0}}>Stuff</Text>
                 </View>
