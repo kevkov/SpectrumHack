@@ -27,7 +27,7 @@
         }
     </style>
     <script type="text/javascript"
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBoUQ0ymaQRt_Fxci5SI0EZvv_lDRBNdWM&libraries=places">
+            src="https://maps.googleapis.com/maps/api/js?key=&libraries=places">
     </script>
     <script type="text/javascript">
 
@@ -69,12 +69,10 @@
         
 
         function addKmlLayer() {
-            var offasDykeLayer = new google.maps.KmlLayer('https://spectrummapapi.azurewebsites.net/api/map/1/true/false/12:00');
-            alert(offasDykeLayer);
-            //var kmlLayer = new google.maps.KmlLayer('http://localhost:53907/api/map');
-
-            //var kmlLayer = new google.maps.KmlLayer(C: \CSharp\Development\Github\SpectrumHack\src\MapApi\Test.kml')
-            offasDykeLayer.setMap(map);
+            var kmlLayer = new google.maps.KmlLayer('https://spectrummapapi.azurewebsites.net/api/map/1/true/false/12:00');
+           
+            
+            kmlLayer.setMap(map);
         }
     </script>
 </head>
