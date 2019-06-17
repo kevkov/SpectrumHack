@@ -1,17 +1,9 @@
-﻿using System.Collections.Generic;
-using MapApi.Models;
-
-namespace MapApi.Repositories
+﻿namespace MapApi.Repositories
 {
-    public class PollutionRepository : IMarkerRepository
+    using MapApiCore.Interfaces;
+
+    public class PollutionRepository : MarkerRepositoryBase, IPollutionRepository
     {
-        public List<Marker> GetMarkers()
-        {
-            return new List<Marker>
-            {
-                new Marker(new Coordinate(0.00447, 51.49847), 10, "Low"),
-                new Marker(new Coordinate(0.00496, 51.49869), 50, "Med")
-            };
-        }
+        protected override string DataFileName => "Pollution.json";
     }
 }

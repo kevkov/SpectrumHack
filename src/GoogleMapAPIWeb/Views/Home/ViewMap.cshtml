@@ -61,14 +61,16 @@
 
             map = new google.maps.Map(document.getElementById("mapDiv"), mapOptions);
 
-
+            addKmlLayer();
 
         }
 
         google.maps.event.addDomListener(window, "load", init);
+        
 
         function addKmlLayer() {
-            var offasDykeLayer = new google.maps.KmlLayer('http://hikeview.co.uk/tracks/hikeview-offas-dyke.kml');
+            var offasDykeLayer = new google.maps.KmlLayer('https://spectrummapapi.azurewebsites.net/api/map/1/true/false/12:00');
+            alert(offasDykeLayer);
             //var kmlLayer = new google.maps.KmlLayer('http://localhost:53907/api/map');
 
             //var kmlLayer = new google.maps.KmlLayer(C: \CSharp\Development\Github\SpectrumHack\src\MapApi\Test.kml')

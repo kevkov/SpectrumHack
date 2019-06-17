@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
-using MapApi.Repositories;
+using MapApi.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -16,6 +17,10 @@ using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace MapApi
 {
+    using MapApiCore.Interfaces;
+    using Repositories;
+    using Services.Interfaces;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -29,9 +34,12 @@ namespace MapApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddScoped<IMarkerRepository, PollutionRepository>();
+            services.AddScoped<IPollutionRepository, PollutionRepository>();
+            services.AddScoped<ISchoolRepository, SchoolRepository>();
             services.AddScoped<IJourneyRepository, JourneyRepository>();
             services.AddScoped<IIntersectionService, IntersectionService>();
+            //services.AddScoped<IPollutionService, AirVisualService>();
+            services.AddScoped<IPollutionService, LondonAirService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

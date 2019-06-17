@@ -1,42 +1,24 @@
-﻿using System.Collections.Generic;
-using MapApi.Models;
-
-namespace MapApi.Repositories
+﻿namespace MapApi.Repositories
 {
-    public interface IJourneyRepository
-    {
-        List<Route> GetRoutesForJourney(int journeyId);
-    }
+    using System.Collections.Generic;
+    using System.Linq;
+    using MapApiCore.Interfaces;
+    using MapApiCore.Models;
 
-    public class JourneyRepository : IJourneyRepository
+    public class JourneyRepository : RepositoryBase, IJourneyRepository
     {
-        public List<Route> GetRoutesForJourney(int journeyId)
+        private const string fileName = "Journey.json";
+
+        private readonly List<Journey> _journeys;
+
+        public JourneyRepository()
         {
-            var route1 = new Route(
-                journeyId,
-                new List<Coordinate>
-                {
-                    new Coordinate(0.00447, 51.49847),
-                    new Coordinate(0.00496, 51.49869)
-                });
+            this._journeys = ReadData<Journey>(fileName);
+        }
 
-            var route2 = new Route(
-                journeyId,
-                new List<Coordinate>
-                {
-                    new Coordinate(0.00447, 51.49847),
-                    new Coordinate(0.00496, 51.498690)
-                });
-
-            var route3 = new Route(
-                journeyId,
-                new List<Coordinate>
-                {
-                    new Coordinate(0.00447, 51.49847),
-                    new Coordinate(0.00496, 51.49869)
-                });
-
-            return new List<Route> {route1, route2, route3};
+        public Journey GetJourney(int journeyId)
+        {
+            return this._journeys.FirstOrDefault(j => j.JourneyId == journeyId);
         }
     }
 }

@@ -1399,17 +1399,6 @@
         </Point>
       </Placemark>
     </Folder>
-    <Folder>
-      <name>Untitled layer</name>
-      <Placemark>
-        <name>Low Air Pollution</name>
-        <styleUrl>#icon-1769-0F9D58-nodesc</styleUrl>
-        <Point>
-          <coordinates>
-            -0.06457,51.49805,0
-          </coordinates>
-        </Point>
-      </Placemark>
-    </Folder>
+    {AirQuality}
   </Document>
 </kml>
