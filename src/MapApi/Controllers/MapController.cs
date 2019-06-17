@@ -41,20 +41,33 @@
         [HttpGet("{journeyId}/{showPollution}/{showSchools}/{startTime}")]
         public ActionResult<string> Get(int journeyId, bool showPollution, bool showSchools, TimeSpan startTime)
         {
-            IList<EnrichedRoute> fullJourneyOptions = this.ProcessJourney(journeyId, startTime);
-            /*
-             Kev - List of layers + color
-                    List of route + score + color
-              Assala - KML file https://stackoverflow.com/questions/952667/how-do-i-generate-a-kml-file-in-asp-net
-            */
+            RouteOptions fullJourneyOptions = new RouteOptions()
+            {
+                StartLocation = new MapLocation()
+                {
+                    Name = "North Greenwich",
+                    Location = new Coordinate(0.004472, 51.498473)
+                },
+                EndLocation = new MapLocation()
+                {
+                    Name = "Westminster",
+                    Location = new Coordinate(-0.135628, 51.497496)
+                },
+                EnrichedRoute = this.ProcessJourney(journeyId, startTime)
+            };
 
-            var kmlString = this.CreateTestKmlString(showPollution, showSchools);
+            var kmlString = this.CreateTestKmlString(fullJourneyOptions, showPollution, showSchools);
             return kmlString;
         }
 
-        private string CreateTestKmlString(bool showPollution, bool showSchools)
+        private string CreateTestKmlString(RouteOptions routeOptions, bool showPollution, bool showSchools)
         {
             var kmlString = System.IO.File.ReadAllText(GetFilePath("Test.kml"));
+
+            var routes = GetRoutes(routeOptions);
+            kmlString = kmlString.Replace("{Routes}", routes);
+            kmlString = kmlString.Replace("<ArrayOfFolder xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">", string.Empty);
+            kmlString = kmlString.Replace("</ArrayOfFolder>", string.Empty);
 
             if (showPollution)
             {
@@ -99,6 +112,69 @@
             return kml.OuterXml;
         }
 
+        private string GetRoutes(RouteOptions routeOptions)
+        {
+            var folder = GetRouteFolders(routeOptions);
+            var serializer = new XmlSerializer(typeof(List<Folder>));
+            var xout = new StringWriter();
+
+            serializer.Serialize(xout, folder);
+            var xml = xout.ToString()
+                .Replace("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n", string.Empty)
+                .Replace("<Folder xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">", "<Folder>");
+
+            return xml;
+        }
+
+        private List<Folder> GetRouteFolders(RouteOptions routeOptions)
+        {
+            var folders = new List<Folder>();
+
+            foreach (var route in routeOptions.EnrichedRoute)
+            {
+                folders.Add(
+                    new Folder()
+                    {
+                        Name = $"From {routeOptions.StartLocation.Name} to {routeOptions.EndLocation.Name}",
+                        Placemark = new List<Placemark>()
+                        {
+                            // route placemark
+                            new Placemark()
+                            {
+                                StyleUrl = "#line-12FF00-5000-nodesc",
+                                LineString = new LineString()
+                                {
+                                    Tessellate = 1,
+                                    Coordinates = string.Join(',', route.RouteMarkers.ToList().Select(x => $"{x.Coordinate.Longitude},{x.Coordinate.Latitude},0{Environment.NewLine}"))
+                                }
+                            },
+                            // start placemark
+                            new Placemark()
+                            {
+                                Name = routeOptions.StartLocation.Name,
+                                StyleUrl = "#icon-1899-DB4436-nodesc",
+                                Point = new Point()
+                                {
+                                    Coordinates = $"{routeOptions.StartLocation.Location.Longitude},{routeOptions.StartLocation.Location.Latitude},0"
+                                }
+                            },
+                            // end placemark
+                            new Placemark()
+                            {
+                                Name = routeOptions.EndLocation.Name,
+                                StyleUrl = "#icon-1899-DB4436-nodesc",
+                                Point = new Point()
+                                {
+                                    Coordinates = $"{routeOptions.EndLocation.Location.Longitude},{routeOptions.EndLocation.Location.Latitude},0"
+                                }
+                            }
+                        }
+                    });
+            }
+
+            return folders;
+        }
+
         private IList<EnrichedRoute> ProcessJourney(int journeyId, TimeSpan startTime)
         {
             var journeyOptions = _journeyRepo.GetJourney(journeyId);
@@ -110,7 +186,8 @@
                 enrichedRoute.Add(new EnrichedRoute()
                 {
                     PollutionScore = 100,
-                    RouteMarkers = _interactionService.FindMarkersOnRoute(journeyOption.Coordinates, pollutionMarkers, startTime)
+                    RouteMarkers = journeyOption.Coordinates.Select(x => new Marker(new Coordinate(x.Longitude, x.Latitude), 0, string.Empty)).ToList(),
+                    PollutionMarkers = _interactionService.FindMarkersOnRoute(journeyOption.Coordinates, pollutionMarkers, startTime)
                 });
             }
 

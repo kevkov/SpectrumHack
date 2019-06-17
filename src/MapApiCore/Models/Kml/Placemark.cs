@@ -1,6 +1,5 @@
 ﻿namespace MapApiCore.Models.Kml
 {
-    using System.Drawing;
     using System.Xml.Serialization;
 
     [XmlRoot(ElementName = "Placemark")]
@@ -14,5 +13,8 @@
 
         [XmlElement(ElementName = "Point")]
         public Point Point { get; set; }
+        
+        [XmlElement(ElementName = "LineString")]
+        public LineString LineString { get; set; }
     }
 }

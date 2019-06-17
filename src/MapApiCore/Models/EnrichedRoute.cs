@@ -5,7 +5,9 @@ namespace MapApiCore.Models
     public class EnrichedRoute
     {
         public IList<Marker> RouteMarkers { get; set; }
+        public IList<Marker> PollutionMarkers { get; set; }
 
         public int PollutionScore { get; set; }
+
     }
 }
