@@ -45,16 +45,6 @@
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <StyleMap id="icon-1769-0F9D58-nodesc">
-      <Pair>
-        <key>normal</key>
-        <styleUrl>#icon-1769-0F9D58-nodesc-normal</styleUrl>
-      </Pair>
-      <Pair>
-        <key>highlight</key>
-        <styleUrl>#icon-1769-0F9D58-nodesc-highlight</styleUrl>
-      </Pair>
-    </StyleMap>
     <Style id="icon-1899-DB4436-nodesc-normal">
       <IconStyle>
         <color>ff3644db</color>
@@ -87,16 +77,6 @@
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <StyleMap id="icon-1899-DB4436-nodesc">
-      <Pair>
-        <key>normal</key>
-        <styleUrl>#icon-1899-DB4436-nodesc-normal</styleUrl>
-      </Pair>
-      <Pair>
-        <key>highlight</key>
-        <styleUrl>#icon-1899-DB4436-nodesc-highlight</styleUrl>
-      </Pair>
-    </StyleMap>
     <Style id="line-1267FF-5000-nodesc-normal">
       <LineStyle>
         <color>ffff6712</color>
@@ -115,16 +95,6 @@
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <StyleMap id="line-1267FF-5000-nodesc">
-      <Pair>
-        <key>normal</key>
-        <styleUrl>#line-1267FF-5000-nodesc-normal</styleUrl>
-      </Pair>
-      <Pair>
-        <key>highlight</key>
-        <styleUrl>#line-1267FF-5000-nodesc-highlight</styleUrl>
-      </Pair>
-    </StyleMap>
     <Style id="line-12FF00-5000-nodesc-normal">
       <LineStyle>
         <color>ff00ff12</color>
@@ -143,28 +113,6 @@
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <StyleMap id="line-12FF00-5000-nodesc">
-      <Pair>
-        <key>normal</key>
-        <styleUrl>#line-12FF00-5000-nodesc-normal</styleUrl>
-      </Pair>
-      <Pair>
-        <key>highlight</key>
-        <styleUrl>#line-12FF00-5000-nodesc-highlight</styleUrl>
-      </Pair>
-    </StyleMap>
-    <Folder>
-      <name>Untitled layer</name>
-      <Placemark>
-        <name>Moderate Air Pollution</name>
-        <styleUrl>#icon-1626-0288D1-labelson-nodesc</styleUrl>
-        <Point>
-          <coordinates>
-            -0.055152,51.5098677,0
-          </coordinates>
-        </Point>
-      </Placemark>
-    </Folder>
     {Routes}
     {AirQuality}
   </Document>
