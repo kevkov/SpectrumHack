@@ -1,0 +1,87 @@
+﻿
+@{
+    ViewData["Title"] = "ViewMap";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome To Route Explorer</h1>
+
+</div>
+<html>
+<head>
+    <meta name="viewport"
+          content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        html {
+            height: 100%
+        }
+
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0
+        }
+
+        #mapDiv {
+            height: 100%;
+        }
+    </style>
+    <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBoUQ0ymaQRt_Fxci5SI0EZvv_lDRBNdWM&libraries=places">
+    </script>
+    <script type="text/javascript">
+
+
+        var map;
+
+
+
+        function init() {
+
+
+            var mapOptions = {
+
+                center: new google.maps.LatLng(51.50652, -0.112297),
+                zoom: 12,
+                disableDefaultUI: true,
+
+                zoomControl: true,
+                zoomControlOptions: {
+                    style: google.maps.ZoomControlStyle.SMALL,
+                    position: google.maps.ControlPosition.BOTTOMLEFT
+                },
+                panControl: true,
+                mapTypeControl: true,
+                scaleControl: true,
+                streetViewControl: true,
+                rotateControl: true,
+                overviewMapControl: true
+
+            };
+
+            map = new google.maps.Map(document.getElementById("mapDiv"), mapOptions);
+
+
+
+        }
+
+        google.maps.event.addDomListener(window, "load", init);
+
+        function addKmlLayer() {
+            var offasDykeLayer = new google.maps.KmlLayer('http://hikeview.co.uk/tracks/hikeview-offas-dyke.kml');
+            //var kmlLayer = new google.maps.KmlLayer('http://localhost:53907/api/map');
+
+            //var kmlLayer = new google.maps.KmlLayer(C: \CSharp\Development\Github\SpectrumHack\src\MapApi\Test.kml')
+            offasDykeLayer.setMap(map);
+        }
+    </script>
+</head>
+<body>
+
+    <div id="mapDiv"></div>
+
+</body>
+</html>
+
+
+

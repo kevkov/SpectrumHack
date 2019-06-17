@@ -36,7 +36,7 @@ namespace MapApi.Controllers
               Assala - KML file https://stackoverflow.com/questions/952667/how-do-i-generate-a-kml-file-in-asp-net
             */
 
-            var filePath = Path.Combine(Environment.CurrentDirectory, "Test.kml");
+            var filePath = @"C:\CSharp\Development\Github\SpectrumHack\src\MapApi\Test.kml";
             var kml = new XmlDocument();
             kml.Load(filePath);
             
