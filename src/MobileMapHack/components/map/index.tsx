@@ -23,6 +23,9 @@ export const Map = (props) => {
     let centre = {latitude: minLoc.latitude + (0.5 * latDelta), longitude: minLoc.longitude + (0.5 * lonDelta)};
 
     const [fabActive, setFabActive] = useState(() => false);
+    const [showPollution, togglePollution] = useState(() => true);
+    const [showSchools, toggleSchools] = useState(() => true);
+
     return (<View style={{flex:1}}>
                 <MapView
                     provider={PROVIDER_GOOGLE}
@@ -39,10 +42,14 @@ export const Map = (props) => {
                     active={fabActive}
                     onPress={() => setFabActive(!fabActive)}>
                     <Icon name="playlist-add-check" type="MaterialIcons"/>
-                    <Button style={{backgroundColor: "#808080"}}>
+                    <Button
+                        onPress={() => togglePollution(!showPollution)}
+                        style={{backgroundColor: showPollution ? "#B5651D" : "#CCCCCC"}}>
                         <Icon name="cloud-circle" type="MaterialIcons" />
                     </Button>
-                    <Button style={{backgroundColor: "#B5651D"}}>
+                    <Button
+                        onPress={() => toggleSchools(!showSchools)}
+                        style={{backgroundColor: showSchools ? "#397D02" : "#CCCCCC"}}>
                         <Icon name="school" type="MaterialIcons" />
                     </Button>
                 </Fab>
