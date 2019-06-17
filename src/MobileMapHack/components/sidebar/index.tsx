@@ -7,7 +7,7 @@ import {
     Container,
     Left,
     Right,
-    View
+    View, Badge
 } from "native-base";
 import {DrawerItemsProps} from "react-navigation";
 import Constants from 'expo-constants';
@@ -27,6 +27,16 @@ const data = [
     {
         key: "Work to Heathrow",
         icon: "business",
+        start: {
+            latitude: 51.4511731, longitude: -0.2138706
+        },
+        end: {
+            latitude: 51.5250836, longitude: -0.0769465
+        }
+    },
+    {
+        key: "Mum's",
+        icon: "home",
         start: {
             latitude: 51.4511731, longitude: -0.2138706
         },
@@ -56,6 +66,7 @@ export const SideBar = (props: DrawerItemsProps) => {
                     }}>
                         <Text>Jane</Text>
                         <Text>Public</Text>
+                        <Badge success><Text>72</Text></Badge>
                     </View>
                 </View>
                 <FlatList
