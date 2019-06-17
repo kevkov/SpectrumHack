@@ -76,22 +76,22 @@
                 kmlString = kmlString.Replace("{AirQuality}", string.Empty);
             }
 
-            //if (showSchools)
-            //{
-            //    var schoolMarkers = this._schoolRepo.GetMarkers();
-            //    var schoolPlacemarks = this.CreatePlacemarks(schoolMarkers);
-            //    var folder = new Folder { Name = "Schools", Placemark = schoolPlacemarks };
-            //    var serializer = new XmlSerializer(typeof(Folder));
-            //    var xout = new StringWriter();
+            if (showSchools)
+            {
+                var schoolMarkers = this._schoolRepo.GetMarkers();
+                var schoolPlacemarks = this.CreatePlacemarks(schoolMarkers);
+                var folder = new Folder { Name = "Schools", Placemark = schoolPlacemarks };
+                var serializer = new XmlSerializer(typeof(Folder));
+                var xout = new StringWriter();
 
-            //    serializer.Serialize(xout, folder);
-            //    var xml = xout.ToString().Replace("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n", string.Empty);
-            //    kmlString = kmlString.Replace("{Schools}", xml);
-            //}
-            //else
-            //{
-            //    kmlString = kmlString.Replace("{Schools}", string.Empty);
-            //}
+                serializer.Serialize(xout, folder);
+                var xml = xout.ToString().Replace("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n", string.Empty);
+                kmlString = kmlString.Replace("{Schools}", xml);
+            }
+            else
+            {
+                kmlString = kmlString.Replace("{Schools}", string.Empty);
+            }
 
             var kml = new XmlDocument();
             kml.LoadXml(kmlString);
