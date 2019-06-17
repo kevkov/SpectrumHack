@@ -3,6 +3,7 @@
   <Document>
     <name>Untitled map</name>
     <description/>
+    {Styles}
     <Style id="icon-1626-0288D1-labelson-nodesc">
       <IconStyle>
         <color>ffd18802</color>
