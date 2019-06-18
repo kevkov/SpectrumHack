@@ -58,7 +58,9 @@ namespace MapApi.Controllers
             kmlString = kmlString.Replace("{Styles}", styles);
 
             var routes = GetRoutes(routeOptions);
+            var routesLabels = GetRouteLabels(routeOptions);
             kmlString = kmlString.Replace("{Routes}", routes);
+            kmlString = kmlString.Replace("{RouteLabels}", routesLabels);
             kmlString = kmlString.Replace("<ArrayOfFolder xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">", string.Empty);
             kmlString = kmlString.Replace("</ArrayOfFolder>", string.Empty);
 
@@ -157,6 +159,49 @@ namespace MapApi.Controllers
             return xml;
         }
 
+        private string GetRouteLabels(RouteOptions routeOptions)
+        {
+            var folder = GetRouteLabelsFolders(routeOptions);
+            var serializer = new XmlSerializer(typeof(List<Folder>));
+            var xout = new StringWriter();
+
+            serializer.Serialize(xout, folder);
+            var xml = xout.ToString()
+                .Replace("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n", string.Empty)
+                .Replace("<Folder xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">", "<Folder>");
+
+            return xml;
+        }
+
+        private List<Folder> GetRouteLabelsFolders(RouteOptions routeOptions)
+        {
+            var folders = new List<Folder>();
+
+            foreach (var route in routeOptions.EnrichedRoute)
+            {
+                var markerCoodinate = route.RouteMarkers[route.RouteMarkers.Count / 2].Coordinate;
+                folders.Add(
+                    new Folder()
+                    {
+                        Name = $"From {routeOptions.StartLocation.Name} to {routeOptions.EndLocation.Name}",
+                        Placemark = new List<Placemark>()
+                        {
+                            new Placemark()
+                            {
+                                Name = $"Score:{route.GreenScore}",
+                                StyleUrl = $"#line-{route.GreenScore}-{route.Cost}-{route.Colour}",
+                                Point = new Point()
+                                {
+                                    Coordinates = $"{markerCoodinate.Longitude},{markerCoodinate.Latitude},0"
+                                }
+                            }
+                        }
+                    });
+            }
+
+            return folders;
+        }
+
         private List<Folder> GetRouteFolders(RouteOptions routeOptions)
         {
             var folders = new List<Folder>();
@@ -230,7 +275,7 @@ namespace MapApi.Controllers
                     20 + ((100-er.GreenScore)/10)
                     );
 
-                var col = GetBlendedColor((int.Parse(er.Cost.ToString())-20)*10);
+                var col = GetBlendedColor(100 - ((int.Parse(er.Cost.ToString())-20)*10));
                 er.Colour = col.A.ToString("X2") + col.B.ToString("X2") + col.G.ToString("X2") + col.R.ToString("X2");
 
                 // Layman terms - £20 + £1 for pollution mark, + £2 for school mark upto £30
