@@ -9,10 +9,6 @@ namespace GoogleMapAPIWeb.Controllers
     {
         public IActionResult Index()
         {
-            return View();
-        }
-        public IActionResult Index2()
-        {
             // Make an HTTP call to the API... convert response to HomeViewModel instead of this
             // var response = HttpClient.blahblah
 
@@ -48,17 +44,7 @@ namespace GoogleMapAPIWeb.Controllers
 
             return View(homeViewModel);
         }
-
-        public IActionResult ViewMap()
-        {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
+        
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
