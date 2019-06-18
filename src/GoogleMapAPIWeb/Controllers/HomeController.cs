@@ -2,49 +2,27 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
+using GoogleMapAPIWeb.Services;
 
 namespace GoogleMapAPIWeb.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IMapApiClient _mapApiClient;
+
+        public HomeController(IMapApiClient mapApiClient)
+        {
+            _mapApiClient = mapApiClient;
+        }
+
         public IActionResult Index()
         {
             return View();
         }
-        public IActionResult Index2()
-        {
-            // Make an HTTP call to the API... convert response to HomeViewModel instead of this
-            // var response = HttpClient.blahblah
-
-            var homeViewModel = new HomeViewModel();
-
-            homeViewModel.RouteInfos.Add(new RouteInfo
-            {
-                Id = 1,
-                AveragePollutionPoint = 5,
-                ColorInHex = "#ff0000",
-                SchoolCount = 9,
-                TravellTime = new TimeSpan(2, 33, 0)
-            });
-
-            homeViewModel.RouteInfos.Add(new RouteInfo
-            {
-                Id = 2,
-                AveragePollutionPoint = 3,
-                ColorInHex = "#00ff00",
-                SchoolCount = 6,
-                TravellTime = new TimeSpan(2, 33, 0)
-            });
-
-            homeViewModel.RouteInfos.Add(new RouteInfo
-            {
-                Id = 3,
-                AveragePollutionPoint = 1,
-                ColorInHex = "#0000ff",
-                SchoolCount = 3,
-                TravellTime = new TimeSpan(2, 33, 0)
-            });
-
+        public async Task<IActionResult> Index2()
+        {   
+            var homeViewModel = await _mapApiClient.RouteInformationAsync(1, true, true, new TimeSpan(12, 13, 0));
 
             return View(homeViewModel);
         }
