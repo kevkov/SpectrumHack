@@ -1,11 +1,21 @@
-import React from 'react';
-import {Body, Button, Container, Footer, FooterTab, Header, Icon, Left, Right, Title, Text} from "native-base";
+import React, {useState} from 'react';
+import {Body, Button, Container, Footer, FooterTab, Header, Icon, Left, Right, Title, Text, Content, View} from "native-base";
 import { Map } from '../../components/map';
 import Constants from "expo-constants";
 
+enum Tab  { MAP, DETAILS};
+
+const getContent = (tab:Tab, props) => {
+    if (tab == Tab.MAP) {
+        return (<Map {...props} />);
+    }
+    return (<Content><Text>the other tab</Text></Content>);
+};
 export const Route = (props) => {
+
+    const [currentTab, setCurrentTab] = useState<Tab>(Tab.MAP);
     return (
-        <Container>
+        <Container style={{flex:1}}>
             <Header style={{paddingTop: Constants.statusBarHeight}}>
                 <Left>
                     <Button
@@ -19,14 +29,21 @@ export const Route = (props) => {
                 </Body>
                 <Right/>
             </Header>
-            <Map {...props} />
+            { getContent(currentTab, props) }
             <Footer>
                 <FooterTab>
-                    <Button vertical>
+                    <Button
+                        active={currentTab == Tab.MAP}
+                        vertical
+                        onPress={() => setCurrentTab(Tab.MAP)}
+                    >
                         <Icon name="map" />
                         <Text>Map</Text>
                     </Button>
-                    <Button vertical>
+                    <Button
+                        active={currentTab == Tab.DETAILS}
+                        vertical
+                        onPress={() => setCurrentTab(Tab.DETAILS)}>
                         <Icon name="list" />
                         <Text>Details</Text>
                     </Button>

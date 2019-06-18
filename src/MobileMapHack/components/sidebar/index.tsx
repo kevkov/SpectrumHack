@@ -76,9 +76,9 @@ export const SideBar = (props: DrawerItemsProps) => {
                             button
                             noBorder
                             onPress={() => {
+                                props.navigation.closeDrawer();
                                 props.navigation.navigate("Route",
                                     {origin: datum.item.start, destination: datum.item.end});
-                                props.navigation.closeDrawer();
                             }}
                         >
                             <Left>
