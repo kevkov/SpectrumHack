@@ -3,6 +3,8 @@
   <Document>
     <name>Untitled map</name>
     <description/>
+    {Styles}
+    {SchoolsStyle}
     <Style id="icon-route-start">
       <IconStyle>
         <color>ff00ff00</color>
@@ -24,21 +26,6 @@
         <scale>1</scale>
         <Icon>
           <href>http://maps.google.com/mapfiles/kml/pal4/icon15.png</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>0</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <Style id="icon-school">
-      <IconStyle>
-        <color>ff00ff00</color>
-        <scale>1</scale>
-        <Icon>
-          <href>http://maps.google.com/mapfiles/kml/pal3/icon56.png</href>
         </Icon>
       </IconStyle>
       <LabelStyle>
@@ -213,6 +200,7 @@
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
+    {SchoolsStyle}
     {Routes}
     {AirQuality}
     {Schools}
