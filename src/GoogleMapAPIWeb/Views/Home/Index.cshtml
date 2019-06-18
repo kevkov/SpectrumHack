@@ -3,7 +3,7 @@
     ViewData["Title"] = "Spectrum Hackathon";
 }
 @model HomeViewModel
-@using GoogleMapAPIWeb.Models
+@using MapApiCore.Models
 
 <div class="container-fluid">
 
@@ -55,12 +55,13 @@
                     {
                         <div class="card mb-4 shadow-sm">
                             <div class="card-header">
-                                <h4 my-0-font-weight-normat style="background-color: @hvm.ColorInHex">Option @hvm.Id </h4>
+                                <h4 my-0-font-weight-normat style="background-color: @hvm.ColorInHex"> @hvm.RouteLabel </h4>
                             </div>
                             <div class="card-body">
-                                <h1 class="card-title pricing-card-title"> Pollution @hvm.AveragePollutionPoint </h1>
+                                <h1 class="card-title pricing-card-title"> Pollution @hvm.PollutionPoint </h1>
                                 <ul class="list-unstyled mt-3 mb-4">
-                                    <li>Travel time: @hvm.TravellTime</li>
+                                    <li>Travel time: @hvm.TravelTime</li>
+                                    <li>Travel cost: @hvm.TravelCost</li>
                                     <li>Schools: @hvm.SchoolCount</li>
                                 </ul>
                             </div>

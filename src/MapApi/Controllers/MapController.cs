@@ -40,6 +40,8 @@ namespace MapApi.Controllers
             return this.Get(1, true, true, new TimeSpan(9, 0, 0));
         }
 
+
+
         // GET api/journey
         [HttpGet("{journeyId}/{showPollution}/{showSchools}/{startTime}")]
         public ActionResult<string> Get(int journeyId, bool showPollution, bool showSchools, TimeSpan startTime)

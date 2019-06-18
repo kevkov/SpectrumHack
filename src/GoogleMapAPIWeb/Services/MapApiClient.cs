@@ -39,28 +39,34 @@ namespace GoogleMapAPIWeb.Services
             homeViewModel.RouteInfos.Add(new RouteInfo
             {
                 Id = 1,
-                AveragePollutionPoint = 5,
+                RouteLabel = "Option 1",
+                PollutionPoint = 5,
                 ColorInHex = "#ff0000",
                 SchoolCount = 9,
-                TravellTime = new TimeSpan(2, 33, 0)
+                TravelCost =12.50m,
+                TravelTime = new TimeSpan(2, 33, 0)
             });
 
             homeViewModel.RouteInfos.Add(new RouteInfo
             {
                 Id = 2,
-                AveragePollutionPoint = 3,
+                RouteLabel = "Option 2",
+                PollutionPoint = 3,
                 ColorInHex = "#00ff00",
                 SchoolCount = 6,
-                TravellTime = new TimeSpan(2, 33, 0)
+                TravelCost = 10.50m,
+                TravelTime = new TimeSpan(2, 33, 0)
             });
 
             homeViewModel.RouteInfos.Add(new RouteInfo
             {
                 Id = 3,
-                AveragePollutionPoint = 1,
+                PollutionPoint = 1,
+                RouteLabel = "Option 3",
                 ColorInHex = "#0000ff",
                 SchoolCount = 3,
-                TravellTime = new TimeSpan(2, 33, 0)
+                TravelCost = 9.50m,
+                TravelTime = new TimeSpan(2, 33, 0)
             });
 
             return homeViewModel;
