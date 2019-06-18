@@ -1,9 +1,9 @@
-import MapView, {PROVIDER_GOOGLE} from "react-native-maps";
+import MapView, {KmlMapEvent, PROVIDER_GOOGLE} from "react-native-maps";
 //import MapViewDirections from "react-native-maps-directions";
 import {View} from "react-native";
 import React, {useState} from "react";
 import {Location} from "../../domain/types";
-import {Button, Fab, Icon} from "native-base";
+import {Button, Fab, Icon } from "native-base";
 
 const GOOGLE_MAPS_APIKEY = '';
 
@@ -30,12 +30,12 @@ export const Map = (props) => {
                 <MapView
                     provider={PROVIDER_GOOGLE}
                     style={{flex: 1}}
-                    region={{
+                    initialRegion={{
                         latitude: centre.latitude,
                         longitude: centre.longitude,
                         latitudeDelta: 1.05 * latDelta,
                         longitudeDelta: 1.05 * lonDelta }}
-                    kmlSrc={"https://spectrummapapi.azurewebsites.net/api/map"} />
+                    />
                 <Fab
                     direction="up"
                     position="bottomRight"
