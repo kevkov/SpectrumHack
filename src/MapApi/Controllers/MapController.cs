@@ -110,25 +110,32 @@ namespace MapApi.Controllers
             StringBuilder sb = new StringBuilder();
             foreach (var route in routeOptions.EnrichedRoute)
             {
-                sb.AppendLine(String.Format(styleString, $"#line-{route.GreenScore}-{route.Cost}-{route.Colour}", route.Colour));
+                sb.AppendLine(String.Format(styleString, $"line-{route.GreenScore}-{route.Cost}-{route.Colour}", route.Colour.ToLower()));
             }
 
             return sb.ToString();
         }
 
-        string styleString =
-            "<Style id=\"{0}\">"+
-            "<IconStyle> " +
-            "<color>{1}</color> " +
-            "<scale>1</scale> "+
-            "<Icon> "+
-            "<href>http://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>"+
-            "</Icon>"+
-            "</IconStyle>"+
-            "<BalloonStyle>"+
-            "<text><![CDATA[<h3>$[name]</h3>]]></text>"+
-            "</BalloonStyle>"+
+        private string styleString =
+            "<Style id =\"{0}\">" +
+            "<LineStyle>" +
+            "<color>{1}</color>" +
+            "<width>5</width>" +
+            "</LineStyle>" +
             "</Style>";
+
+            //"<Style id=\"{0}\">"+
+            //"<IconStyle> " +
+            //"<color>{1}</color> " +
+            //"<scale>1</scale> "+
+            //"<Icon> "+
+            //"<href>http://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>"+
+            //"</Icon>"+
+            //"</IconStyle>"+
+            //"<BalloonStyle>"+
+            //"<text><![CDATA[<h3>$[name]</h3>]]></text>"+
+            //"</BalloonStyle>"+
+            //"</Style>";
 
         private string GetRoutes(RouteOptions routeOptions)
         {
@@ -199,7 +206,6 @@ namespace MapApi.Controllers
             var pollutionMarkers = this._pollutionRepo.GetMarkers();
             var schoolMarkers = this._schoolRepo.GetMarkers();
 
-
             IList<EnrichedRoute> enrichedRoute = new List<EnrichedRoute>();
             foreach (var journeyOption in journeyOptions.Routes)
             {
@@ -218,7 +224,8 @@ namespace MapApi.Controllers
                     20 + ((100-er.GreenScore)/10)
                     );
 
-                er.Colour = GetBlendedColor((int.Parse(er.Cost.ToString())-20)*10).Name;
+                var col = GetBlendedColor((int.Parse(er.Cost.ToString())-20)*10);
+                er.Colour = col.A.ToString("X2") + col.B.ToString("X2") + col.G.ToString("X2") + col.R.ToString("X2");
 
                 // Layman terms - £20 + £1 for pollution mark, + £2 for school mark upto £30
 
