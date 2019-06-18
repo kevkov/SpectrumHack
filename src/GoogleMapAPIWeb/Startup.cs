@@ -37,14 +37,13 @@ namespace GoogleMapAPIWeb
         private void DependencyInjection(IServiceCollection services)
         {
             var baseUri = Configuration.GetSection("MapApiBaseUri");
-            var httpClient = new HttpClient
-            {
-                BaseAddress = new Uri(baseUri.Value)
-
-            };
 
             services.AddScoped<IMapApiClient, MapApiClient>(
-                s => new MapApiClient(httpClient));
+                s => new MapApiClient(new HttpClient
+                {
+                    BaseAddress = new Uri(baseUri.Value)
+
+                }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

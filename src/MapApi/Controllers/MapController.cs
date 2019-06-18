@@ -40,6 +40,8 @@ namespace MapApi.Controllers
             return this.Get(1, true, true, new TimeSpan(9, 0, 0), "North Greenwich", 0.00447m, 51.49847m, "Westminster", -0.13563m, 51.4975m);
         }
 
+
+
         // GET api/journey
         //[HttpGet]
         public ActionResult<string> Get([FromQuery]int journeyId, bool showPollution, bool showSchools, TimeSpan startTime, string startName, decimal startLongitude, decimal startLatitude, string endName, decimal endLongitude, decimal endLatitude)
