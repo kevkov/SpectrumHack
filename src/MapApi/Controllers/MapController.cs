@@ -65,7 +65,7 @@ namespace MapApi.Controllers
             if (showPollution)
             {
                 var pollutionMarkers = this._pollutionRepo.GetMarkers();
-                var pollutionPlacemarks = this.CreatePlacemarks(pollutionMarkers);
+                var pollutionPlacemarks = this.CreatePlacemarksVariable(pollutionMarkers, "#icon-airqualityindex-");
                 var folder = new Folder { Name = "Pollution", Placemark = pollutionPlacemarks };
                 var serializer = new XmlSerializer(typeof(Folder));
                 var xout = new StringWriter();
@@ -85,7 +85,7 @@ namespace MapApi.Controllers
             if (showSchools)
             {
                 var schoolMarkers = this._schoolRepo.GetMarkers();
-                var schoolPlacemarks = this.CreatePlacemarks(schoolMarkers);
+                var schoolPlacemarks = this.CreatePlacemarks(schoolMarkers, "#icon-school");
                 var folder = new Folder { Name = "Schools", Placemark = schoolPlacemarks };
                 var serializer = new XmlSerializer(typeof(Folder));
                 var xout = new StringWriter();
@@ -93,10 +93,12 @@ namespace MapApi.Controllers
                 serializer.Serialize(xout, folder);
                 var xml = xout.ToString().Replace("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n", string.Empty);
                 kmlString = kmlString.Replace("{Schools}", xml);
+                kmlString = kmlString.Replace("{SchoolsStyle}", xmlSchoolStyle);
             }
             else
             {
                 kmlString = kmlString.Replace("{Schools}", string.Empty);
+                kmlString = kmlString.Replace("{SchoolsStyle}", string.Empty);
             }
 
             var kml = new XmlDocument();
@@ -124,18 +126,22 @@ namespace MapApi.Controllers
             "</LineStyle>" +
             "</Style>";
 
-            //"<Style id=\"{0}\">"+
-            //"<IconStyle> " +
-            //"<color>{1}</color> " +
-            //"<scale>1</scale> "+
-            //"<Icon> "+
-            //"<href>http://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>"+
-            //"</Icon>"+
-            //"</IconStyle>"+
-            //"<BalloonStyle>"+
-            //"<text><![CDATA[<h3>$[name]</h3>]]></text>"+
-            //"</BalloonStyle>"+
-            //"</Style>";
+        private string xmlSchoolStyle =
+            "<Style id=\"icon-school\">"+
+            "<IconStyle>" +
+            "<color>ff00ff00</color>" +
+            "<scale>1</scale>" +
+            "<Icon>" +
+            "<href>http://maps.google.com/mapfiles/kml/pal3/icon56.png</href>" +
+            "</Icon>" +
+            "</IconStyle>" +
+            "<LabelStyle>" +
+            "<scale>0</scale>" +
+            "</LabelStyle>" +
+            "<BalloonStyle>" +
+            "<text><![CDATA[<h3>$[name]</h3>]]></text>" +
+            "</BalloonStyle>" +
+            "</Style>";
 
         private string GetRoutes(RouteOptions routeOptions)
         {
@@ -170,7 +176,7 @@ namespace MapApi.Controllers
                                 LineString = new LineString()
                                 {
                                     Tessellate = 1,
-                                    Coordinates = string.Join(',', route.RouteMarkers.ToList().Select(x => $"{x.Coordinate.Longitude},{x.Coordinate.Latitude},0{Environment.NewLine}"))
+                                    Coordinates = string.Join("", route.RouteMarkers.ToList().Select(x => $"{x.Coordinate.Longitude},{x.Coordinate.Latitude},0{Environment.NewLine}"))
                                 }
                             },
                             // start placemark
@@ -271,7 +277,7 @@ namespace MapApi.Controllers
             return path;
         }
 
-        private List<Placemark> CreatePlacemarks(List<Marker> markers)
+        private List<Placemark> CreatePlacemarks(List<Marker> markers, string style = "#icon-1769-0F9D58-nodesc-normal")
         {
             var placemarks = new List<Placemark>();
             
@@ -280,9 +286,27 @@ namespace MapApi.Controllers
                 placemarks.Add(new Placemark
                 {
                     Name = $"{marker.Description} ({marker.Value})",
-                    StyleUrl = "#icon-1769-0F9D58-nodesc-normal",
+                    StyleUrl = style,
                     Point = new Point { Coordinates = $"{marker.Coordinate.Longitude},{marker.Coordinate.Latitude}"}
                 });    
+            }
+
+            return placemarks;
+        }
+
+
+        private List<Placemark> CreatePlacemarksVariable(List<Marker> markers, string stylePrefix)
+        {
+            var placemarks = new List<Placemark>();
+
+            foreach (var marker in markers)
+            {
+                placemarks.Add(new Placemark
+                {
+                    Name = $"{marker.Description} ({marker.Value})",
+                    StyleUrl = stylePrefix + marker.Value,
+                    Point = new Point { Coordinates = $"{marker.Coordinate.Longitude},{marker.Coordinate.Latitude}" }
+                });
             }
 
             return placemarks;

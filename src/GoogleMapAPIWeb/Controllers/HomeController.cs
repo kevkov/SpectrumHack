@@ -15,26 +15,12 @@ namespace GoogleMapAPIWeb.Controllers
         {
             _mapApiClient = mapApiClient;
         }
-
-        public IActionResult Index()
-        {
-            return View();
-        }
-        public async Task<IActionResult> Index2()
+        
+        public async Task<IActionResult> Index()
         {   
             var homeViewModel = await _mapApiClient.RouteInformationAsync(1, true, true, new TimeSpan(12, 13, 0));
 
             return View(homeViewModel);
-        }
-
-        public IActionResult ViewMap()
-        {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
