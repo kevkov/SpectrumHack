@@ -190,7 +190,7 @@ namespace MapApi.Controllers
                         {
                             new Placemark()
                             {
-                                Name = $"Score:{route.GreenScore}",
+                                Name = route.Label,
                                 StyleUrl = $"#line-{route.GreenScore}-{route.Cost}-{route.Colour}",
                                 Point = new Point()
                                 {
@@ -259,15 +259,19 @@ namespace MapApi.Controllers
             var pollutionMarkers = this._pollutionRepo.GetMarkers();
             var schoolMarkers = this._schoolRepo.GetMarkers();
 
+            int i = 0;
             IList<EnrichedRoute> enrichedRoute = new List<EnrichedRoute>();
             foreach (var journeyOption in journeyOptions.Routes)
             {
                 var er = new EnrichedRoute()
                 {
+                    Label = $"Option:{i}",
                     RouteMarkers = journeyOption.Coordinates.Select(x => new Marker(new Coordinate(x.Longitude, x.Latitude), 0, string.Empty)).ToList(),
                     PollutionMarkers = _interactionService.FindMarkersOnRoute(journeyOption.Coordinates, pollutionMarkers, startTime),
                     SchoolMarkers = _interactionService.FindMarkersOnRoute(journeyOption.Coordinates, schoolMarkers, startTime)
                 };
+
+                i++;
 
                 er.GreenScore = Math.Min(100, 100  
                                               - (er.PollutionMarkers.Count * 10)
