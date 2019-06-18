@@ -3,7 +3,26 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <UserSecretsId>8d8e59ab-5f94-4f50-91da-94c975763ad0</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="Data\Journey.json" />
+    <Content Remove="Data\Pollution.json" />
+    <Content Remove="Data\School.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Data\Journey.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Pollution.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\School.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="GeoCoordinate.NetCore" Version="1.0.0.1" />
@@ -13,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\MapApiCore\MapApiCore.csproj" />
+    <ProjectReference Include="..\MapApiCore\MapApiCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>

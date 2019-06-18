@@ -1,16 +1,16 @@
-﻿using MapApiCore.Models;
-using System.Collections.Generic;
-using System.Linq;
-using GeoCoordinatePortable;
-
+﻿
 namespace MapApi.Services
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using GeoCoordinatePortable;
     using Interfaces;
+    using MapApiCore.Models;
 
     public class IntersectionService : IIntersectionService
     {
-        private const double RangeInMeters = 1000;
+        private const double RangeInMeters = 200;
 
         public List<Marker> FindMarkersOnRoute(List<Coordinate> route, List<Marker> markers, TimeSpan startTime)
         {
