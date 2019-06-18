@@ -4,7 +4,6 @@ namespace GoogleMapAPIWeb.Models
 {
     public class RouteInfo
     {
-        public int Id { get; set; }
         public string ColorInHex { get; set; }
         public string RouteLabel { get; set; }
         public int PollutionPoint { get; set; }
