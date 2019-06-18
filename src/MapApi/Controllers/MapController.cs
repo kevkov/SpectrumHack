@@ -33,18 +33,17 @@ namespace MapApi.Controllers
             _interactionService = interactionService;
         }
 
-        // GET api/journey
+        // GET api/map
         [HttpGet]
         public ActionResult<string> Get()
         {
             return this.Get(1, true, true, new TimeSpan(9, 0, 0), "North Greenwich", 0.00447m, 51.49847m, "Westminster", -0.13563m, 51.4975m);
         }
 
-
-
-        // GET api/journey
-        //[HttpGet]
-        public ActionResult<string> Get([FromQuery]int journeyId, bool showPollution, bool showSchools, TimeSpan startTime, string startName, decimal startLongitude, decimal startLatitude, string endName, decimal endLongitude, decimal endLatitude)
+        // GET api/map/1?showPollution=true&showSchools=true&startTime=09:00:00&startName=NorthGreenwich&startLongitude=0.00447&startLatitude=51.49847&endName=Westerminster,endLongitude=-0.13563,endLatitude=51.4975
+        [HttpGet]
+        [Route("{journeyId}")]
+        public ActionResult<string> Get(int journeyId, [FromQuery]bool showPollution, [FromQuery]bool showSchools, [FromQuery]TimeSpan startTime, [FromQuery]string startName, [FromQuery]decimal startLongitude, [FromQuery]decimal startLatitude, [FromQuery]string endName, [FromQuery]decimal endLongitude, [FromQuery]decimal endLatitude)
         {
             RouteOptions fullJourneyOptions = this.ProcessJourney(journeyId, startTime);
 
