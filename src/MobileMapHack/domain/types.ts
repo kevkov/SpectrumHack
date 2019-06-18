@@ -1,7 +1,15 @@
 
-export interface Location {
+export interface LatLng {
     latitude: number
     longitude: number
+}
+
+export interface Polyline {
+    coordinates: LatLng[]
+}
+
+export interface MapData {
+    lines: Polyline[]
 }
 
 export interface Journey {

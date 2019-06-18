@@ -1,5 +1,8 @@
 ﻿using System.Drawing;
 using System.Text;
+using System.Threading.Tasks;
+using MapApi.ViewModels;
+using Newtonsoft.Json.Serialization;
 
 namespace MapApi.Controllers
 {
@@ -49,6 +52,22 @@ namespace MapApi.Controllers
 
             var kmlString = this.CreateTestKmlString(fullJourneyOptions, showPollution, showSchools);
             return kmlString;
+        }
+
+        [HttpGet("mobile")]
+        public async Task<ActionResult<Map>> GetForMobile()
+        {
+            RouteOptions fullJourneyOptions = this.ProcessJourney(1, new TimeSpan(9, 0, 0));
+            
+            var map = new Map();
+            map.Lines = fullJourneyOptions.EnrichedRoute.Select(r =>
+            {
+                var line = new Polyline(r.RouteMarkers.Select(m =>
+                    new LatLng(m.Coordinate.Latitude, m.Coordinate.Longitude)));
+                return line;
+            }).ToList();
+
+            return map;
         }
 
         private string CreateTestKmlString(RouteOptions routeOptions, bool showPollution, bool showSchools)
