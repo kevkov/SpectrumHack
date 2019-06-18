@@ -13,5 +13,7 @@ namespace MapApiCore.Models
         public decimal Cost { get; set; }
 
         public string Colour { get; set; }
+
+        public string Label { get; set; }
     }
 }
