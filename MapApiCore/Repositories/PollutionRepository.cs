@@ -3,15 +3,36 @@ using MapApiCore.Models;
 
 namespace MapApiCore.Repositories
 {
-    public class PollutionRepository : IMarkerRepository
+    using System.Linq;
+    using Interfaces;
+    using Newtonsoft.Json;
+
+    public class PollutionRepository : RepositoryBase, IPollutionRepository
     {
+        private const string fileName = "Pollution.json";
+
+        private readonly List<Marker> _markers;
+
+        public PollutionRepository()
+        {
+            _markers = ReadData<Marker>(fileName);
+        }
+
         public List<Marker> GetMarkers()
         {
-            return new List<Marker>
+            return _markers;
+        }
+
+        public void InsertMarker(Marker marker)
+        {
+            var markerExists = this._markers.Any(m => m.Coordinate.Longitude == marker.Coordinate.Longitude && m.Coordinate.Latitude == marker.Coordinate.Latitude);
+
+            if (markerExists == false)
             {
-                new Marker(new Coordinate(0.00447, 51.49847), 10, "Low"),
-                new Marker(new Coordinate(0.00496, 51.49869), 50, "Med")
-            };
+                _markers.Add(marker);
+                WriteData(fileName, this._markers);
+            }
+            
         }
     }
 }

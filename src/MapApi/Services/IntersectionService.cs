@@ -5,22 +5,23 @@ using GeoCoordinatePortable;
 
 namespace MapApi.Services
 {
-    public interface IIntersectionService
-    {
-        List<Marker> FindMarkersOnRoute(List<Coordinate> route, List<Marker> markers);
-    }
+    using System;
+    using Interfaces;
 
     public class IntersectionService : IIntersectionService
     {
         private const double RangeInMeters = 1000;
 
-        public List<Marker> FindMarkersOnRoute(List<Coordinate> route, List<Marker> markers)
+        public List<Marker> FindMarkersOnRoute(List<Coordinate> route, List<Marker> markers, TimeSpan startTime)
         {
             var matchedMarkers = new List<Marker>();
 
             foreach (var marker in markers)
             {
-                if (route.Any(r => CalculateDistance(r, marker.Coordinate) <= RangeInMeters))
+                // Point must be within range and valid for the start time of the journey
+                if (route.Any(r => CalculateDistance(r, marker.Coordinate) <= RangeInMeters && 
+                                   startTime >= marker.StartTime && 
+                                   startTime <= marker.EndTime))
                 {
                     matchedMarkers.Add(marker);
                 }
@@ -29,7 +30,7 @@ namespace MapApi.Services
             return matchedMarkers;
         }
 
-        private double CalculateDistance(Coordinate first, Coordinate second)
+        private static double CalculateDistance(Coordinate first, Coordinate second)
         {
             var firstGeoCoordinate = new GeoCoordinate(first.Latitude, first.Longitude);
             var secondGeoCoordinate = new GeoCoordinate(second.Latitude, second.Longitude);
