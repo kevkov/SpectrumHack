@@ -1,4 +1,7 @@
-﻿namespace MapApi.Controllers
+﻿using System.Drawing;
+using System.Text;
+
+namespace MapApi.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -41,20 +44,7 @@
         [HttpGet("{journeyId}/{showPollution}/{showSchools}/{startTime}")]
         public ActionResult<string> Get(int journeyId, bool showPollution, bool showSchools, TimeSpan startTime)
         {
-            RouteOptions fullJourneyOptions = new RouteOptions()
-            {
-                StartLocation = new MapLocation()
-                {
-                    Name = "North Greenwich",
-                    Location = new Coordinate(0.004472, 51.498473)
-                },
-                EndLocation = new MapLocation()
-                {
-                    Name = "Westminster",
-                    Location = new Coordinate(-0.135628, 51.497496)
-                },
-                EnrichedRoute = this.ProcessJourney(journeyId, startTime)
-            };
+            RouteOptions fullJourneyOptions = this.ProcessJourney(journeyId, startTime);
 
             var kmlString = this.CreateTestKmlString(fullJourneyOptions, showPollution, showSchools);
             return kmlString;
@@ -63,6 +53,9 @@
         private string CreateTestKmlString(RouteOptions routeOptions, bool showPollution, bool showSchools)
         {
             var kmlString = System.IO.File.ReadAllText(GetFilePath("Test.kml"));
+            
+            var styles = GetStyles(routeOptions);
+            kmlString = kmlString.Replace("{Styles}", styles);
 
             var routes = GetRoutes(routeOptions);
             kmlString = kmlString.Replace("{Routes}", routes);
@@ -89,28 +82,60 @@
                 kmlString = kmlString.Replace("{AirQuality}", string.Empty);
             }
 
-            //if (showSchools)
-            //{
-            //    var schoolMarkers = this._schoolRepo.GetMarkers();
-            //    var schoolPlacemarks = this.CreatePlacemarks(schoolMarkers);
-            //    var folder = new Folder { Name = "Schools", Placemark = schoolPlacemarks };
-            //    var serializer = new XmlSerializer(typeof(Folder));
-            //    var xout = new StringWriter();
+            if (showSchools)
+            {
+                var schoolMarkers = this._schoolRepo.GetMarkers();
+                var schoolPlacemarks = this.CreatePlacemarks(schoolMarkers);
+                var folder = new Folder { Name = "Schools", Placemark = schoolPlacemarks };
+                var serializer = new XmlSerializer(typeof(Folder));
+                var xout = new StringWriter();
 
-            //    serializer.Serialize(xout, folder);
-            //    var xml = xout.ToString().Replace("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n", string.Empty);
-            //    kmlString = kmlString.Replace("{Schools}", xml);
-            //}
-            //else
-            //{
-            //    kmlString = kmlString.Replace("{Schools}", string.Empty);
-            //}
+                serializer.Serialize(xout, folder);
+                var xml = xout.ToString().Replace("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n", string.Empty);
+                kmlString = kmlString.Replace("{Schools}", xml);
+            }
+            else
+            {
+                kmlString = kmlString.Replace("{Schools}", string.Empty);
+            }
 
             var kml = new XmlDocument();
             kml.LoadXml(kmlString);
 
             return kml.OuterXml;
         }
+
+        private string GetStyles(RouteOptions routeOptions)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var route in routeOptions.EnrichedRoute)
+            {
+                sb.AppendLine(String.Format(styleString, $"line-{route.GreenScore}-{route.Cost}-{route.Colour}", route.Colour.ToLower()));
+            }
+
+            return sb.ToString();
+        }
+
+        private string styleString =
+            "<Style id =\"{0}\">" +
+            "<LineStyle>" +
+            "<color>{1}</color>" +
+            "<width>5</width>" +
+            "</LineStyle>" +
+            "</Style>";
+
+            //"<Style id=\"{0}\">"+
+            //"<IconStyle> " +
+            //"<color>{1}</color> " +
+            //"<scale>1</scale> "+
+            //"<Icon> "+
+            //"<href>http://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>"+
+            //"</Icon>"+
+            //"</IconStyle>"+
+            //"<BalloonStyle>"+
+            //"<text><![CDATA[<h3>$[name]</h3>]]></text>"+
+            //"</BalloonStyle>"+
+            //"</Style>";
 
         private string GetRoutes(RouteOptions routeOptions)
         {
@@ -141,7 +166,7 @@
                             // route placemark
                             new Placemark()
                             {
-                                StyleUrl = "#line-12FF00-5000-nodesc-normal",
+                                StyleUrl = $"#line-{route.GreenScore}-{route.Cost}-{route.Colour}",
                                 LineString = new LineString()
                                 {
                                     Tessellate = 1,
@@ -155,7 +180,7 @@
                                 StyleUrl = "#icon-1899-DB4436-nodesc-normal",
                                 Point = new Point()
                                 {
-                                    Coordinates = $"{routeOptions.StartLocation.Location.Longitude},{routeOptions.StartLocation.Location.Latitude},0"
+                                    Coordinates = $"{routeOptions.StartLocation.Longitude},{routeOptions.StartLocation.Latitude},0"
                                 }
                             },
                             // end placemark
@@ -165,7 +190,7 @@
                                 StyleUrl = "#icon-1899-DB4436-nodesc-normal",
                                 Point = new Point()
                                 {
-                                    Coordinates = $"{routeOptions.EndLocation.Location.Longitude},{routeOptions.EndLocation.Location.Latitude},0"
+                                    Coordinates = $"{routeOptions.EndLocation.Longitude},{routeOptions.EndLocation.Latitude},0"
                                 }
                             }
                         }
@@ -175,23 +200,69 @@
             return folders;
         }
 
-        private IList<EnrichedRoute> ProcessJourney(int journeyId, TimeSpan startTime)
+        private RouteOptions ProcessJourney(int journeyId, TimeSpan startTime)
         {
             var journeyOptions = _journeyRepo.GetJourney(journeyId);
             var pollutionMarkers = this._pollutionRepo.GetMarkers();
-            
+            var schoolMarkers = this._schoolRepo.GetMarkers();
+
             IList<EnrichedRoute> enrichedRoute = new List<EnrichedRoute>();
             foreach (var journeyOption in journeyOptions.Routes)
             {
-                enrichedRoute.Add(new EnrichedRoute()
+                var er = new EnrichedRoute()
                 {
-                    PollutionScore = 100,
                     RouteMarkers = journeyOption.Coordinates.Select(x => new Marker(new Coordinate(x.Longitude, x.Latitude), 0, string.Empty)).ToList(),
-                    PollutionMarkers = _interactionService.FindMarkersOnRoute(journeyOption.Coordinates, pollutionMarkers, startTime)
-                });
+                    PollutionMarkers = _interactionService.FindMarkersOnRoute(journeyOption.Coordinates, pollutionMarkers, startTime),
+                    SchoolMarkers = _interactionService.FindMarkersOnRoute(journeyOption.Coordinates, schoolMarkers, startTime)
+                };
+
+                er.GreenScore = Math.Min(100, 100  
+                                              - (er.PollutionMarkers.Count * 10)
+                                              - (er.SchoolMarkers.Count * 20)
+                                              );
+                er.Cost = Math.Min(30,
+                    20 + ((100-er.GreenScore)/10)
+                    );
+
+                var col = GetBlendedColor((int.Parse(er.Cost.ToString())-20)*10);
+                er.Colour = col.A.ToString("X2") + col.B.ToString("X2") + col.G.ToString("X2") + col.R.ToString("X2");
+
+                // Layman terms - £20 + £1 for pollution mark, + £2 for school mark upto £30
+
+                // distance or time spent to add?
+                // 7.5 miles (1.5x east-west distance) = £30
+                // points - starts at 100 -20 for school, -10 for within 200m of pollution points
+                // £20 base + (100-points/10)
+
+                enrichedRoute.Add(er);
             }
 
-            return enrichedRoute;
+            return new RouteOptions()
+            {
+                StartLocation = journeyOptions.Start,
+                EndLocation = journeyOptions.End,
+                EnrichedRoute = enrichedRoute
+            };
+        }
+
+        private Color GetBlendedColor(int percentage)
+        {
+            if (percentage < 50)
+                return Interpolate(Color.Red, Color.Yellow, percentage / 50.0);
+            return Interpolate(Color.Yellow, Color.Lime, (percentage - 50) / 50.0);
+        }
+
+        private Color Interpolate(Color color1, Color color2, double fraction)
+        {
+            double r = Interpolate(color1.R, color2.R, fraction);
+            double g = Interpolate(color1.G, color2.G, fraction);
+            double b = Interpolate(color1.B, color2.B, fraction);
+            return Color.FromArgb((int)Math.Round(r), (int)Math.Round(g), (int)Math.Round(b));
+        }
+
+        private double Interpolate(double d1, double d2, double fraction)
+        {
+            return d1 + (d2 - d1) * fraction;
         }
 
         private static string GetFilePath(string filename)
