@@ -6,8 +6,12 @@ namespace MapApiCore.Models
     {
         public IList<Marker> RouteMarkers { get; set; }
         public IList<Marker> PollutionMarkers { get; set; }
+        public IList<Marker> SchoolMarkers { get; set; }
 
-        public int PollutionScore { get; set; }
+        public int GreenScore { get; set; }
 
+        public decimal Cost { get; set; }
+
+        public string Colour { get; set; }
     }
 }

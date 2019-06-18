@@ -1,35 +1,72 @@
-import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import MapView from "react-native-maps";
-import MapViewDirections from 'react-native-maps-directions';
+import React, {Component} from 'react';
+import {StyleSheet} from "react-native";
+import { createDrawerNavigator, createStackNavigator, createAppContainer } from "react-navigation";
+import { SideBar } from "./components/sidebar";
+import { Home } from './screens/home'
+import { Route } from './screens/route'
+import {Root} from "native-base";
+import * as Font from 'expo-font';
+import { Ionicons } from '@expo/vector-icons';
+// @ts-ignore
+import Roboto from 'native-base/Fonts/Roboto.ttf';
+// @ts-ignore
+import Roboto_medium from 'native-base/Fonts/Roboto_medium.ttf';
+// @ts-ignore
+import MaterialIcons from "native-base/Fonts/MaterialIcons.ttf";
 
-const origin = {latitude: 51.4511732, longitude: -0.2138706};
-const destination = {latitude: 51.5250836, longitude: -0.0769465};
-const GOOGLE_MAPS_APIKEY = 'Some key';
+const Drawer = createDrawerNavigator(
+    {
+        Home: { screen: Home },
+        Route: { screen: Route }
+    },
+    {
+        initialRouteName: "Home",
+        contentOptions: {
+            activeTintColor: "#e91e63"
+        },
+        contentComponent: props => <SideBar {...props} />
+    }
+);
 
-export default function App() {
+const AppNavigator = createStackNavigator(
+    {
+        Drawer: { screen: Drawer }
+    },
+    {
+        initialRouteName: "Drawer",
+        headerMode: "none"
+    }
+);
 
-    return (
-        <>
-            <MapView
-                style={{flex: 1}}
-                initialRegion={{
-                    latitude: 51.509864,
-                    longitude: -0.118092,
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421,
-                }}>
-                <MapViewDirections
-                    origin={origin}
-                    destination={destination}
-                    apikey={GOOGLE_MAPS_APIKEY}
-                    />
-            </MapView>
-            <View>
-                <Text style={{flex: 0}}>Stuff</Text>
-            </View>
-        </>
-    );
+const AppContainer = createAppContainer(AppNavigator);
+
+export default class App extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isReady: false
+        };
+    }
+    componentWillMount() {
+        this.loadFonts();
+    }
+    async loadFonts() {
+        await Font.loadAsync({
+            Roboto,
+            Roboto_medium,
+            MaterialIcons,
+           ...Ionicons.font
+        });
+        this.setState({ isReady: true });
+    }
+
+    render() {
+        return (
+            <Root>
+                <AppContainer/>
+            </Root>
+        )
+    }
 }
 
 const styles = StyleSheet.create({
