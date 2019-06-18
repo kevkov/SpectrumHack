@@ -14,16 +14,4 @@
 
   </ItemGroup>
 
-
-  <ItemGroup>
-    <None Include="wwwroot\images\map.png" />
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <Content Update="wwwroot\images\map.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
 </Project>
