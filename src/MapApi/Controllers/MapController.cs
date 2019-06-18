@@ -37,12 +37,12 @@ namespace MapApi.Controllers
         [HttpGet]
         public ActionResult<string> Get()
         {
-            return this.Get(1, true, true, new TimeSpan(9, 0, 0));
+            return this.Get(1, true, true, new TimeSpan(9, 0, 0), "North Greenwich", 0.00447m, 51.49847m, "Westminster", -0.13563m, 51.4975m);
         }
 
         // GET api/journey
-        [HttpGet("{journeyId}/{showPollution}/{showSchools}/{startTime}")]
-        public ActionResult<string> Get(int journeyId, bool showPollution, bool showSchools, TimeSpan startTime)
+        //[HttpGet]
+        public ActionResult<string> Get([FromQuery]int journeyId, bool showPollution, bool showSchools, TimeSpan startTime, string startName, decimal startLongitude, decimal startLatitude, string endName, decimal endLongitude, decimal endLatitude)
         {
             RouteOptions fullJourneyOptions = this.ProcessJourney(journeyId, startTime);
 
@@ -183,7 +183,7 @@ namespace MapApi.Controllers
                             new Placemark()
                             {
                                 Name = routeOptions.StartLocation.Name,
-                                StyleUrl = "#icon-1899-DB4436-nodesc-normal",
+                                StyleUrl = "#icon-route-start",
                                 Point = new Point()
                                 {
                                     Coordinates = $"{routeOptions.StartLocation.Longitude},{routeOptions.StartLocation.Latitude},0"
@@ -193,7 +193,7 @@ namespace MapApi.Controllers
                             new Placemark()
                             {
                                 Name = routeOptions.EndLocation.Name,
-                                StyleUrl = "#icon-1899-DB4436-nodesc-normal",
+                                StyleUrl = "#icon-route-end",
                                 Point = new Point()
                                 {
                                     Coordinates = $"{routeOptions.EndLocation.Longitude},{routeOptions.EndLocation.Latitude},0"
