@@ -150,7 +150,7 @@ namespace MapApi.Controllers
                     map.Markers.Add(new ViewModels.Marker()
                     {
                         Image = pollutionImage,
-                        Title = markers.Description + " - " + markers.Value,
+                        Title = markers.Description,
                         Coordinates = new LatLng(markers.Coordinate.Latitude, markers.Coordinate.Longitude)
                     });
                 }
@@ -264,7 +264,7 @@ namespace MapApi.Controllers
             "<scale>0</scale>" +
             "</LabelStyle>" +
             "<BalloonStyle>" +
-            "<text><![CDATA[<h3>$[name]</h3>]]></text>" +
+            "<text><![CDATA[$[name]]]></text>" +
             "</BalloonStyle>" +
             "</Style>";
 
@@ -458,7 +458,7 @@ namespace MapApi.Controllers
             {
                 placemarks.Add(new Placemark
                 {
-                    Name = $"{marker.Description} ({marker.Value})",
+                    Name = $"{marker.Description}",
                     StyleUrl = style,
                     Point = new Point { Coordinates = $"{marker.Coordinate.Longitude},{marker.Coordinate.Latitude}"}
                 });    
@@ -476,7 +476,7 @@ namespace MapApi.Controllers
             {
                 placemarks.Add(new Placemark
                 {
-                    Name = $"{marker.Description} ({marker.Value})",
+                    Name = $"{marker.Description}",
                     StyleUrl = stylePrefix + marker.Value,
                     Point = new Point { Coordinates = $"{marker.Coordinate.Longitude},{marker.Coordinate.Latitude}" }
                 });
