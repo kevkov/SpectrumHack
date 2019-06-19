@@ -10,7 +10,7 @@ namespace GoogleMapAPIWeb.Models
             RouteInfos = new List<RouteInfo>();
         }
 
-        public List<RouteInfo> RouteInfos { get; }
+        public List<RouteInfo> RouteInfos { get; set; }
     }
 
 }

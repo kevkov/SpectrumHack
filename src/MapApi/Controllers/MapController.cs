@@ -1,5 +1,9 @@
 ﻿using System.Drawing;
 using System.Text;
+using GoogleMapAPIWeb.Models;
+using System.Threading.Tasks;
+using MapApi.ViewModels;
+using Newtonsoft.Json.Serialization;
 
 namespace MapApi.Controllers
 {
@@ -40,15 +44,133 @@ namespace MapApi.Controllers
             return this.Get(1, true, true, new TimeSpan(9, 0, 0), "North Greenwich", 0.00447m, 51.49847m, "Westminster", -0.13563m, 51.4975m);
         }
 
-        // GET api/map/1?showPollution=true&showSchools=true&startTime=09:00:00&startName=NorthGreenwich&startLongitude=0.00447&startLatitude=51.49847&endName=Westerminster,endLongitude=-0.13563,endLatitude=51.4975
+        [Route("routes/{journeyId:int}/{showPollution:bool}/{showSchools:bool}/{startTime:DateTime}")]
+        public ActionResult<List<RouteInfo>> RouteInfo(int journeyId, bool showPollution, bool showSchools, DateTime startTime)
+        {
+            RouteOptions fullJourneyOptions = this.ProcessJourney(journeyId, new TimeSpan(startTime.Hour, startTime.Minute, startTime.Second), showPollution, showSchools);
+
+            return CreateRouteInfo(fullJourneyOptions); ;
+        }
+
+        private ActionResult<List<RouteInfo>> CreateRouteInfo(RouteOptions fullJourneyOptions)
+        {
+            if (fullJourneyOptions == null)
+            {
+                return BadRequest();
+            }
+
+            List<EnrichedRoute> enrichedRoutes = fullJourneyOptions.EnrichedRoute.ToList();
+
+            enrichedRoutes.Sort((routeA, routeB) => routeA.GreenScore.CompareTo(routeB.GreenScore));
+            var takeTopThree = enrichedRoutes.Count > 3 ? 3 : enrichedRoutes.Count;
+
+            List<RouteInfo> routeInfos = new List<RouteInfo>();
+            foreach (var enrichedRoute in enrichedRoutes.Take(takeTopThree))
+            {
+                routeInfos.Add(
+                    new RouteInfo
+                    {
+                        ColorInHex = enrichedRoute.Colour,
+                        PollutionPoint = enrichedRoute.GreenScore,
+                        RouteLabel = enrichedRoute.Label,
+                        SchoolCount = enrichedRoute.SchoolMarkers?.Count ?? 0,
+                        TravelCost = enrichedRoute.Cost
+                    });
+            }
+
+            return Ok(routeInfos);
+        }
+
+        // GET api/map/1?showPollution=true&showSchools=true&startTime=09:00:00&startName=NorthGreenwich&startLongitude=0.00447&startLatitude=51.49847&endName=Westerminster&endLongitude=-0.13563&endLatitude=51.4975
         [HttpGet]
         [Route("{journeyId}")]
         public ActionResult<string> Get(int journeyId, [FromQuery]bool showPollution, [FromQuery]bool showSchools, [FromQuery]TimeSpan startTime, [FromQuery]string startName, [FromQuery]decimal startLongitude, [FromQuery]decimal startLatitude, [FromQuery]string endName, [FromQuery]decimal endLongitude, [FromQuery]decimal endLatitude)
         {
-            RouteOptions fullJourneyOptions = this.ProcessJourney(journeyId, startTime);
+            RouteOptions fullJourneyOptions = this.ProcessJourney(journeyId, startTime, showPollution, showSchools);
 
             var kmlString = this.CreateTestKmlString(fullJourneyOptions, showPollution, showSchools);
             return kmlString;
+        }
+
+        [HttpGet("mobile")]
+        public async Task<ActionResult<Map>> GetForMobile()
+        {
+            var showPollution = true;
+            var showSchools = true;
+
+            RouteOptions fullJourneyOptions = this.ProcessJourney(1, new TimeSpan(9, 0, 0), showPollution, showSchools);
+            
+            var map = new Map();
+            map.Lines = fullJourneyOptions.EnrichedRoute.Select(r =>
+            {
+                var line = new Polyline(r.RouteMarkers.Select(m =>
+                                new LatLng(m.Coordinate.Latitude, m.Coordinate.Longitude)))
+                    {
+                        StrokeColor = r.Colour.Substring(6,2) +
+                                      r.Colour.Substring(4, 2) +
+                                      r.Colour.Substring(2, 2) +
+                                      r.Colour.Substring(0, 2),
+                        StrokeWidth = 3
+                    };
+
+                return line;
+            }).ToList();
+
+
+            map.Markers = new List<ViewModels.Marker>();
+
+            map.Markers.Add(new ViewModels.Marker()
+            {
+                Image = "../assets/start.png",
+                Title = fullJourneyOptions.StartLocation.Name,
+                Coordinates = new LatLng(fullJourneyOptions.StartLocation.Latitude, fullJourneyOptions.StartLocation.Longitude)
+            });
+
+            map.Markers.Add(new ViewModels.Marker()
+            {
+                Image = "../assets/finish.png",
+                Title = fullJourneyOptions.EndLocation.Name,
+                Coordinates = new LatLng(fullJourneyOptions.EndLocation.Latitude, fullJourneyOptions.EndLocation.Longitude)
+            });
+
+            if (showPollution)
+            {
+                foreach (var markers in this._pollutionRepo.GetMarkers())
+                {
+                    string pollutionImage = string.Empty;
+                    if (markers.Value == 1)
+                        pollutionImage = "../assets/one.png";
+                    if (markers.Value == 2)
+                        pollutionImage = "../assets/two.png";
+                    if (markers.Value == 3)
+                        pollutionImage = "../assets/three.png";
+                    if (pollutionImage == string.Empty)
+                        pollutionImage = "../assets/four.png";
+
+                    map.Markers.Add(new ViewModels.Marker()
+                    {
+                        Image = pollutionImage,
+                        Title = markers.Description + " - " + markers.Value,
+                        Coordinates = new LatLng(markers.Coordinate.Latitude, markers.Coordinate.Longitude)
+                    });
+                }
+            }
+
+            if (showSchools)
+            {
+                foreach (var markers in this._schoolRepo.GetMarkers())
+                {
+                    map.Markers.Add(new ViewModels.Marker()
+                    {
+                        Image = "../assets/school.png",
+                        Title = markers.Description + " - " + markers.Value,
+                        Coordinates = new LatLng(markers.Coordinate.Latitude, markers.Coordinate.Longitude)
+                    });
+                }
+
+            }
+
+            return map;
         }
 
         private string CreateTestKmlString(RouteOptions routeOptions, bool showPollution, bool showSchools)
@@ -66,7 +188,7 @@ namespace MapApi.Controllers
             kmlString = kmlString.Replace("</ArrayOfFolder>", string.Empty);
 
             if (showPollution)
-            {
+             {
                 var pollutionMarkers = this._pollutionRepo.GetMarkers();
                 var pollutionPlacemarks = this.CreatePlacemarksVariable(pollutionMarkers, "#icon-airqualityindex-");
                 var folder = new Folder { Name = "Pollution", Placemark = pollutionPlacemarks };
@@ -180,7 +302,7 @@ namespace MapApi.Controllers
 
             foreach (var route in routeOptions.EnrichedRoute)
             {
-                var markerCoodinate = route.RouteMarkers[route.RouteMarkers.Count / 2].Coordinate;
+                var markerCoordinate = route.RouteMarkers[route.RouteMarkers.Count / 2].Coordinate;
                 folders.Add(
                     new Folder()
                     {
@@ -193,7 +315,7 @@ namespace MapApi.Controllers
                                 StyleUrl = $"#line-{route.GreenScore}-{route.Cost}-{route.Colour}",
                                 Point = new Point()
                                 {
-                                    Coordinates = $"{markerCoodinate.Longitude},{markerCoodinate.Latitude},0"
+                                    Coordinates = $"{markerCoordinate.Longitude},{markerCoordinate.Latitude},0"
                                 }
                             }
                         }
@@ -252,7 +374,7 @@ namespace MapApi.Controllers
             return folders;
         }
 
-        private RouteOptions ProcessJourney(int journeyId, TimeSpan startTime)
+        private RouteOptions ProcessJourney(int journeyId, TimeSpan startTime, bool showPollution, bool showSchools)
         {
             var journeyOptions = _journeyRepo.GetJourney(journeyId);
             var pollutionMarkers = this._pollutionRepo.GetMarkers();
@@ -272,10 +394,11 @@ namespace MapApi.Controllers
 
                 i++;
 
-                er.GreenScore = Math.Min(100, 100  
-                                              - (er.PollutionMarkers.Count * 10)
-                                              - (er.SchoolMarkers.Count * 20)
-                                              );
+                var pollutionFactor = showPollution ? er.PollutionMarkers.Count * 10 : 0;
+                var schoolFactor = showSchools ? er.SchoolMarkers.Count * 20 : 0;
+
+                er.GreenScore = Math.Max(0, 100 - pollutionFactor - schoolFactor);
+                
                 er.Cost = Math.Min(30,
                     20 + ((100-er.GreenScore)/10)
                     );
