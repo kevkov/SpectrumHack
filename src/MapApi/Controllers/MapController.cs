@@ -410,7 +410,7 @@ namespace MapApi.Controllers
 
                 er.GreenScore = Math.Max(0, 100 - pollutionFactor - schoolFactor);
 
-                er.Cost = ((100 - (decimal) er.GreenScore)/10) * er.Distance;
+                er.Cost = ((10 - ((decimal) er.GreenScore)/10)) * journeyOption.Distance;
 
                 var col = GetBlendedColor(er.GreenScore);
                 er.Colour = col.A.ToString("X2") + col.B.ToString("X2") + col.G.ToString("X2") + col.R.ToString("X2");
