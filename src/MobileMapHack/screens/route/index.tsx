@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Body, Button, Container, Footer, FooterTab, Header, Icon, Left, Right, Title, Text, Content, View} from "native-base";
 import { Map } from '../../components/map';
 import Constants from "expo-constants";
+import { JourneyDetails } from './journeyDetails';
 
 enum Tab  { MAP, DETAILS};
 
@@ -9,7 +10,7 @@ const getContent = (tab:Tab, props) => {
     if (tab == Tab.MAP) {
         return (<Map {...props} />);
     }
-    return (<Content><Text>the other tab</Text></Content>);
+    return (<JourneyDetails />);
 };
 export const Route = (props) => {
 
