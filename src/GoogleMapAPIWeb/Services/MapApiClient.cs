@@ -28,8 +28,6 @@ namespace GoogleMapAPIWeb.Services
                 homeViewModel.RouteInfos = await response.Content.ReadAsAsync<List<RouteInfo>>();
             }
 
-            //homeViewModel = StubData();
-
             return homeViewModel;
         }
 
