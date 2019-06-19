@@ -422,6 +422,7 @@ namespace MapApi.Controllers
                 // how many school and pollution zones crossed
                 // mode of transport
 
+                // show factor in the UI
                 // extend the ui model and add in modeoftransport, cost multiplication factor, how many schools and pollution zones crossed, car pollution rate
 
                 // high and low polluting vrm cars
@@ -443,7 +444,7 @@ namespace MapApi.Controllers
                 
                 if (journeyOption.ModeOfTransport == "car")
                 {
-                    er.GreenScore = Math.Clamp(0, 100 - pollutionFactor - schoolFactor, 75);
+                    er.GreenScore = Math.Clamp(100 - pollutionFactor - schoolFactor, 0, 75);
                     er.Cost = ((10 - ((decimal) er.GreenScore)/10)) * journeyOption.Distance;
                 }
 
