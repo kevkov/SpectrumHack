@@ -45,7 +45,7 @@ namespace MapApi.Controllers
         [Route("{journeyId}")]
         public ActionResult<string> Get(int journeyId, [FromQuery]bool showPollution, [FromQuery]bool showSchools, [FromQuery]TimeSpan startTime, [FromQuery]string startName, [FromQuery]decimal startLongitude, [FromQuery]decimal startLatitude, [FromQuery]string endName, [FromQuery]decimal endLongitude, [FromQuery]decimal endLatitude)
         {
-            RouteOptions fullJourneyOptions = this.ProcessJourney(journeyId, startTime);
+            RouteOptions fullJourneyOptions = this.ProcessJourney(journeyId, startTime, showPollution, showSchools);
 
             var kmlString = this.CreateTestKmlString(fullJourneyOptions, showPollution, showSchools);
             return kmlString;
@@ -66,7 +66,7 @@ namespace MapApi.Controllers
             kmlString = kmlString.Replace("</ArrayOfFolder>", string.Empty);
 
             if (showPollution)
-            {
+             {
                 var pollutionMarkers = this._pollutionRepo.GetMarkers();
                 var pollutionPlacemarks = this.CreatePlacemarksVariable(pollutionMarkers, "#icon-airqualityindex-");
                 var folder = new Folder { Name = "Pollution", Placemark = pollutionPlacemarks };
@@ -180,7 +180,7 @@ namespace MapApi.Controllers
 
             foreach (var route in routeOptions.EnrichedRoute)
             {
-                var markerCoodinate = route.RouteMarkers[route.RouteMarkers.Count / 2].Coordinate;
+                var markerCoordinate = route.RouteMarkers[route.RouteMarkers.Count / 2].Coordinate;
                 folders.Add(
                     new Folder()
                     {
@@ -193,7 +193,7 @@ namespace MapApi.Controllers
                                 StyleUrl = $"#line-{route.GreenScore}-{route.Cost}-{route.Colour}",
                                 Point = new Point()
                                 {
-                                    Coordinates = $"{markerCoodinate.Longitude},{markerCoodinate.Latitude},0"
+                                    Coordinates = $"{markerCoordinate.Longitude},{markerCoordinate.Latitude},0"
                                 }
                             }
                         }
@@ -252,7 +252,7 @@ namespace MapApi.Controllers
             return folders;
         }
 
-        private RouteOptions ProcessJourney(int journeyId, TimeSpan startTime)
+        private RouteOptions ProcessJourney(int journeyId, TimeSpan startTime, bool showPollution, bool showSchools)
         {
             var journeyOptions = _journeyRepo.GetJourney(journeyId);
             var pollutionMarkers = this._pollutionRepo.GetMarkers();
@@ -272,10 +272,11 @@ namespace MapApi.Controllers
 
                 i++;
 
-                er.GreenScore = Math.Min(100, 100  
-                                              - (er.PollutionMarkers.Count * 10)
-                                              - (er.SchoolMarkers.Count * 20)
-                                              );
+                var pollutionFactor = showPollution ? er.PollutionMarkers.Count * 10 : 0;
+                var schoolFactor = showSchools ? er.SchoolMarkers.Count * 20 : 0;
+
+                er.GreenScore = Math.Max(0, 100 - pollutionFactor - schoolFactor);
+                
                 er.Cost = Math.Min(30,
                     20 + ((100-er.GreenScore)/10)
                     );
