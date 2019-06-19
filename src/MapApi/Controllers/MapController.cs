@@ -1,5 +1,9 @@
 ﻿using System.Drawing;
 using System.Text;
+using GoogleMapAPIWeb.Models;
+using System.Threading.Tasks;
+using MapApi.ViewModels;
+using Newtonsoft.Json.Serialization;
 
 namespace MapApi.Controllers
 {
@@ -40,6 +44,43 @@ namespace MapApi.Controllers
             return this.Get(1, true, true, new TimeSpan(9, 0, 0), "North Greenwich", 0.00447m, 51.49847m, "Westminster", -0.13563m, 51.4975m);
         }
 
+        [Route("routes/{journeyId:int}/{showPollution:bool}/{showSchools:bool}/{startTime:DateTime}")]
+        public ActionResult<List<RouteInfo>> RouteInfo(int journeyId, bool showPollution, bool showSchools, DateTime startTime)
+        {
+            RouteOptions fullJourneyOptions = this.ProcessJourney(journeyId, new TimeSpan(startTime.Hour, startTime.Minute, startTime.Second));
+
+            return CreateRouteInfo(fullJourneyOptions); ;
+        }
+
+        private ActionResult<List<RouteInfo>> CreateRouteInfo(RouteOptions fullJourneyOptions)
+        {
+            if (fullJourneyOptions == null)
+            {
+                return BadRequest();
+            }
+
+            List<EnrichedRoute> enrichedRoutes = fullJourneyOptions.EnrichedRoute.ToList();
+
+            enrichedRoutes.Sort((routeA, routeB) => routeA.GreenScore.CompareTo(routeB.GreenScore));
+            var takeTopThree = enrichedRoutes.Count > 3 ? 3 : enrichedRoutes.Count;
+
+            List<RouteInfo> routeInfos = new List<RouteInfo>();
+            foreach (var enrichedRoute in enrichedRoutes.Take(takeTopThree))
+            {
+                routeInfos.Add(
+                    new RouteInfo
+                    {
+                        ColorInHex = enrichedRoute.Colour,
+                        PollutionPoint = enrichedRoute.GreenScore,
+                        RouteLabel = enrichedRoute.Label,
+                        SchoolCount = enrichedRoute.SchoolMarkers?.Count ?? 0,
+                        TravelCost = enrichedRoute.Cost
+                    });
+            }
+
+            return Ok(routeInfos);
+        }
+
         // GET api/map/1?showPollution=true&showSchools=true&startTime=09:00:00&startName=NorthGreenwich&startLongitude=0.00447&startLatitude=51.49847&endName=Westerminster,endLongitude=-0.13563,endLatitude=51.4975
         [HttpGet]
         [Route("{journeyId}")]
@@ -49,6 +90,22 @@ namespace MapApi.Controllers
 
             var kmlString = this.CreateTestKmlString(fullJourneyOptions, showPollution, showSchools);
             return kmlString;
+        }
+
+        [HttpGet("mobile")]
+        public async Task<ActionResult<Map>> GetForMobile()
+        {
+            RouteOptions fullJourneyOptions = this.ProcessJourney(1, new TimeSpan(9, 0, 0));
+            
+            var map = new Map();
+            map.Lines = fullJourneyOptions.EnrichedRoute.Select(r =>
+            {
+                var line = new Polyline(r.RouteMarkers.Select(m =>
+                    new LatLng(m.Coordinate.Latitude, m.Coordinate.Longitude)));
+                return line;
+            }).ToList();
+
+            return map;
         }
 
         private string CreateTestKmlString(RouteOptions routeOptions, bool showPollution, bool showSchools)

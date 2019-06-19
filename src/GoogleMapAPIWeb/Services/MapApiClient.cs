@@ -1,5 +1,6 @@
 ﻿using GoogleMapAPIWeb.Models;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -16,18 +17,16 @@ namespace GoogleMapAPIWeb.Services
 
         public async Task<HomeViewModel> RouteInformationAsync(int journeyId, bool showPollution, bool showSchools, TimeSpan startTime)
         {
-            var endPoint = $"1/{showPollution}/{showSchools}/{startTime}";
+            var endPoint = $"routes/{journeyId}/{showPollution}/{showSchools}/{startTime}";
 
             var response = await _httpClient.GetAsync(endPoint);
 
-            HomeViewModel homeViewModel = default(HomeViewModel);
+            HomeViewModel homeViewModel = new HomeViewModel();
 
             if (response.IsSuccessStatusCode)
             {
-                var routeInfo = response.Content.ReadAsStringAsync();
+                homeViewModel.RouteInfos = await response.Content.ReadAsAsync<List<RouteInfo>>();
             }
-
-            homeViewModel = StubData();
 
             return homeViewModel;
         }
@@ -38,18 +37,16 @@ namespace GoogleMapAPIWeb.Services
 
             homeViewModel.RouteInfos.Add(new RouteInfo
             {
-                Id = 1,
                 RouteLabel = "Option 1",
                 PollutionPoint = 5,
                 ColorInHex = "#ff0000",
                 SchoolCount = 9,
-                TravelCost =12.50m,
+                TravelCost = 12.50m,
                 TravelTime = new TimeSpan(2, 33, 0)
             });
 
             homeViewModel.RouteInfos.Add(new RouteInfo
             {
-                Id = 2,
                 RouteLabel = "Option 2",
                 PollutionPoint = 3,
                 ColorInHex = "#00ff00",
@@ -60,7 +57,6 @@ namespace GoogleMapAPIWeb.Services
 
             homeViewModel.RouteInfos.Add(new RouteInfo
             {
-                Id = 3,
                 PollutionPoint = 1,
                 RouteLabel = "Option 3",
                 ColorInHex = "#0000ff",
