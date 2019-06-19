@@ -6,10 +6,19 @@ export interface LatLng {
 
 export interface Polyline {
     coordinates: LatLng[]
+    strokeWidth: number;
+    strokeColor: string;
+}
+
+export interface Marker {
+    title: string;
+    image: string;
+    coordinates: LatLng;
 }
 
 export interface MapData {
     lines: Polyline[]
+    markers: Marker[];
 }
 
 export interface Journey {
