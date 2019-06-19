@@ -404,19 +404,26 @@ namespace MapApi.Controllers
                 };
 
                 i++;
-                
+                er.Distance = journeyOption.Distance;
+                er.Duration = journeyOption.Duration;
+                er.ModeOfTransport = journeyOption.ModeOfTransport;
+
                 var pollutionFactor = showPollution ? er.PollutionMarkers.Count * 10 : 0;
                 var schoolFactor = showSchools ? er.SchoolMarkers.Count * 20 : 0;
 
-                er.GreenScore = Math.Max(0, 100 - pollutionFactor - schoolFactor);
-
-                er.Cost = ((10 - ((decimal) er.GreenScore)/10)) * journeyOption.Distance;
+                if (journeyOption.ModeOfTransport == "cycle")
+                {
+                    er.GreenScore = 95;
+                    er.Cost = 0;
+                }
+                else
+                {
+                    er.GreenScore = Math.Max(0, 100 - pollutionFactor - schoolFactor);
+                    er.Cost = ((10 - ((decimal) er.GreenScore)/10)) * journeyOption.Distance;
+                }
 
                 var col = GetBlendedColor(er.GreenScore);
                 er.Colour = col.A.ToString("X2") + col.B.ToString("X2") + col.G.ToString("X2") + col.R.ToString("X2");
-
-                er.Distance = journeyOption.Distance;
-                er.Duration = journeyOption.Duration;
 
                 enrichedRoute.Add(er);
             }

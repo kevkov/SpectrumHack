@@ -13,6 +13,7 @@
     },
     "Routes": [
       {
+        "ModeOfTransport":  "car" ,
         "Distance": 13.05,
         "Duration": "37 minutes",
         "Coordinates": [
@@ -2195,6 +2196,7 @@
         ]
       },
       {
+        "ModeOfTransport": "car",
         "Distance": 14.02,
         "Duration": "42 minutes",
         "Coordinates": [
