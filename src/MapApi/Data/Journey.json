@@ -4383,6 +4383,7 @@
         ]
       },
       {
+	   "ModeOfTransport": "car",
         "Distance": 18.02,
         "Duration": "52 minutes",
         "Coordinates": [
