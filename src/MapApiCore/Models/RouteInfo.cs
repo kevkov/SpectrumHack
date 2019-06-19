@@ -10,6 +10,6 @@ namespace GoogleMapAPIWeb.Models
         public string Duration { get; set; }
         public decimal TravelCost { get; set; }
         public int SchoolCount { get; set; }
-        public string Distance { get; set; }
+        public decimal Distance { get; set; }
     }
 }

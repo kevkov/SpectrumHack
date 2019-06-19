@@ -16,7 +16,7 @@ namespace MapApiCore.Models
 
         public string Label { get; set; }
 
-        public string Distance { get; set; }
+        public decimal Distance { get; set; }
 
         public string Duration { get; set; }
 
