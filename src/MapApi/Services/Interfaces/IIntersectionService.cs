@@ -7,6 +7,6 @@ namespace MapApi.Services.Interfaces
     
     public interface IIntersectionService
     {
-        List<Marker> FindMarkersOnRoute(List<Coordinate> route, List<Marker> markers, TimeSpan startTime);
+        List<Marker> FindMarkersOnRoute(List<Coordinate> route, List<Marker> markers, double rangeInMetres, TimeSpan? startTime = null);
     }
 }

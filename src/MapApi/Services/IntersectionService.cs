@@ -10,18 +10,16 @@ namespace MapApi.Services
 
     public class IntersectionService : IIntersectionService
     {
-        private const double RangeInMeters = 200;
-
-        public List<Marker> FindMarkersOnRoute(List<Coordinate> route, List<Marker> markers, TimeSpan startTime)
+        public List<Marker> FindMarkersOnRoute(List<Coordinate> route, List<Marker> markers, double rangeInMetres, TimeSpan? startTime = null)
         {
             var matchedMarkers = new List<Marker>();
 
             foreach (var marker in markers)
             {
                 // Point must be within range and valid for the start time of the journey
-                if (route.Any(r => CalculateDistance(r, marker.Coordinate) <= RangeInMeters && 
-                                   startTime >= marker.StartTime && 
-                                   startTime <= marker.EndTime))
+                if (route.Any(r => CalculateDistance(r, marker.Coordinate) <= rangeInMetres && 
+                                   (startTime == null || startTime >= marker.StartTime) && 
+                                   (startTime == null || startTime <= marker.EndTime)))
                 {
                     matchedMarkers.Add(marker);
                 }
