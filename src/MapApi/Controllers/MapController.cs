@@ -111,7 +111,7 @@ namespace MapApi.Controllers
                                       r.Colour.Substring(4, 2) +
                                       r.Colour.Substring(2, 2) +
                                       r.Colour.Substring(0, 2),
-                        StrokeWidth = 3
+                        StrokeWidth = 4
                     };
 
                 return line;
