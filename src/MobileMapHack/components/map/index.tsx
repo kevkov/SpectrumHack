@@ -76,7 +76,7 @@ export const Map = (props) => {
                     ref={mapRef}
                     provider={PROVIDER_GOOGLE}
                     style={{flex: 1}}
-                    region={{
+                    initialRegion={{
                         latitude: centre.latitude,
                         longitude: centre.longitude,
                         latitudeDelta: 1.05 * latDelta,
@@ -97,7 +97,6 @@ export const Map = (props) => {
                             title={marker.title}
                             image={imgs[marker.image]}
                             coordinate={marker.coordinates}
-
                         />
                     )}
                 </MapView>
