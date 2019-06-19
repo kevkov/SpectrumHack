@@ -404,20 +404,52 @@ namespace MapApi.Controllers
                 };
 
                 i++;
-                
+                er.Distance = journeyOption.Distance;
+                er.Duration = journeyOption.Duration;
+                er.ModeOfTransport = journeyOption.ModeOfTransport;
+
                 var pollutionFactor = showPollution ? er.PollutionMarkers.Count * 10 : 0;
                 var schoolFactor = showSchools ? er.SchoolMarkers.Count * 20 : 0;
 
-                er.GreenScore = Math.Max(0, 100 - pollutionFactor - schoolFactor);
+                if (journeyOption.ModeOfTransport == "cycle")
+                {
+                    er.GreenScore = 95;
+                    er.Cost = 0;
+                }
 
-                er.Cost = ((10 - ((decimal) er.GreenScore)/10)) * journeyOption.Distance;
+                // pollution level from json of car increases factor
+                // ui shows follution factor
+                // how many school and pollution zones crossed
+                // mode of transport
+
+                // show factor in the UI
+                // extend the ui model and add in modeoftransport, cost multiplication factor, how many schools and pollution zones crossed, car pollution rate
+
+                // high and low polluting vrm cars
+
+                // or in box also show if using cleaning car - cost would be 
+
+                // or just give a message that cleaners cars cost less.
+
+                //message if taken greenest route £2 added to oyster account for future public transport journey
+                // and and 5 pts or something
+
+                // side bar
+
+                // badges in side bar show
+
+                //When changing the Air Quality Index/ Time / Schools options...the map reloads and zooms out... fix this
+
+                //6 Add some content to the side bar(Neil to provide some sample content
+                
+                if (journeyOption.ModeOfTransport == "car")
+                {
+                    er.GreenScore = Math.Clamp(100 - pollutionFactor - schoolFactor, 0, 75);
+                    er.Cost = ((10 - ((decimal) er.GreenScore)/10)) * journeyOption.Distance;
+                }
 
                 var col = GetBlendedColor(er.GreenScore);
                 er.Colour = col.A.ToString("X2") + col.B.ToString("X2") + col.G.ToString("X2") + col.R.ToString("X2");
-
-                er.Distance = journeyOption.Distance;
-                er.Duration = journeyOption.Duration;
-
                 enrichedRoute.Add(er);
             }
 

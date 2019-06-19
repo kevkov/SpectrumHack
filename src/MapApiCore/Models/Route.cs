@@ -13,6 +13,8 @@ namespace MapApiCore.Models
 
         public string Duration { get; set; }
 
+        public string ModeOfTransport { get; set; }
+
         public List<Coordinate> Coordinates { get; set; }
     }
 }

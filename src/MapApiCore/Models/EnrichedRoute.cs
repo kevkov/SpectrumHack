@@ -20,5 +20,6 @@ namespace MapApiCore.Models
 
         public string Duration { get; set; }
 
+        public string ModeOfTransport { get; set; }
     }
 }
