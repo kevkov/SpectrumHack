@@ -30,42 +30,5 @@ namespace GoogleMapAPIWeb.Services
 
             return homeViewModel;
         }
-
-        private HomeViewModel StubData()
-        {
-            HomeViewModel homeViewModel = new HomeViewModel();
-
-            homeViewModel.RouteInfos.Add(new RouteInfo
-            {
-                RouteLabel = "Option 1",
-                PollutionPoint = 5,
-                ColorInHex = "#ff0000",
-                SchoolCount = 9,
-                TravelCost = 12.50m,
-                TravelTime = new TimeSpan(2, 33, 0)
-            });
-
-            homeViewModel.RouteInfos.Add(new RouteInfo
-            {
-                RouteLabel = "Option 2",
-                PollutionPoint = 3,
-                ColorInHex = "#00ff00",
-                SchoolCount = 6,
-                TravelCost = 10.50m,
-                TravelTime = new TimeSpan(2, 33, 0)
-            });
-
-            homeViewModel.RouteInfos.Add(new RouteInfo
-            {
-                PollutionPoint = 1,
-                RouteLabel = "Option 3",
-                ColorInHex = "#0000ff",
-                SchoolCount = 3,
-                TravelCost = 9.50m,
-                TravelTime = new TimeSpan(2, 33, 0)
-            });
-
-            return homeViewModel;
-        }
     }
 }

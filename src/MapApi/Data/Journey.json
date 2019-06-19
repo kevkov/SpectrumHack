@@ -13,6 +13,8 @@
     },
     "Routes": [
       {
+        "Distance": "13.05 km",
+        "Duration": "37 minutes",
         "Coordinates": [
           {
             "Longitude": 0.00447,
@@ -2193,6 +2195,8 @@
         ]
       },
       {
+        "Distance": "14.02 km",
+        "Duration": "42 minutes",
         "Coordinates": [
           {
             "Longitude": 0.00447,
@@ -4369,6 +4373,10 @@
           {
             "Longitude": -0.12504,
             "Latitude": 51.49468
+          },
+          {
+            "Longitude": -0.13563,
+            "Latitude": 51.4975
           }
         ]
       }

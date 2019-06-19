@@ -17,7 +17,7 @@
         <scale>0</scale>
       </LabelStyle>
       <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
+        <text><![CDATA[$[name]]]></text>
       </BalloonStyle>
     </Style>
     <Style id="icon-route-end">
@@ -32,7 +32,7 @@
         <scale>0</scale>
       </LabelStyle>
       <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
+        <text><![CDATA[$[name]]]></text>
       </BalloonStyle>
     </Style>
     <Style id="icon-airqualityindex-0">
@@ -47,7 +47,7 @@
         <scale>0</scale>
       </LabelStyle>
       <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
+        <text><![CDATA[$[name]]]></text>
       </BalloonStyle>
     </Style>
     <Style id="icon-airqualityindex-1">
@@ -62,7 +62,7 @@
         <scale>0</scale>
       </LabelStyle>
       <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
+        <text><![CDATA[$[name]]]></text>
       </BalloonStyle>
     </Style>
     <Style id="icon-airqualityindex-2">
@@ -77,7 +77,7 @@
         <scale>0</scale>
       </LabelStyle>
       <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
+        <text><![CDATA[$[name]]]></text>
       </BalloonStyle>
     </Style>
     <Style id="icon-airqualityindex-3">
@@ -92,7 +92,7 @@
         <scale>0</scale>
       </LabelStyle>
       <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
+        <text><![CDATA[$[name]]]></text>
       </BalloonStyle>
     </Style>
     <Style id="icon-airqualityindex-4">
@@ -107,7 +107,7 @@
         <scale>0</scale>
       </LabelStyle>
       <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
+        <text><![CDATA[$[name]]]></text>
       </BalloonStyle>
     </Style>
     <Style id="icon-airqualityindex-5">
@@ -122,7 +122,7 @@
         <scale>0</scale>
       </LabelStyle>
       <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
+        <text><![CDATA[$[name]]]></text>
       </BalloonStyle>
     </Style>
     <Style id="icon-airqualityindex-6">
@@ -137,7 +137,7 @@
         <scale>0</scale>
       </LabelStyle>
       <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
+        <text><![CDATA[$[name]]]></text>
       </BalloonStyle>
     </Style>
     <Style id="icon-airqualityindex-7">
@@ -152,7 +152,7 @@
         <scale>0</scale>
       </LabelStyle>
       <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
+        <text><![CDATA[$[name]]]></text>
       </BalloonStyle>
     </Style>
     <Style id="icon-airqualityindex-8">
@@ -167,7 +167,7 @@
         <scale>0</scale>
       </LabelStyle>
       <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
+        <text><![CDATA[$[name]]]></text>
       </BalloonStyle>
     </Style>
     <Style id="icon-airqualityindex-9">
@@ -182,7 +182,7 @@
         <scale>0</scale>
       </LabelStyle>
       <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
+        <text><![CDATA[$[name]]]></text>
       </BalloonStyle>
     </Style>
     <Style id="icon-airqualityindex-10">
@@ -197,7 +197,7 @@
         <scale>0</scale>
       </LabelStyle>
       <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
+        <text><![CDATA[$[name]]]></text>
       </BalloonStyle>
     </Style>
     {SchoolsStyle}

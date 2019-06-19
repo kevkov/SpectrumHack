@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using MapApi.Services;
+﻿using MapApi.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using System;
+using System.Net.Http;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace MapApi
@@ -27,7 +21,7 @@ namespace MapApi
         {
             Configuration = configuration;
         }
-        
+
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -39,6 +33,16 @@ namespace MapApi
             services.AddScoped<IJourneyRepository, JourneyRepository>();
             services.AddScoped<IIntersectionService, IntersectionService>();
             //services.AddScoped<IPollutionService, AirVisualService>();
+
+            var baseUri = Configuration.GetSection("BaseApiURIForDistanceMatrix");
+            var apiKey = Configuration.GetSection("ApiKey");
+
+            services.AddScoped<IDirectionService, DirectionService>(
+                s => new DirectionService(new HttpClient
+                {
+                    BaseAddress = new Uri(baseUri.Value)
+                }, apiKey.Value));
+
             services.AddScoped<IPollutionService, LondonAirService>();
         }
 

@@ -9,7 +9,6 @@
     
     public class AirVisualService : IPollutionService
     {
-        //private const string ApiKey = "zZTKfHCg9CnMEcKvk"; // Mohammad's Key
         private const string ApiKey = "ZhvvjFjWNBq7vWfpC"; // Tim's Key
 
         private readonly HttpClient _httpClient;
