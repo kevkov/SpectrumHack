@@ -106,7 +106,8 @@ namespace MapApi.Controllers
                 var line = new Polyline(r.RouteMarkers.Select(m =>
                                 new LatLng(m.Coordinate.Latitude, m.Coordinate.Longitude)))
                     {
-                        StrokeColor = r.Colour.Substring(6,2) +
+                        StrokeColor = "#" +
+                                      r.Colour.Substring(6,2) +
                                       r.Colour.Substring(4, 2) +
                                       r.Colour.Substring(2, 2) +
                                       r.Colour.Substring(0, 2),
@@ -119,16 +120,16 @@ namespace MapApi.Controllers
 
             map.Markers = new List<ViewModels.Marker>();
 
-            map.Markers.Add(new ViewModels.Marker()
+            map.Markers.Add(new ViewModels.Marker
             {
-                Image = "../assets/start.png",
+                Image = "start",
                 Title = fullJourneyOptions.StartLocation.Name,
                 Coordinates = new LatLng(fullJourneyOptions.StartLocation.Latitude, fullJourneyOptions.StartLocation.Longitude)
             });
 
-            map.Markers.Add(new ViewModels.Marker()
+            map.Markers.Add(new ViewModels.Marker
             {
-                Image = "../assets/finish.png",
+                Image = "finish",
                 Title = fullJourneyOptions.EndLocation.Name,
                 Coordinates = new LatLng(fullJourneyOptions.EndLocation.Latitude, fullJourneyOptions.EndLocation.Longitude)
             });
@@ -139,13 +140,13 @@ namespace MapApi.Controllers
                 {
                     string pollutionImage = string.Empty;
                     if (markers.Value == 1)
-                        pollutionImage = "../assets/one.png";
+                        pollutionImage = "one";
                     if (markers.Value == 2)
-                        pollutionImage = "../assets/two.png";
+                        pollutionImage = "two";
                     if (markers.Value == 3)
-                        pollutionImage = "../assets/three.png";
+                        pollutionImage = "three";
                     if (pollutionImage == string.Empty)
-                        pollutionImage = "../assets/four.png";
+                        pollutionImage = "four";
 
                     map.Markers.Add(new ViewModels.Marker()
                     {
@@ -162,7 +163,7 @@ namespace MapApi.Controllers
                 {
                     map.Markers.Add(new ViewModels.Marker()
                     {
-                        Image = "../assets/school.png",
+                        Image = "school",
                         Title = markers.Description + " - " + markers.Value,
                         Coordinates = new LatLng(markers.Coordinate.Latitude, markers.Coordinate.Longitude)
                     });
@@ -188,7 +189,7 @@ namespace MapApi.Controllers
             kmlString = kmlString.Replace("</ArrayOfFolder>", string.Empty);
 
             if (showPollution)
-             {
+            {
                 var pollutionMarkers = this._pollutionRepo.GetMarkers();
                 var pollutionPlacemarks = this.CreatePlacemarksVariable(pollutionMarkers, "#icon-airqualityindex-");
                 var folder = new Folder { Name = "Pollution", Placemark = pollutionPlacemarks };

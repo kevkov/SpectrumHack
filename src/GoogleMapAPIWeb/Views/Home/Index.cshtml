@@ -104,10 +104,14 @@
         };
 
         function initMap() {
-            var src = 'https://spectrummapapi.azurewebsites.net/api/map/1/' + showPollution + '/' + showSchools + '/' + startTime;
-
-
-
+            var src = 'https://spectrummapapi.azurewebsites.net/api/map/1?showPollution=' +
+                showPollution +
+                '&showSchools=' +
+                showSchools +
+                '&startTime=' +
+                startTime +
+                '&startName=NorthGreenwich&startLongitude=0.00447&startLatitude=51.49847&endName=Westerminster,endLongitude=-0.13563,endLatitude=51.4975';
+            
             map = new google.maps.Map(document.getElementById('mapContainer'), {
                 center: new google.maps.LatLng(-19.257753, 146.823688),
                 zoom: 2,
@@ -115,7 +119,7 @@
             });
 
             var kmlLayer = new google.maps.KmlLayer(src, {
-                suppressInfoWindows: true,
+                suppressInfoWindows: false,
                 preserveViewport: false,
                 map: map
             });
