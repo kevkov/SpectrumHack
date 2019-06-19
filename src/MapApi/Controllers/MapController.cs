@@ -412,7 +412,7 @@ namespace MapApi.Controllers
 
                 er.Cost = ((100 - (decimal) er.GreenScore)/10) * er.Distance;
 
-                var col = GetBlendedColor(100 - ((int.Parse(er.Cost.ToString())-20)*10));
+                var col = GetBlendedColor(er.GreenScore);
                 er.Colour = col.A.ToString("X2") + col.B.ToString("X2") + col.G.ToString("X2") + col.R.ToString("X2");
 
                 er.Distance = journeyOption.Distance;
