@@ -121,14 +121,14 @@ namespace MapApi.Controllers
 
             map.Markers.Add(new ViewModels.Marker()
             {
-                Image = "icon1",
+                Image = "../assets/start.png",
                 Title = fullJourneyOptions.StartLocation.Name,
                 Coordinates = new LatLng(fullJourneyOptions.StartLocation.Latitude, fullJourneyOptions.StartLocation.Longitude)
             });
 
             map.Markers.Add(new ViewModels.Marker()
             {
-                Image = "icon1",
+                Image = "../assets/finish.png",
                 Title = fullJourneyOptions.EndLocation.Name,
                 Coordinates = new LatLng(fullJourneyOptions.EndLocation.Latitude, fullJourneyOptions.EndLocation.Longitude)
             });
@@ -137,9 +137,19 @@ namespace MapApi.Controllers
             {
                 foreach (var markers in this._pollutionRepo.GetMarkers())
                 {
+                    string pollutionImage = string.Empty;
+                    if (markers.Value == 1)
+                        pollutionImage = "../assets/one.png";
+                    if (markers.Value == 2)
+                        pollutionImage = "../assets/two.png";
+                    if (markers.Value == 3)
+                        pollutionImage = "../assets/three.png";
+                    if (pollutionImage == string.Empty)
+                        pollutionImage = "../assets/four.png";
+
                     map.Markers.Add(new ViewModels.Marker()
                     {
-                        Image = "icon1",
+                        Image = pollutionImage,
                         Title = markers.Description + " - " + markers.Value,
                         Coordinates = new LatLng(markers.Coordinate.Latitude, markers.Coordinate.Longitude)
                     });
@@ -152,7 +162,7 @@ namespace MapApi.Controllers
                 {
                     map.Markers.Add(new ViewModels.Marker()
                     {
-                        Image = "icon1",
+                        Image = "../assets/school.png",
                         Title = markers.Description + " - " + markers.Value,
                         Coordinates = new LatLng(markers.Coordinate.Latitude, markers.Coordinate.Longitude)
                     });
