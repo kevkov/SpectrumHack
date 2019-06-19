@@ -1,9 +1,23 @@
-import MapView, {KmlMapEvent, Polyline, PROVIDER_GOOGLE} from "react-native-maps";
+import MapView, {KmlMapEvent, Marker, Polyline, PROVIDER_GOOGLE} from "react-native-maps";
 //import MapViewDirections from "react-native-maps-directions";
 import {View} from "react-native";
 import React, {useEffect, useRef, useState} from "react";
 import {MapData, LatLng}  from "../../domain/types";
 import {Button, Fab, Icon } from "native-base";
+// @ts-ignore
+import StartImg from "../../assets/start.png"
+// @ts-ignore
+import FinishImg from "../../assets/finish.png"
+// @ts-ignore
+import SchoolImg from "../../assets/school.png"
+// @ts-ignore
+import OneImg from "../../assets/one.png"
+// @ts-ignore
+import TwoImg from "../../assets/two.png"
+// @ts-ignore
+import ThreeImg from "../../assets/three.png"
+// @ts-ignore
+import FourImg from "../../assets/four.png"
 
 const GOOGLE_MAPS_APIKEY = '';
 
@@ -38,6 +52,17 @@ export const Map = (props) => {
             })
     }
 
+    const imgs = {
+        "start": StartImg,
+        "finish": FinishImg,
+        "school": SchoolImg,
+        "one": OneImg,
+        "two": TwoImg,
+        "three": ThreeImg,
+        "four": FourImg
+    };
+
+
     useEffect(() => {
         api<MapData>("http://10.0.2.2:5000/api/map/mobile")
             .then(data => {
@@ -45,7 +70,6 @@ export const Map = (props) => {
                 setMapData(data);
             });
     },[showPollution, showSchools]);
-
 
     return (<View style={{flex:1}}>
                 <MapView
@@ -60,7 +84,21 @@ export const Map = (props) => {
                     onMapReady={() => mapRef.current.fitToElements(true)}
                 >
                     {mapData && mapData.lines.map((line, index) =>
-                        <Polyline key={index} coordinates={line.coordinates} />
+                        <Polyline
+                            key={"line" + index}
+                            coordinates={line.coordinates}
+                            strokeWidth={line.strokeWidth}
+                            strokeColor={line.strokeColor}
+                        />
+                    )}
+                    {mapData && mapData.markers.map((marker, index) =>
+                        <Marker
+                            key={"marker" + index}
+                            title={marker.title}
+                            image={imgs[marker.image]}
+                            coordinate={marker.coordinates}
+
+                        />
                     )}
                 </MapView>
                 <Fab
