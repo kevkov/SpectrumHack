@@ -4,7 +4,6 @@
     <name>Untitled map</name>
     <description/>
     {Styles}
-    {SchoolsStyle}
     <Style id="icon-route-start">
       <IconStyle>
         <color>ff00ff00</color>

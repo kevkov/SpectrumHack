@@ -404,27 +404,19 @@ namespace MapApi.Controllers
                 };
 
                 i++;
-
+                
                 var pollutionFactor = showPollution ? er.PollutionMarkers.Count * 10 : 0;
                 var schoolFactor = showSchools ? er.SchoolMarkers.Count * 20 : 0;
 
                 er.GreenScore = Math.Max(0, 100 - pollutionFactor - schoolFactor);
-                
-                er.Cost = Math.Min(30,
-                    20 + ((100-er.GreenScore)/10)
-                    );
+
+                er.Cost = ((100 - (decimal) er.GreenScore)/10) * er.Distance;
 
                 var col = GetBlendedColor(100 - ((int.Parse(er.Cost.ToString())-20)*10));
                 er.Colour = col.A.ToString("X2") + col.B.ToString("X2") + col.G.ToString("X2") + col.R.ToString("X2");
 
                 er.Distance = journeyOption.Distance;
                 er.Duration = journeyOption.Duration;
-                // Layman terms - £20 + £1 for pollution mark, + £2 for school mark upto £30
-
-                // distance or time spent to add?
-                // 7.5 miles (1.5x east-west distance) = £30
-                // points - starts at 100 -20 for school, -10 for within 200m of pollution points
-                // £20 base + (100-points/10)
 
                 enrichedRoute.Add(er);
             }
