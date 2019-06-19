@@ -73,9 +73,12 @@ export const Map = (props) => {
 
     function maybeSearch() {
         if (showSearch) {
-            return (<Card style={{zIndex: 1, right: 10, left: 10, position: 'absolute'}}>
-                <Input placeholder="From" style={{flex: 0}}/>
-            </Card>)
+            return (
+                <Card style={{zIndex: 1, right: 10, left: 10, position: 'absolute', flexDirection: "row"}}>
+                    <Input placeholder="From" style={{flex: 1}}/>
+                    <Input placeholder="From" style={{flex: 1}}/>
+                    <Input placeholder="From" style={{flex: 1}}/>
+                </Card>)
         } else {
             return null;
         }
