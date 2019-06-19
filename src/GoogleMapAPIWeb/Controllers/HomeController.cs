@@ -17,9 +17,9 @@ namespace GoogleMapAPIWeb.Controllers
         }
         
         public async Task<IActionResult> Index()
-        {   
+        {
             var homeViewModel = await _mapApiClient.RouteInformationAsync(1, true, true, new TimeSpan(12, 13, 0));
-
+            
             return View(homeViewModel);
         }
 
