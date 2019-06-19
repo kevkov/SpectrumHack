@@ -15,5 +15,10 @@ namespace MapApiCore.Models
         public string Colour { get; set; }
 
         public string Label { get; set; }
+
+        public string Distance { get; set; }
+
+        public string Duration { get; set; }
+
     }
 }

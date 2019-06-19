@@ -28,13 +28,17 @@ namespace MapApi.Controllers
         private readonly ISchoolRepository _schoolRepo;
         private readonly IJourneyRepository _journeyRepo;
         private readonly IIntersectionService _interactionService;
+        private readonly IDirectionService _directionService;
 
-        public MapController(IPollutionRepository pollutionRepo, ISchoolRepository schoolRepo, IJourneyRepository journeyRepo, IIntersectionService interactionService)
+        public MapController(IPollutionRepository pollutionRepo, ISchoolRepository schoolRepo, 
+            IJourneyRepository journeyRepo, IIntersectionService interactionService,
+            IDirectionService directionService)
         {
             _pollutionRepo = pollutionRepo;
             _schoolRepo = schoolRepo;
             _journeyRepo = journeyRepo;
             _interactionService = interactionService;
+            _directionService = directionService;
         }
 
         // GET api/map
@@ -48,6 +52,10 @@ namespace MapApi.Controllers
         public ActionResult<List<RouteInfo>> RouteInfo(int journeyId, bool showPollution, bool showSchools, DateTime startTime)
         {
             RouteOptions fullJourneyOptions = this.ProcessJourney(journeyId, new TimeSpan(startTime.Hour, startTime.Minute, startTime.Second), showPollution, showSchools);
+
+            //var response = _directionService.GetAsync(new Coordinate(0.00447, 51.49847),
+            //    new Coordinate(-0.13563, 51.4975),
+            //    true);
 
             return CreateRouteInfo(fullJourneyOptions); ;
         }
@@ -74,7 +82,9 @@ namespace MapApi.Controllers
                         PollutionPoint = enrichedRoute.GreenScore,
                         RouteLabel = enrichedRoute.Label,
                         SchoolCount = enrichedRoute.SchoolMarkers?.Count ?? 0,
-                        TravelCost = enrichedRoute.Cost
+                        TravelCost = enrichedRoute.Cost,
+                        Duration = enrichedRoute.Duration,
+                        Distance = enrichedRoute.Distance
                     });
             }
 
@@ -407,6 +417,8 @@ namespace MapApi.Controllers
                 var col = GetBlendedColor(100 - ((int.Parse(er.Cost.ToString())-20)*10));
                 er.Colour = col.A.ToString("X2") + col.B.ToString("X2") + col.G.ToString("X2") + col.R.ToString("X2");
 
+                er.Distance = journeyOption.Distance;
+                er.Duration = journeyOption.Duration;
                 // Layman terms - £20 + £1 for pollution mark, + £2 for school mark upto £30
 
                 // distance or time spent to add?
