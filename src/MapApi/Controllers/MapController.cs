@@ -95,15 +95,70 @@ namespace MapApi.Controllers
         [HttpGet("mobile")]
         public async Task<ActionResult<Map>> GetForMobile()
         {
-            RouteOptions fullJourneyOptions = this.ProcessJourney(1, new TimeSpan(9, 0, 0), true, true);
+            var showPollution = true;
+            var showSchools = true;
+
+            RouteOptions fullJourneyOptions = this.ProcessJourney(1, new TimeSpan(9, 0, 0), showPollution, showSchools);
             
             var map = new Map();
             map.Lines = fullJourneyOptions.EnrichedRoute.Select(r =>
             {
                 var line = new Polyline(r.RouteMarkers.Select(m =>
-                    new LatLng(m.Coordinate.Latitude, m.Coordinate.Longitude)));
+                                new LatLng(m.Coordinate.Latitude, m.Coordinate.Longitude)))
+                    {
+                        StrokeColor = r.Colour.Substring(6,2) +
+                                      r.Colour.Substring(4, 2) +
+                                      r.Colour.Substring(2, 2) +
+                                      r.Colour.Substring(0, 2),
+                        StrokeWidth = 3
+                    };
+
                 return line;
             }).ToList();
+
+
+            map.Markers = new List<ViewModels.Marker>();
+
+            map.Markers.Add(new ViewModels.Marker()
+            {
+                Image = "icon1",
+                Title = fullJourneyOptions.StartLocation.Name,
+                Coordinates = new LatLng(fullJourneyOptions.StartLocation.Latitude, fullJourneyOptions.StartLocation.Longitude)
+            });
+
+            map.Markers.Add(new ViewModels.Marker()
+            {
+                Image = "icon1",
+                Title = fullJourneyOptions.EndLocation.Name,
+                Coordinates = new LatLng(fullJourneyOptions.EndLocation.Latitude, fullJourneyOptions.EndLocation.Longitude)
+            });
+
+            if (showPollution)
+            {
+                foreach (var markers in this._pollutionRepo.GetMarkers())
+                {
+                    map.Markers.Add(new ViewModels.Marker()
+                    {
+                        Image = "icon1",
+                        Title = markers.Description + " - " + markers.Value,
+                        Coordinates = new LatLng(markers.Coordinate.Latitude, markers.Coordinate.Longitude)
+                    });
+                }
+            }
+
+            if (showSchools)
+            {
+                foreach (var markers in this._schoolRepo.GetMarkers())
+                {
+                    map.Markers.Add(new ViewModels.Marker()
+                    {
+                        Image = "icon1",
+                        Title = markers.Description + " - " + markers.Value,
+                        Coordinates = new LatLng(markers.Coordinate.Latitude, markers.Coordinate.Longitude)
+                    });
+                }
+
+            }
 
             return map;
         }
