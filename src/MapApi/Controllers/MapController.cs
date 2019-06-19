@@ -47,7 +47,7 @@ namespace MapApi.Controllers
         [Route("routes/{journeyId:int}/{showPollution:bool}/{showSchools:bool}/{startTime:DateTime}")]
         public ActionResult<List<RouteInfo>> RouteInfo(int journeyId, bool showPollution, bool showSchools, DateTime startTime)
         {
-            RouteOptions fullJourneyOptions = this.ProcessJourney(journeyId, new TimeSpan(startTime.Hour, startTime.Minute, startTime.Second));
+            RouteOptions fullJourneyOptions = this.ProcessJourney(journeyId, new TimeSpan(startTime.Hour, startTime.Minute, startTime.Second), showPollution, showSchools);
 
             return CreateRouteInfo(fullJourneyOptions); ;
         }
@@ -95,7 +95,7 @@ namespace MapApi.Controllers
         [HttpGet("mobile")]
         public async Task<ActionResult<Map>> GetForMobile()
         {
-            RouteOptions fullJourneyOptions = this.ProcessJourney(1, new TimeSpan(9, 0, 0));
+            RouteOptions fullJourneyOptions = this.ProcessJourney(1, new TimeSpan(9, 0, 0), true, true);
             
             var map = new Map();
             map.Lines = fullJourneyOptions.EnrichedRoute.Select(r =>
