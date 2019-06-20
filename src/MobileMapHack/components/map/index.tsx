@@ -18,6 +18,7 @@ import TwoImg from "../../assets/two.png"
 import ThreeImg from "../../assets/three.png"
 // @ts-ignore
 import FourImg from "../../assets/four.png"
+import {api} from "../../api"
 
 const GOOGLE_MAPS_APIKEY = '';
 
@@ -51,16 +52,6 @@ export const Map = (props) => {
     const mapRef = useRef<MapView>();
     const [showSearch, toggleSearch] = useState(() => false);
 
-    function api<T>(url: string): Promise<T> {
-        return fetch(url)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(response.statusText)
-                }
-                return response.json() as Promise<T>
-            })
-    }
-
     const imgs = {
         "start": StartImg,
         "finish": FinishImg,
@@ -82,7 +73,8 @@ export const Map = (props) => {
                 })
                 .catch(reason => {
                     console.log(`***********  error calling map api: ${reason}`);
-                    Toast.show({text: "There was a problem getting the route details", position: "top"});
+                    // todo: can't have any other position that bottom does not show up
+                    Toast.show({text: "There was a problem getting the route details", position: "bottom"});
                 });
         }
     }, [journey, showPollution, showSchools]);
@@ -106,7 +98,7 @@ export const Map = (props) => {
             <MapView
                 ref={mapRef}
                 provider={PROVIDER_GOOGLE}
-                style={{flex: 1, zIndex: 0}}
+                style={{flex: 1, zIndex: -1}}
                 initialRegion={{
                     latitude: region.centre.latitude,
                     longitude: region.centre.longitude,
