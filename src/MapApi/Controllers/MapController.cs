@@ -24,6 +24,9 @@ namespace MapApi.Controllers
     [ApiController]
     public class MapController : ControllerBase
     {
+        private const double MarkerIntersectionRangeInMetres = 200;
+        private const double MarkerDisplayRangeInMetres = 1000;
+
         private readonly IPollutionRepository _pollutionRepo;
         private readonly ISchoolRepository _schoolRepo;
         private readonly IJourneyRepository _journeyRepo;
@@ -180,18 +183,22 @@ namespace MapApi.Controllers
         {
             RouteOptions fullJourneyOptions = await this.ProcessJourney(journeyId, startTime, showPollution, showSchools);
 
-            var kmlString = this.CreateTestKmlString(fullJourneyOptions, showPollution, showSchools);
+            var kmlString = this.CreateTestKmlString(fullJourneyOptions, journeyId, showPollution, showSchools);
             return kmlString;
         }
-
-        [HttpGet("mobile")]
+        
+        [HttpGet()]
+        [Route("mobile")]
         public async Task<ActionResult<Map>> GetForMobile()
         {
-            var showPollution = true;
-            var showSchools = true;
+            return await GetForMobile(1, true, true, new TimeSpan(9, 0, 0));
+        }
 
-            RouteOptions fullJourneyOptions = await this.ProcessJourney(1, new TimeSpan(9, 0, 0), showPollution, showSchools);
-
+        [HttpGet("mobile/{journeyId}")]
+        public async Task<ActionResult<Map>> GetForMobile(int journeyId, [FromQuery]bool showPollution, [FromQuery]bool showSchools, [FromQuery]TimeSpan startTime)
+        {
+            var fullJourneyOptions = await this.ProcessJourney(journeyId, startTime, showPollution, showSchools);
+            
             var map = new Map();
             map.Lines = fullJourneyOptions.EnrichedRoute.Select(r =>
             {
@@ -228,7 +235,7 @@ namespace MapApi.Controllers
 
             if (showPollution)
             {
-                foreach (var markers in this._pollutionRepo.GetMarkers())
+                foreach (var markers in GetPollutionMarkersForJourney(journeyId))
                 {
                     string pollutionImage = string.Empty;
                     if (markers.Value == 1)
@@ -262,7 +269,7 @@ namespace MapApi.Controllers
 
             if (showSchools)
             {
-                foreach (var markers in this._schoolRepo.GetMarkers())
+                foreach (var markers in GetSchoolMarkersForJourney(journeyId))
                 {
                     map.Markers.Add(new ViewModels.Marker()
                     {
@@ -277,7 +284,7 @@ namespace MapApi.Controllers
             return map;
         }
 
-        private string CreateTestKmlString(RouteOptions routeOptions, bool showPollution, bool showSchools)
+        private string CreateTestKmlString(RouteOptions routeOptions, int journeyId, bool showPollution, bool showSchools)
         {
             var kmlString = System.IO.File.ReadAllText(GetFilePath("Test.kml"));
 
@@ -293,7 +300,7 @@ namespace MapApi.Controllers
 
             if (showPollution)
             {
-                var pollutionMarkers = this._pollutionRepo.GetMarkers();
+                var pollutionMarkers = GetPollutionMarkersForJourney(journeyId);
                 var pollutionPlacemarks = this.CreatePlacemarksVariable(pollutionMarkers, "#icon-airqualityindex-");
                 var folder = new Folder { Name = "Pollution", Placemark = pollutionPlacemarks };
                 var serializer = new XmlSerializer(typeof(Folder));
@@ -313,7 +320,7 @@ namespace MapApi.Controllers
 
             if (showSchools)
             {
-                var schoolMarkers = this._schoolRepo.GetMarkers();
+                var schoolMarkers = GetSchoolMarkersForJourney(journeyId);
                 var schoolPlacemarks = this.CreatePlacemarks(schoolMarkers, "#icon-school");
                 var folder = new Folder { Name = "Schools", Placemark = schoolPlacemarks };
                 var serializer = new XmlSerializer(typeof(Folder));
@@ -322,12 +329,10 @@ namespace MapApi.Controllers
                 serializer.Serialize(xout, folder);
                 var xml = xout.ToString().Replace("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n", string.Empty);
                 kmlString = kmlString.Replace("{Schools}", xml);
-                kmlString = kmlString.Replace("{SchoolsStyle}", xmlSchoolStyle);
             }
             else
             {
                 kmlString = kmlString.Replace("{Schools}", string.Empty);
-                kmlString = kmlString.Replace("{SchoolsStyle}", string.Empty);
             }
 
             var kml = new XmlDocument();
@@ -353,23 +358,9 @@ namespace MapApi.Controllers
             "<color>{1}</color>" +
             "<width>5</width>" +
             "</LineStyle>" +
-            "</Style>";
-
-        private string xmlSchoolStyle =
-            "<Style id=\"icon-school\">" +
-            "<IconStyle>" +
-            "<color>ff00ff00</color>" +
-            "<scale>1</scale>" +
-            "<Icon>" +
-            "<href>http://maps.google.com/mapfiles/kml/pal3/icon56.png</href>" +
-            "</Icon>" +
-            "</IconStyle>" +
             "<LabelStyle>" +
-            "<scale>0</scale>" +
-            "</LabelStyle>" +
-            "<BalloonStyle>" +
-            "<text><![CDATA[$[name]]]></text>" +
-            "</BalloonStyle>" +
+            "<scale>1</scale>" +
+            "</LabelStyle>"+
             "</Style>";
 
         private string GetRoutes(RouteOptions routeOptions)
@@ -481,10 +472,7 @@ namespace MapApi.Controllers
         private async Task<RouteOptions> ProcessJourney(int journeyId, TimeSpan startTime, bool showPollution, bool showSchools)
         {
             var journeyOptions = _journeyRepo.GetJourney(journeyId);
-           // var journeyOptions = await GetJourney();
-            var pollutionMarkers = this._pollutionRepo.GetMarkers();
-            var schoolMarkers = this._schoolRepo.GetMarkers();
-
+            
             int i = 0;
             IList<EnrichedRoute> enrichedRoute = new List<EnrichedRoute>();
             foreach (var journeyOption in journeyOptions.Routes)
@@ -493,8 +481,8 @@ namespace MapApi.Controllers
                 {
                     Label = $"Option:{i}",
                     RouteMarkers = journeyOption.Coordinates.Select(x => new Marker(new Coordinate(x.Longitude, x.Latitude), 0, string.Empty)).ToList(),
-                    PollutionMarkers = _interactionService.FindMarkersOnRoute(journeyOption.Coordinates, pollutionMarkers, startTime),
-                    SchoolMarkers = _interactionService.FindMarkersOnRoute(journeyOption.Coordinates, schoolMarkers, startTime)
+                    PollutionMarkers = GetPollutionMarkersForRoute(journeyOption.Coordinates, startTime),
+                    SchoolMarkers = GetSchoolMarkersForRoute(journeyOption.Coordinates, MarkerIntersectionRangeInMetres, startTime)
                 };
 
                 i++;
@@ -503,47 +491,25 @@ namespace MapApi.Controllers
                 er.ModeOfTransport = journeyOption.ModeOfTransport;
 
                 var pollutionFactor = showPollution ? er.PollutionMarkers.Count * 10 : 0;
-                var schoolFactor = showSchools ? er.SchoolMarkers.Count * 20 : 0;
+                var schoolFactor = showSchools ? er.SchoolMarkers.Count * 40 : 0;
+                Color col;
 
-                if (journeyOption.ModeOfTransport == "cycle")
+                if (journeyOption.ModeOfTransport == "bicycle")
                 {
                     er.GreenScore = 95;
                     er.Cost = 0;
+                    col = Color.DarkGreen;
+                    er.Colour = "FF" + col.B.ToString("X2") + col.G.ToString("X2") + col.R.ToString("X2");
                 }
-
-                // pollution level from json of car increases factor
-                // ui shows follution factor
-                // how many school and pollution zones crossed
-                // mode of transport
-
-                // show factor in the UI
-                // extend the ui model and add in modeoftransport, cost multiplication factor, how many schools and pollution zones crossed, car pollution rate
-
-                // high and low polluting vrm cars
-
-                // or in box also show if using cleaning car - cost would be 
-
-                // or just give a message that cleaners cars cost less.
-
-                //message if taken greenest route £2 added to oyster account for future public transport journey
-                // and and 5 pts or something
-
-                // side bar
-
-                // badges in side bar show
-
-                //When changing the Air Quality Index/ Time / Schools options...the map reloads and zooms out... fix this
-
-                //6 Add some content to the side bar(Neil to provide some sample content
 
                 if (journeyOption.ModeOfTransport == "car")
                 {
                     er.GreenScore = Math.Clamp(100 - pollutionFactor - schoolFactor, 0, 75);
-                    er.Cost = Math.Round(((10 - ((decimal)er.GreenScore) / 10)) * er.Distance , 2);
+                    er.Cost = Math.Round(((10 - ((decimal) er.GreenScore)/10)) * journeyOption.Distance,2);
+                    col = GetBlendedColor(er.GreenScore);
+                    er.Colour = "FF" + col.B.ToString("X2") + col.G.ToString("X2") + col.R.ToString("X2");
                 }
 
-                var col = GetBlendedColor(er.GreenScore);
-                er.Colour = col.A.ToString("X2") + col.B.ToString("X2") + col.G.ToString("X2") + col.R.ToString("X2");
                 enrichedRoute.Add(er);
             }
 
@@ -555,14 +521,60 @@ namespace MapApi.Controllers
             };
         }
 
+        private List<Marker> GetPollutionMarkersForJourney(int journeyId)
+        {
+            var journey = _journeyRepo.GetJourney(journeyId);
+            
+            var pollutionMarkers = this._pollutionRepo.GetMarkers();
+            
+            var matchedMarkers = new List<Marker>();
+
+            foreach (var journeyRoute in journey.Routes)
+            {
+                var markersOnRoute = _interactionService.FindMarkersOnRoute(journeyRoute.Coordinates, pollutionMarkers, MarkerDisplayRangeInMetres);
+                matchedMarkers = matchedMarkers.Union(markersOnRoute).ToList();
+            }
+            
+            return matchedMarkers;
+        }
+
+        private List<Marker> GetSchoolMarkersForJourney(int journeyId)
+        {
+            var journey = _journeyRepo.GetJourney(journeyId);
+            var schoolMarkers = this._schoolRepo.GetMarkers();
+            
+            var matchedMarkers = new List<Marker>();
+
+            foreach (var journeyRoute in journey.Routes)
+            {
+                var markersOnRoute = _interactionService.FindMarkersOnRoute(journeyRoute.Coordinates, schoolMarkers, MarkerDisplayRangeInMetres);
+                matchedMarkers = matchedMarkers.Union(markersOnRoute).ToList();
+            }
+            
+            return matchedMarkers;
+        }
+
+        private List<Marker> GetPollutionMarkersForRoute(List<Coordinate> routeCoordinates, TimeSpan? startTime = null)
+        {
+            var pollutionMarkers = this._pollutionRepo.GetMarkers();
+            var markers = _interactionService.FindMarkersOnRoute(routeCoordinates, pollutionMarkers, MarkerIntersectionRangeInMetres, startTime);
+
+            return markers;
+        }
+
+        private List<Marker> GetSchoolMarkersForRoute(List<Coordinate> routeCoordinates, double rangeInMetres, TimeSpan? startTime = null)
+        {
+            var schoolMarkers = this._schoolRepo.GetMarkers();
+            var markers = _interactionService.FindMarkersOnRoute(routeCoordinates, schoolMarkers, rangeInMetres, startTime);
+
+            return markers;
+        }
+        
         private Color GetBlendedColor(int percentage)
         {
             if (percentage < 50)
-            {
                 return Interpolate(Color.Red, Color.Yellow, percentage / 50.0);
-            }
-
-            return Interpolate(Color.Yellow, Color.Lime, (percentage - 50) / 50.0);
+            return Interpolate(Color.Yellow, Color.Green, (percentage - 50) / 50.0);
         }
 
         private Color Interpolate(Color color1, Color color2, double fraction)
@@ -600,8 +612,7 @@ namespace MapApi.Controllers
 
             return placemarks;
         }
-
-
+        
         private List<Placemark> CreatePlacemarksVariable(List<Marker> markers, string stylePrefix)
         {
             var placemarks = new List<Placemark>();
