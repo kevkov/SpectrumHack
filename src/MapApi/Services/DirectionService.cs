@@ -20,7 +20,7 @@ namespace MapApi.Services
         }
         public async Task<string> GetAsync(Coordinate source, Coordinate destination)
         {
-            string endPoint = $"directions/json?origin={source.ToString()}&destination={destination.ToString()}&alternatives=true&key={_apiKey}";
+            string endPoint = $"directions/xml?origin={source.ToString()}&destination={destination.ToString()}&alternatives=true&key={_apiKey}";
 
             var response = await _httpClient.GetAsync(endPoint);
             string jsonResponse = string.Empty;
