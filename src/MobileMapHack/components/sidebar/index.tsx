@@ -12,37 +12,47 @@ import {
 import {DrawerItemsProps} from "react-navigation";
 import Constants from 'expo-constants';
 import {FlatList} from "react-native";
+import {Journey} from "../../domain/types";
 
-const data = [
+const myJourneys:Journey[] = [
     {
-        key: "Home to Work",
+        id: 1,
+        name: "Home to Work",
         icon: "business",
         start: {
             latitude: 51.4511732, longitude: -0.2138706
         },
+        startName: "Westminster",
         end: {
             latitude: 51.5250836, longitude: -0.0769465
-        }
+        },
+        endName: "North Greenwich"
     },
     {
-        key: "Work to Heathrow",
+        id: 2,
+        name: "Work to Heathrow",
         icon: "business",
         start: {
             latitude: 51.4511731, longitude: -0.2138706
         },
+        startName: "North Greenwich",
         end: {
             latitude: 51.5250836, longitude: -0.0769465
-        }
+        },
+        endName: "Heathrow"
     },
     {
-        key: "Mum's",
+        id: 3,
+        name: "Mum's",
         icon: "home",
         start: {
             latitude: 51.4511731, longitude: -0.2138706
         },
+        startName: "Westminster",
         end: {
             latitude: 51.5250836, longitude: -0.0769465
-        }
+        },
+        endName: "Ealing"
     },
 ];
 
@@ -70,7 +80,8 @@ export const SideBar = (props: DrawerItemsProps) => {
                     </View>
                 </View>
                 <FlatList
-                    data={data}
+                    data={myJourneys}
+                    keyExtractor={(item) => item.id.toString()}
                     renderItem={datum =>
                         <ListItem
                             button
@@ -78,7 +89,7 @@ export const SideBar = (props: DrawerItemsProps) => {
                             onPress={() => {
                                 props.navigation.closeDrawer();
                                 props.navigation.navigate("Route",
-                                    {origin: datum.item.start, destination: datum.item.end});
+                                    {journey: datum.item});
                             }}
                         >
                             <Left>
@@ -89,7 +100,7 @@ export const SideBar = (props: DrawerItemsProps) => {
                                     style={{color: "#777", fontSize: 26, width: 30}}
                                 />
                                 <Text>
-                                    {datum.item.key}
+                                    {datum.item.name}
                                 </Text>
                             </Left>
                             <Right />

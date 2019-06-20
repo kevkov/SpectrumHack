@@ -4,13 +4,14 @@ import { Map } from '../../components/map';
 import Constants from "expo-constants";
 import { JourneyDetails } from './journeyDetails';
 
-enum Tab  { MAP, DETAILS};
+enum Tab  { MAP, DETAILS}
 
 const getContent = (tab:Tab, props) => {
     if (tab == Tab.MAP) {
         return (<Map {...props} />);
     }
-    return (<JourneyDetails />);
+
+    return (<JourneyDetails showPollution='true' showSchools='true' startTime='09:12' />);
 };
 export const Route = (props) => {
 
