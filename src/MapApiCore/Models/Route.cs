@@ -15,6 +15,8 @@ namespace MapApiCore.Models
 
         public string ModeOfTransport { get; set; }
 
+        public string Summary { get; set; }
+
         public List<Coordinate> Coordinates { get; set; }
     }
 }

@@ -14,8 +14,8 @@
     "Routes": [
       {
         "ModeOfTransport": "car",
-        "Distance": 13.05,
-        "Duration": "37 minutes",
+        "Distance": 1305,
+        "Duration": "87",
         "Coordinates": [
           {
             "Longitude": 0.00447,
@@ -2197,8 +2197,8 @@
       },
       {
         "ModeOfTransport": "car",
-        "Distance": 14.02,
-        "Duration": "42 minutes",
+        "Distance": 1402,
+        "Duration": "92",
         "Coordinates": [
           {
             "Longitude": 0.00447,
@@ -4384,8 +4384,8 @@
       },
       {
         "ModeOfTransport": "car",
-        "Distance": 18.02,
-        "Duration": "52 minutes",
+        "Distance": 1802,
+        "Duration": "52",
         "Coordinates": [
           {
             "Longitude": 0.00324,
@@ -8619,8 +8619,8 @@
       },
       {
         "ModeOfTransport": "bicycle",
-        "Distance":7.5 ,
-        "Duration": "102 minutes",
+        "Distance":75 ,
+        "Duration": "102",
         "Coordinates": [
           {
             "Longitude": 0.00357,
