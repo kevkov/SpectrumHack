@@ -4,7 +4,7 @@ import { FlatList, StyleSheet } from 'react-native';
 import { RouteInfo } from '../../domain/types';
 
 export const JourneyDetails = (props) => {
-    
+
     const [routeInfoItems, setRouteInfoItems] = useState<RouteInfo[]>();
 
     function api<T>(url: string): Promise<T> {
@@ -16,27 +16,27 @@ export const JourneyDetails = (props) => {
                 return response.json() as Promise<T>
             })
     }
-    
+
     useEffect(() => {
         console.log("Inside useEffect on journey details");
-        
+
         api<RouteInfo[]>("http://spectrummapapi.azurewebsites.net/api/map/routes/1/true/true/09:00")
             .then(data => {
                 console.log("calling  route info api");
                 setRouteInfoItems(data);
             });
-        }), [props.showPollution, props.showSchools, props.startTime];
+        }, [props.showPollution, props.showSchools, props.startTime]);
 
     const GetHeaderStyle = (backgroundColourHex: string) => {
         const blue = backgroundColourHex.substring(2,4);
         const green = backgroundColourHex.substring(4,6);
         const red = backgroundColourHex.substring(6);
-        
-        return { 
+
+        return {
             backgroundColor: '#' + red + green + blue
         };
     }
-    
+
     const styles = StyleSheet.create({
         headerText: {
             fontWeight: '600'
@@ -50,7 +50,7 @@ export const JourneyDetails = (props) => {
         <Content style={styles.content}>
             <FlatList
                     data={routeInfoItems}
-                    renderItem={datum =>                    
+                    renderItem={datum =>
             <Card>
                 <CardItem bordered style={GetHeaderStyle(datum.item.colorInHex)}>
                     <Text style={styles.headerText}>{datum.item.routeLabel}</Text>
