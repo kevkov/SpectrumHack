@@ -19,6 +19,7 @@ import ThreeImg from "../../assets/three.png"
 // @ts-ignore
 import FourImg from "../../assets/four.png"
 import {api} from "../../api"
+import {Option, some} from "fp-ts/lib/Option";
 
 const GOOGLE_MAPS_APIKEY = '';
 
