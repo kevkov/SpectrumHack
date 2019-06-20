@@ -8,18 +8,18 @@ import JourneyContext from '../../context/JourneyContext';
 export const JourneyDetails = (props) => {
     const journeySettings = useContext<JourneySettings>(JourneyContext);
     const [routeInfoItems, setRouteInfoItems] = useState<RouteInfo[]>();
-    
+
     useEffect(() => {
-        var uri = "http://spectrummapapi.azurewebsites.net/api/map/routes/1/" + 
+        var uri = "http://spectrummapapi.azurewebsites.net/api/map/routes/1/" +
         journeySettings.showPollution + "/" +
         journeySettings.showSchools + "/" +
         journeySettings.startTime;
-        
+
         console.log(journeySettings.showPollution);
 
         api<RouteInfo[]>(uri)
             .then(data => {
-                console.log("api callback in journey details");
+                console.log(`api callback in journey details ${uri}`);
                 setRouteInfoItems(data);
             });
         }, []);

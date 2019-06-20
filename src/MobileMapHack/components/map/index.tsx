@@ -48,7 +48,7 @@ export const Map = (props) => {
         :  {centre: {latitude: 51.509864, longitude: -0.118092}, size: {latDelta: 0.0922, lonDelta: 0.0421}};
 
     const [fabActive, setFabActive] = useState(() => false);
-    const journeySettings = useContext<JourneySettings>(JourneyContext);
+    const journeySettings = useContext(JourneyContext);
     const [mapData, setMapData] = useState<MapData>();
     const mapRef = useRef<MapView>();
     const [showSearch, toggleSearch] = useState(() => false);

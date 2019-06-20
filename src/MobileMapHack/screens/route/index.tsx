@@ -3,7 +3,7 @@ import {Body, Button, Container, Footer, FooterTab, Header, Icon, Left, Right, T
 import { Map } from '../../components/map';
 import Constants from "expo-constants";
 import { JourneyDetails } from './journeyDetails';
-import { JourneyProvider } from '../../context/JourneyContext';
+import JourneyContext from '../../context/JourneyContext';
 import { JourneySettings } from '../../domain/types';
 
 enum Tab  { MAP, DETAILS}
@@ -29,9 +29,9 @@ export const Route = (props) => {
         toggleSchools,
         toggleStartTime
     };
-    
+
     return (
-        <JourneyProvider value={context}>
+        <JourneyContext.Provider value={context}>
             <Container style={{flex:1}}>
                 <Header style={{paddingTop: Constants.statusBarHeight}}>
                     <Left>
@@ -67,6 +67,6 @@ export const Route = (props) => {
                     </FooterTab>
                 </Footer>
             </Container>
-        </JourneyProvider>
+        </JourneyContext.Provider>
     )
 };
