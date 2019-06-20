@@ -10,7 +10,8 @@ const getContent = (tab:Tab, props) => {
     if (tab == Tab.MAP) {
         return (<Map {...props} />);
     }
-    return (<JourneyDetails />);
+
+    return (<JourneyDetails showPollution='true' showSchools='true' startTime='09:12' />);
 };
 export const Route = (props) => {
 

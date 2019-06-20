@@ -64,7 +64,8 @@ export const Map = (props) => {
     };
 
     useEffect(() => {
-        api<MapData>("http://10.0.2.2:5000/api/map/mobile")
+        console.log('Use effect in map')
+        api<MapData>("http://spectrummapapi.azurewebsites.net/api/map/mobile")
             .then(data => {
                 console.log("calling api");
                 setMapData(data);

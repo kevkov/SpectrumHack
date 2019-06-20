@@ -26,3 +26,13 @@ export interface Journey {
     start: Location
     end: Location
 }
+
+export interface RouteInfo {
+    colorInHex: string,
+    routeLabel: string,
+    pollutionPoint: number,
+    duration: string,
+    travelCost: number,
+    schoolCount: number,
+    distance: number
+}
