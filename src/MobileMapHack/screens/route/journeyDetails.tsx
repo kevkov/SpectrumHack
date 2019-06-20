@@ -1,30 +1,32 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {Card, CardItem, Content, Text, Left, Right, Body} from "native-base";
 import { FlatList, StyleSheet } from 'react-native';
-import { RouteInfo } from '../../domain/types';
+import { RouteInfo, JourneySettings } from '../../domain/types';
 import { api } from '../../api';
+import JourneyContext from '../../context/JourneyContext';
 
 export const JourneyDetails = (props) => {
-
+    const journeySettings = useContext<JourneySettings>(JourneyContext);
     const [routeInfoItems, setRouteInfoItems] = useState<RouteInfo[]>();
     
     useEffect(() => {
-        console.log("Inside useEffect on journey details");
+        var uri = "http://spectrummapapi.azurewebsites.net/api/map/routes/1/" + 
+        journeySettings.showPollution + "/" +
+        journeySettings.showSchools + "/" +
+        journeySettings.startTime;
+        
+        console.log(journeySettings.showPollution);
 
-        api<RouteInfo[]>("http://spectrummapapi.azurewebsites.net/api/map/routes/1/true/true/09:00")
+        api<RouteInfo[]>(uri)
             .then(data => {
-                console.log("calling  route info api");
+                console.log("api callback in journey details");
                 setRouteInfoItems(data);
             });
-        }, [props.showPollution, props.showSchools, props.startTime]);
+        }, []);
 
     const GetHeaderStyle = (backgroundColourHex: string) => {
-        const blue = backgroundColourHex.substring(2,4);
-        const green = backgroundColourHex.substring(4,6);
-        const red = backgroundColourHex.substring(6);
-
         return {
-            backgroundColor: '#' + red + green + blue
+            backgroundColor: backgroundColourHex
         };
     }
 

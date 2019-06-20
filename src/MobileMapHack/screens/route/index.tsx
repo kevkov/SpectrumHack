@@ -3,6 +3,8 @@ import {Body, Button, Container, Footer, FooterTab, Header, Icon, Left, Right, T
 import { Map } from '../../components/map';
 import Constants from "expo-constants";
 import { JourneyDetails } from './journeyDetails';
+import { JourneyProvider } from '../../context/JourneyContext';
+import { JourneySettings } from '../../domain/types';
 
 enum Tab  { MAP, DETAILS}
 
@@ -11,46 +13,60 @@ const getContent = (tab:Tab, props) => {
         return (<Map {...props} />);
     }
 
-    return (<JourneyDetails showPollution='true' showSchools='true' startTime='09:12' />);
+    return (<JourneyDetails />);
 };
 export const Route = (props) => {
-
+    const [showPollution, togglePollution] = useState(() => true);
+    const [showSchools, toggleSchools] = useState(() => true);
+    const [startTime, toggleStartTime] = useState(() => '12:00');
     const [currentTab, setCurrentTab] = useState<Tab>(Tab.MAP);
+
+    const context: JourneySettings = {
+        showPollution,
+        showSchools,
+        startTime,
+        togglePollution,
+        toggleSchools,
+        toggleStartTime
+    };
+    
     return (
-        <Container style={{flex:1}}>
-            <Header style={{paddingTop: Constants.statusBarHeight}}>
-                <Left>
-                    <Button
-                        transparent
-                        onPress={() => props.navigation.openDrawer()}>
-                        <Icon name="menu"/>
-                    </Button>
-                </Left>
-                <Body>
-                    <Title>Routes</Title>
-                </Body>
-                <Right/>
-            </Header>
-            { getContent(currentTab, props) }
-            <Footer>
-                <FooterTab>
-                    <Button
-                        active={currentTab == Tab.MAP}
-                        vertical
-                        onPress={() => setCurrentTab(Tab.MAP)}
-                    >
-                        <Icon name="map" />
-                        <Text>Map</Text>
-                    </Button>
-                    <Button
-                        active={currentTab == Tab.DETAILS}
-                        vertical
-                        onPress={() => setCurrentTab(Tab.DETAILS)}>
-                        <Icon name="list" />
-                        <Text>Details</Text>
-                    </Button>
-                </FooterTab>
-            </Footer>
-        </Container>
+        <JourneyProvider value={context}>
+            <Container style={{flex:1}}>
+                <Header style={{paddingTop: Constants.statusBarHeight}}>
+                    <Left>
+                        <Button
+                            transparent
+                            onPress={() => props.navigation.openDrawer()}>
+                            <Icon name="menu"/>
+                        </Button>
+                    </Left>
+                    <Body>
+                        <Title>Routes</Title>
+                    </Body>
+                    <Right/>
+                </Header>
+                { getContent(currentTab, props) }
+                <Footer>
+                    <FooterTab>
+                        <Button
+                            active={currentTab == Tab.MAP}
+                            vertical
+                            onPress={() => setCurrentTab(Tab.MAP)}
+                        >
+                            <Icon name="map" />
+                            <Text>Map</Text>
+                        </Button>
+                        <Button
+                            active={currentTab == Tab.DETAILS}
+                            vertical
+                            onPress={() => setCurrentTab(Tab.DETAILS)}>
+                            <Icon name="list" />
+                            <Text>Details</Text>
+                        </Button>
+                    </FooterTab>
+                </Footer>
+            </Container>
+        </JourneyProvider>
     )
 };

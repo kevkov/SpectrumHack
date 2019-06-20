@@ -1,8 +1,8 @@
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE} from "react-native-maps";
 //import MapViewDirections from "react-native-maps-directions";
 import {View} from "react-native";
-import React, {useEffect, useRef, useState} from "react";
-import {MapData, LatLng, Journey} from "../../domain/types";
+import React, {useEffect, useRef, useState, useContext} from "react";
+import {MapData, LatLng, Journey, JourneySettings} from "../../domain/types";
 import {Button, Fab, Icon, Input, Card, Toast} from "native-base";
 // @ts-ignore
 import StartImg from "../../assets/start.png"
@@ -20,6 +20,7 @@ import ThreeImg from "../../assets/three.png"
 import FourImg from "../../assets/four.png"
 import {api} from "../../api"
 import {Option, some} from "fp-ts/lib/Option";
+import JourneyContext from "../../context/JourneyContext";
 
 const GOOGLE_MAPS_APIKEY = '';
 
@@ -47,8 +48,7 @@ export const Map = (props) => {
         :  {centre: {latitude: 51.509864, longitude: -0.118092}, size: {latDelta: 0.0922, lonDelta: 0.0421}};
 
     const [fabActive, setFabActive] = useState(() => false);
-    const [showPollution, togglePollution] = useState(() => true);
-    const [showSchools, toggleSchools] = useState(() => true);
+    const journeySettings = useContext<JourneySettings>(JourneyContext);
     const [mapData, setMapData] = useState<MapData>();
     const mapRef = useRef<MapView>();
     const [showSearch, toggleSearch] = useState(() => false);
@@ -65,7 +65,7 @@ export const Map = (props) => {
 
     useEffect(() => {
         if (journey != null) {
-            api<MapData>(`http://10.0.2.2:5000/api/map/mobile/${journey.id}?showPollution=${showPollution}&showSchools=${showSchools}`)
+            api<MapData>(`http://10.0.2.2:5000/api/map/mobile/${journey.id}?showPollution=${journeySettings.showPollution}&showSchools=${journeySettings.showSchools}`)
                 .then(data => {
                     console.log("*********** calling api");
                     setMapData(data);
@@ -78,7 +78,7 @@ export const Map = (props) => {
                     Toast.show({text: "There was a problem getting the route details", position: "bottom"});
                 });
         }
-    }, [journey, showPollution, showSchools]);
+    }, [journey, journeySettings.showPollution, journeySettings.showSchools]);
 
     function maybeSearch() {
         if (showSearch) {
@@ -139,13 +139,13 @@ export const Map = (props) => {
                 onPress={() => setFabActive(!fabActive)}>
                 <Icon name="playlist-add-check" type="MaterialIcons"/>
                 <Button
-                    onPress={() => togglePollution(!showPollution)}
-                    style={{backgroundColor: showPollution ? "#B5651D" : "#CCCCCC"}}>
+                    onPress={() => journeySettings.togglePollution(!journeySettings.showPollution)}
+                    style={{backgroundColor: journeySettings.showPollution ? "#B5651D" : "#CCCCCC"}}>
                     <Icon name="cloud-circle" type="MaterialIcons"/>
                 </Button>
                 <Button
-                    onPress={() => toggleSchools(!showSchools)}
-                    style={{backgroundColor: showSchools ? "#397D02" : "#CCCCCC"}}>
+                    onPress={() => journeySettings.toggleSchools(!journeySettings.showSchools)}
+                    style={{backgroundColor: journeySettings.showSchools ? "#397D02" : "#CCCCCC"}}>
                     <Icon name="school" type="MaterialIcons"/>
                 </Button>
             </Fab>

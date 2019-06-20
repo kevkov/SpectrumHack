@@ -102,29 +102,30 @@
             </div>
 
             <div id="mapContainer" class="my-4 w-100 mb-2"></div>
-            <h3>Placeholder</h3>
+            <h3>#</h3>
             <div class="container">
-                <div class="card-deck mb-3 text-center">
+                <div class="card-deck mb-3 text">
                     @foreach (var hvm in Model.RouteInfos)
                     {
                         <div class="card mb-4 shadow-sm">
                             <div class="card-header">
-                                <h4 my-0-font-weight-normat style="background-color: @hvm.ColorInHex"> @hvm.RouteLabel </h4>
+                                <h4 my-0-font-weight-normat> @hvm.RouteLabel (@hvm.ModeOfTransport) </h4>
                             </div>
-                            <div class="card-body">
-                                <h1 class="card-title pricing-card-title"> Pollution @hvm.PollutionPoint </h1>
+                            <div class="card-body" style="background-color: @hvm.ColorInHex">
                                 <ul class="list-unstyled mt-3 mb-4">
-                                    <li>Distance: @hvm.Distance</li>
-                                    <li>Travel time: @hvm.Duration</li>
-                                    <li>Travel cost: @hvm.TravelCost</li>
-                                    <li>Schools: @hvm.SchoolCount</li>
+                                    <li><h6>Green score: @hvm.PollutionPoint</h6></li>
+                                    <li><h6>Pollution zone: @hvm.PollutionZone</h6></li>
+                                    <li><h6>Distance: @hvm.Distance miles</h6></li>
+                                    <li><h6>Travel time: @hvm.Duration</h6></li>
+                                    <li><h6>Travel cost: @hvm.TravelCost</h6></li>
+                                    <li><h6>Schools: @(hvm.SchoolCount == 0 ? "N/A" : hvm.SchoolCount.ToString())</h6></li>
                                 </ul>
                             </div>
                         </div>
                     }
                 </div>
             </div>
-
+            <h3># Traveling via less polluting car may significantly reduce your cost by up to 30%.</h3>
 
         </main>
     </div>
