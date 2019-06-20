@@ -4,7 +4,7 @@ import { Map } from '../../components/map';
 import Constants from "expo-constants";
 import { JourneyDetails } from './journeyDetails';
 
-enum Tab  { MAP, DETAILS};
+enum Tab  { MAP, DETAILS}
 
 const getContent = (tab:Tab, props) => {
     if (tab == Tab.MAP) {

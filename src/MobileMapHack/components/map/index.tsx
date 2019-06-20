@@ -77,9 +77,11 @@ export const Map = (props) => {
                 .then(data => {
                     console.log("*********** calling api");
                     setMapData(data);
+                    // not yet
+                    // mapRef.current.fitToElements(true);
                 });
         }
-    }, [showPollution, showSchools]);
+    }, [journey, showPollution, showSchools]);
 
     function maybeSearch() {
         if (showSearch) {

@@ -35,10 +35,10 @@ const routeInfoItems = [
      }];
 
 const GetHeaderStyle = (backgroundColourHex: string) => {
-    return { 
+    return {
         backgroundColor: backgroundColourHex,
     };
-}
+};
 
 const styles = StyleSheet.create({
     headerText: {
@@ -55,7 +55,7 @@ export const JourneyDetails = (props) => {
         <Content style={styles.content}>
             <FlatList
                     data={routeInfoItems}
-                    renderItem={datum =>                    
+                    renderItem={datum =>
             <Card>
                 <CardItem bordered style={GetHeaderStyle(datum.item.colorInHex)}>
                     <Text style={styles.headerText}>{datum.item.routeLabel}</Text>
