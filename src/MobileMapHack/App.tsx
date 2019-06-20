@@ -13,6 +13,7 @@ import Roboto from 'native-base/Fonts/Roboto.ttf';
 import Roboto_medium from 'native-base/Fonts/Roboto_medium.ttf';
 // @ts-ignore
 import MaterialIcons from "native-base/Fonts/MaterialIcons.ttf";
+import {AppLoading} from "expo";
 
 const Drawer = createDrawerNavigator(
     {
@@ -40,7 +41,7 @@ const AppNavigator = createStackNavigator(
 
 const AppContainer = createAppContainer(AppNavigator);
 
-export default class App extends Component {
+export default class App extends Component<{}, {isReady: boolean}> {
     constructor(props) {
         super(props);
         this.state = {
@@ -61,6 +62,15 @@ export default class App extends Component {
     }
 
     render() {
+        if (!this.state.isReady) {
+            return (
+                <AppLoading
+                    onFinish={() => this.setState({isReady: true})}
+                    onError={console.warn}
+                />
+            );
+        }
+
         return (
             <Root>
                 <AppContainer/>

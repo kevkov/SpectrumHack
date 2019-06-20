@@ -4,16 +4,30 @@
     <name>Untitled map</name>
     <description/>
     {Styles}
+    <Style id="icon-school">
+      <IconStyle>
+        <scale>1</scale>
+        <color>ffff0000</color>
+        <Icon>
+          <href>http://maps.google.com/mapfiles/kml/pal2/icon10.png</href> 
+        </Icon> 
+      </IconStyle> 
+      <LabelStyle>
+        <scale>0</scale> 
+      </LabelStyle> 
+      <BalloonStyle>
+        <text><![CDATA[$[name]]]></text> 
+      </BalloonStyle> 
+    </Style>
     <Style id="icon-route-start">
       <IconStyle>
-        <color>ff00ff00</color>
         <scale>1</scale>
         <Icon>
           <href>http://maps.google.com/mapfiles/kml/pal4/icon62.png</href>
         </Icon>
       </IconStyle>
       <LabelStyle>
-        <scale>0</scale>
+        <scale>1</scale>
       </LabelStyle>
       <BalloonStyle>
         <text><![CDATA[$[name]]]></text>
@@ -21,14 +35,13 @@
     </Style>
     <Style id="icon-route-end">
       <IconStyle>
-        <color>ff00ff00</color>
         <scale>1</scale>
         <Icon>
           <href>http://maps.google.com/mapfiles/kml/pal4/icon15.png</href>
         </Icon>
       </IconStyle>
       <LabelStyle>
-        <scale>0</scale>
+        <scale>1</scale>
       </LabelStyle>
       <BalloonStyle>
         <text><![CDATA[$[name]]]></text>
@@ -36,7 +49,6 @@
     </Style>
     <Style id="icon-airqualityindex-0">
       <IconStyle>
-        <color>ff00ff00</color>
         <scale>1</scale>
         <Icon>
           <href>http://maps.google.com/mapfiles/kml/pal5/icon46.png</href>
@@ -51,7 +63,6 @@
     </Style>
     <Style id="icon-airqualityindex-1">
       <IconStyle>
-        <color>ff00ff00</color>
         <scale>1</scale>
         <Icon>
           <href>http://maps.google.com/mapfiles/kml/pal3/icon0.png</href>
@@ -66,7 +77,6 @@
     </Style>
     <Style id="icon-airqualityindex-2">
       <IconStyle>
-        <color>ff00ff00</color>
         <scale>1</scale>
         <Icon>
           <href>http://maps.google.com/mapfiles/kml/pal3/icon1.png</href>
@@ -81,7 +91,6 @@
     </Style>
     <Style id="icon-airqualityindex-3">
       <IconStyle>
-        <color>ff00ff00</color>
         <scale>1</scale>
         <Icon>
           <href>http://maps.google.com/mapfiles/kml/pal3/icon10.png</href>
@@ -96,7 +105,6 @@
     </Style>
     <Style id="icon-airqualityindex-4">
       <IconStyle>
-        <color>ff00ff00</color>
         <scale>1</scale>
         <Icon>
           <href>http://maps.google.com/mapfiles/kml/pal3/icon11.png</href>
@@ -111,7 +119,7 @@
     </Style>
     <Style id="icon-airqualityindex-5">
       <IconStyle>
-        <color>ff00ff00</color>
+        
         <scale>1</scale>
         <Icon>
           <href>http://maps.google.com/mapfiles/kml/pal3/icon12.png</href>
@@ -126,7 +134,7 @@
     </Style>
     <Style id="icon-airqualityindex-6">
       <IconStyle>
-        <color>ff00ff00</color>
+        
         <scale>1</scale>
         <Icon>
           <href>http://maps.google.com/mapfiles/kml/pal3/icon13.png</href>
@@ -141,7 +149,7 @@
     </Style>
     <Style id="icon-airqualityindex-7">
       <IconStyle>
-        <color>ff00ff00</color>
+        
         <scale>1</scale>
         <Icon>
           <href>http://maps.google.com/mapfiles/kml/pal3/icon14.png</href>
@@ -156,7 +164,7 @@
     </Style>
     <Style id="icon-airqualityindex-8">
       <IconStyle>
-        <color>ff00ff00</color>
+        
         <scale>1</scale>
         <Icon>
           <href>http://maps.google.com/mapfiles/kml/pal3/icon15.png</href>
@@ -171,7 +179,7 @@
     </Style>
     <Style id="icon-airqualityindex-9">
       <IconStyle>
-        <color>ff00ff00</color>
+        
         <scale>1</scale>
         <Icon>
           <href>http://maps.google.com/mapfiles/kml/pal3/icon16.png</href>
@@ -186,7 +194,7 @@
     </Style>
     <Style id="icon-airqualityindex-10">
       <IconStyle>
-        <color>ff00ff00</color>
+        
         <scale>1</scale>
         <Icon>
           <href>http://maps.google.com/mapfiles/kml/pal3/icon17.png</href>
@@ -199,7 +207,6 @@
         <text><![CDATA[$[name]]]></text>
       </BalloonStyle>
     </Style>
-    {SchoolsStyle}
     {Routes}
     {RouteLabels}
     {AirQuality}
