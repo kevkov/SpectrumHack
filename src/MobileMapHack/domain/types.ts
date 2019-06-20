@@ -22,7 +22,11 @@ export interface MapData {
 }
 
 export interface Journey {
+    id: number
     name: string
-    start: Location
-    end: Location
+    icon: string
+    start: LatLng
+    startName: string
+    end: LatLng
+    endName: string
 }

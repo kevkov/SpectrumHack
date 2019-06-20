@@ -2,8 +2,8 @@ import MapView, { Marker, Polyline, PROVIDER_GOOGLE} from "react-native-maps";
 //import MapViewDirections from "react-native-maps-directions";
 import {View} from "react-native";
 import React, {useEffect, useRef, useState} from "react";
-import {MapData, LatLng} from "../../domain/types";
-import {Button, Fab, Form, Icon, Input, Text, Card} from "native-base";
+import {MapData, LatLng, Journey} from "../../domain/types";
+import {Button, Fab, Icon, Input, Card} from "native-base";
 // @ts-ignore
 import StartImg from "../../assets/start.png"
 // @ts-ignore
@@ -21,20 +21,28 @@ import FourImg from "../../assets/four.png"
 
 const GOOGLE_MAPS_APIKEY = '';
 
-export const Map = (props) => {
-    let origin: LatLng = props.navigation.getParam("origin");
-    let dest: LatLng = props.navigation.getParam("destination");
+function calculateMapRegion(journey: Journey): { centre:LatLng, size: {latDelta: number, lonDelta: number}} {
     let maxLoc = {
-        latitude: Math.max(origin.latitude, dest.latitude),
-        longitude: Math.max(origin.longitude, dest.longitude)
+        latitude: Math.max(journey.start.latitude, journey.end.latitude),
+        longitude: Math.max(journey.start.longitude, journey.end.longitude)
     };
     let minLoc = {
-        latitude: Math.min(origin.latitude, dest.latitude),
-        longitude: Math.min(origin.longitude, dest.longitude)
+        latitude: Math.min(journey.start.latitude, journey.end.latitude),
+        longitude: Math.min(journey.start.longitude, journey.end.longitude)
     };
     let latDelta = maxLoc.latitude - minLoc.latitude;
     let lonDelta = maxLoc.longitude - minLoc.longitude;
     let centre = {latitude: minLoc.latitude + (0.5 * latDelta), longitude: minLoc.longitude + (0.5 * lonDelta)};
+    return { centre, size: {latDelta, lonDelta} };
+}
+
+export const Map = (props) => {
+    let journey: Journey | null = props.navigation.getParam("journey");
+
+    // should maybe based on map feature extents
+    let region = journey
+        ? calculateMapRegion(journey)
+        :  {centre: {latitude: 51.509864, longitude: -0.118092}, size: {latDelta: 0.0922, lonDelta: 0.0421}};
 
     const [fabActive, setFabActive] = useState(() => false);
     const [showPollution, togglePollution] = useState(() => true);
@@ -64,17 +72,19 @@ export const Map = (props) => {
     };
 
     useEffect(() => {
-        api<MapData>("http://10.0.2.2:5000/api/map/mobile")
-            .then(data => {
-                console.log("calling api");
-                setMapData(data);
-            });
+        if (journey != null) {
+            api<MapData>("http://10.0.2.2:5000/api/map/mobile")
+                .then(data => {
+                    console.log("*********** calling api");
+                    setMapData(data);
+                });
+        }
     }, [showPollution, showSchools]);
 
     function maybeSearch() {
         if (showSearch) {
             return (
-                <Card style={{zIndex: 1, right: 10, left: 10, position: 'absolute', flexDirection: "row"}}>
+                <Card style={{zIndex: 1, right: 10, left: 10, position: 'absolute'}}>
                     <Input placeholder="From" style={{flex: 1}}/>
                     <Input placeholder="From" style={{flex: 1}}/>
                     <Input placeholder="From" style={{flex: 1}}/>
@@ -84,6 +94,7 @@ export const Map = (props) => {
         }
     }
 
+    console.log("*********** rendering");
     return (
         <View style={{flex: 1}}>
             <MapView
@@ -91,13 +102,18 @@ export const Map = (props) => {
                 provider={PROVIDER_GOOGLE}
                 style={{flex: 1, zIndex: 0}}
                 initialRegion={{
-                    latitude: centre.latitude,
-                    longitude: centre.longitude,
-                    latitudeDelta: 1.05 * latDelta,
-                    longitudeDelta: 1.05 * lonDelta
+                    latitude: region.centre.latitude,
+                    longitude: region.centre.longitude,
+                    latitudeDelta: 1.05 * region.size.latDelta,
+                    longitudeDelta: 1.05 * region.size.lonDelta
                 }}
                 onPress={() => toggleSearch(!showSearch)}
-                onMapReady={() => mapRef.current.fitToElements(true)}
+                onMapReady={() => {
+                    console.log("*********** fitting elements");
+                    // does not currently run as the elements are loaded afterwards
+                    // left here as example
+                    mapRef.current.fitToElements(true);
+                }}
             >
                 {mapData && mapData.lines.map((line, index) =>
                     <Polyline
