@@ -3,7 +3,7 @@ import MapView, { Marker, Polyline, PROVIDER_GOOGLE} from "react-native-maps";
 import {View} from "react-native";
 import React, {useEffect, useRef, useState} from "react";
 import {MapData, LatLng, Journey} from "../../domain/types";
-import {Button, Fab, Icon, Input, Card} from "native-base";
+import {Button, Fab, Icon, Input, Card, Toast} from "native-base";
 // @ts-ignore
 import StartImg from "../../assets/start.png"
 // @ts-ignore
@@ -73,12 +73,16 @@ export const Map = (props) => {
 
     useEffect(() => {
         if (journey != null) {
-            api<MapData>("http://10.0.2.2:5000/api/map/mobile")
+            api<MapData>(`http://10.0.2.2:5000/api/map/mobile/${journey.id}?showPollution=${showPollution}&showSchools=${showSchools}`)
                 .then(data => {
                     console.log("*********** calling api");
                     setMapData(data);
                     // not yet
                     // mapRef.current.fitToElements(true);
+                })
+                .catch(reason => {
+                    console.log(`***********  error calling map api: ${reason}`);
+                    Toast.show({text: "There was a problem getting the route details", position: "top"});
                 });
         }
     }, [journey, showPollution, showSchools]);
