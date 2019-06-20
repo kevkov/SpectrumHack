@@ -398,47 +398,55 @@ namespace MapApi.Controllers
                 er.ModeOfTransport = journeyOption.ModeOfTransport;
 
                 var pollutionFactor = showPollution ? er.PollutionMarkers.Count * 10 : 0;
-                var schoolFactor = showSchools ? er.SchoolMarkers.Count * 20 : 0;
+                var schoolFactor = showSchools ? er.SchoolMarkers.Count * 40 : 0;
+                Color col;
 
-                if (journeyOption.ModeOfTransport == "cycle")
+                if (journeyOption.ModeOfTransport == "bicycle")
                 {
                     er.GreenScore = 95;
                     er.Cost = 0;
+                    col = Color.DarkGreen;
                 }
+
+
+
 
                 // pollution level from json of car increases factor
                 // ui shows follution factor
                 // how many school and pollution zones crossed
                 // mode of transport
-
                 // show factor in the UI
                 // extend the ui model and add in modeoftransport, cost multiplication factor, how many schools and pollution zones crossed, car pollution rate
-
                 // high and low polluting vrm cars
-
                 // or in box also show if using cleaning car - cost would be 
-
                 // or just give a message that cleaners cars cost less.
-
                 //message if taken greenest route £2 added to oyster account for future public transport journey
                 // and and 5 pts or something
-
                 // side bar
-
                 // badges in side bar show
-
                 //When changing the Air Quality Index/ Time / Schools options...the map reloads and zooms out... fix this
-
                 //6 Add some content to the side bar(Neil to provide some sample content
+
+                //1.The cycling route is red by default.It's useful that it's a different colour, but perhaps something other than red ?
+                //2.The green is actually quite hard to see now that we have three routes on there.Is there something we can do to make the routes stand out
+
+                //3.The panels at the bottom need to show the fourth option
+                //4.The panels at the bottom... do you think we could put "-" or "N/A" in the pollution and schools sections until those options are switched on
+                //5.Could / Should the panel at the bottom show cost(or distance, or time) in the bigger font rather than pollution?
+                //6.I was thinking "Air Quality Index" might be a better term than "Pollution".It does tie back to a real term used in the API. (edited)
+                //I'll add these two too as I think they're left over from yesterday(but I think the other things got done):
+                //7.When changing the Air Quality Index / Time / Schools options...the map reloads and zooms out... fix this
+                //8 Add some content to the side bar(Neil to provide some sample content)(edited)
                 
                 if (journeyOption.ModeOfTransport == "car")
                 {
                     er.GreenScore = Math.Clamp(100 - pollutionFactor - schoolFactor, 0, 75);
                     er.Cost = ((10 - ((decimal) er.GreenScore)/10)) * journeyOption.Distance;
+                    col = GetBlendedColor(er.GreenScore);
                 }
 
-                var col = GetBlendedColor(er.GreenScore);
-                er.Colour = col.A.ToString("X2") + col.B.ToString("X2") + col.G.ToString("X2") + col.R.ToString("X2");
+                er.Colour = "FF" + col.B.ToString("X2") + col.G.ToString("X2") + col.R.ToString("X2");
+
                 enrichedRoute.Add(er);
             }
 
@@ -503,7 +511,7 @@ namespace MapApi.Controllers
         {
             if (percentage < 50)
                 return Interpolate(Color.Red, Color.Yellow, percentage / 50.0);
-            return Interpolate(Color.Yellow, Color.Lime, (percentage - 50) / 50.0);
+            return Interpolate(Color.Yellow, Color.Green, (percentage - 50) / 50.0);
         }
 
         private Color Interpolate(Color color1, Color color2, double fraction)
