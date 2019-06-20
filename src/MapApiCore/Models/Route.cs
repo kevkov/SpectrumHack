@@ -9,9 +9,11 @@ namespace MapApiCore.Models
             this.Coordinates = coordinates;
         }
 
-        public string Distance { get; set; }
+        public decimal Distance { get; set; }
 
         public string Duration { get; set; }
+
+        public string ModeOfTransport { get; set; }
 
         public List<Coordinate> Coordinates { get; set; }
     }

@@ -1,9 +1,9 @@
-import MapView, {KmlMapEvent, Marker, Polyline, PROVIDER_GOOGLE} from "react-native-maps";
+import MapView, { Marker, Polyline, PROVIDER_GOOGLE} from "react-native-maps";
 //import MapViewDirections from "react-native-maps-directions";
 import {View} from "react-native";
 import React, {useEffect, useRef, useState} from "react";
-import {MapData, LatLng}  from "../../domain/types";
-import {Button, Fab, Icon } from "native-base";
+import {MapData, LatLng} from "../../domain/types";
+import {Button, Fab, Form, Icon, Input, Text, Card} from "native-base";
 // @ts-ignore
 import StartImg from "../../assets/start.png"
 // @ts-ignore
@@ -41,6 +41,7 @@ export const Map = (props) => {
     const [showSchools, toggleSchools] = useState(() => true);
     const [mapData, setMapData] = useState<MapData>();
     const mapRef = useRef<MapView>();
+    const [showSearch, toggleSearch] = useState(() => false);
 
     function api<T>(url: string): Promise<T> {
         return fetch(url)
@@ -62,61 +63,76 @@ export const Map = (props) => {
         "four": FourImg
     };
 
-
     useEffect(() => {
         api<MapData>("http://10.0.2.2:5000/api/map/mobile")
             .then(data => {
                 console.log("calling api");
                 setMapData(data);
             });
-    },[showPollution, showSchools]);
+    }, [showPollution, showSchools]);
 
-    return (<View style={{flex:1}}>
-                <MapView
-                    ref={mapRef}
-                    provider={PROVIDER_GOOGLE}
-                    style={{flex: 1}}
-                    region={{
-                        latitude: centre.latitude,
-                        longitude: centre.longitude,
-                        latitudeDelta: 1.05 * latDelta,
-                        longitudeDelta: 1.05 * lonDelta }}
-                    onMapReady={() => mapRef.current.fitToElements(true)}
-                >
-                    {mapData && mapData.lines.map((line, index) =>
-                        <Polyline
-                            key={"line" + index}
-                            coordinates={line.coordinates}
-                            strokeWidth={line.strokeWidth}
-                            strokeColor={line.strokeColor}
-                        />
-                    )}
-                    {mapData && mapData.markers.map((marker, index) =>
-                        <Marker
-                            key={"marker" + index}
-                            title={marker.title}
-                            image={imgs[marker.image]}
-                            coordinate={marker.coordinates}
+    function maybeSearch() {
+        if (showSearch) {
+            return (
+                <Card style={{zIndex: 1, right: 10, left: 10, position: 'absolute', flexDirection: "row"}}>
+                    <Input placeholder="From" style={{flex: 1}}/>
+                    <Input placeholder="From" style={{flex: 1}}/>
+                    <Input placeholder="From" style={{flex: 1}}/>
+                </Card>)
+        } else {
+            return null;
+        }
+    }
 
-                        />
-                    )}
-                </MapView>
-                <Fab
-                    direction="up"
-                    position="bottomRight"
-                    active={fabActive}
-                    onPress={() => setFabActive(!fabActive)}>
-                    <Icon name="playlist-add-check" type="MaterialIcons"/>
-                    <Button
-                        onPress={() => togglePollution(!showPollution)}
-                        style={{backgroundColor: showPollution ? "#B5651D" : "#CCCCCC"}}>
-                        <Icon name="cloud-circle" type="MaterialIcons" />
-                    </Button>
-                    <Button
-                        onPress={() => toggleSchools(!showSchools)}
-                        style={{backgroundColor: showSchools ? "#397D02" : "#CCCCCC"}}>
-                        <Icon name="school" type="MaterialIcons" />
-                    </Button>
-                </Fab>
-            </View>)
+    return (
+        <View style={{flex: 1}}>
+            <MapView
+                ref={mapRef}
+                provider={PROVIDER_GOOGLE}
+                style={{flex: 1, zIndex: 0}}
+                initialRegion={{
+                    latitude: centre.latitude,
+                    longitude: centre.longitude,
+                    latitudeDelta: 1.05 * latDelta,
+                    longitudeDelta: 1.05 * lonDelta
+                }}
+                onPress={() => toggleSearch(!showSearch)}
+                onMapReady={() => mapRef.current.fitToElements(true)}
+            >
+                {mapData && mapData.lines.map((line, index) =>
+                    <Polyline
+                        key={"line" + index}
+                        coordinates={line.coordinates}
+                        strokeWidth={line.strokeWidth}
+                        strokeColor={line.strokeColor}
+                    />
+                )}
+                {mapData && mapData.markers.map((marker, index) =>
+                    <Marker
+                        key={"marker" + index}
+                        title={marker.title}
+                        image={imgs[marker.image]}
+                        coordinate={marker.coordinates}
+                    />
+                )}
+            </MapView>
+            {maybeSearch()}
+            <Fab
+                direction="up"
+                position="bottomRight"
+                active={fabActive}
+                onPress={() => setFabActive(!fabActive)}>
+                <Icon name="playlist-add-check" type="MaterialIcons"/>
+                <Button
+                    onPress={() => togglePollution(!showPollution)}
+                    style={{backgroundColor: showPollution ? "#B5651D" : "#CCCCCC"}}>
+                    <Icon name="cloud-circle" type="MaterialIcons"/>
+                </Button>
+                <Button
+                    onPress={() => toggleSchools(!showSchools)}
+                    style={{backgroundColor: showSchools ? "#397D02" : "#CCCCCC"}}>
+                    <Icon name="school" type="MaterialIcons"/>
+                </Button>
+            </Fab>
+        </View>)
 };
