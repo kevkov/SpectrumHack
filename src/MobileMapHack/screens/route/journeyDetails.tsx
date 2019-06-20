@@ -2,21 +2,12 @@ import React, {useEffect, useState} from 'react';
 import {Card, CardItem, Content, Text, Left, Right, Body} from "native-base";
 import { FlatList, StyleSheet } from 'react-native';
 import { RouteInfo } from '../../domain/types';
+import { api } from '../../api';
 
 export const JourneyDetails = (props) => {
 
     const [routeInfoItems, setRouteInfoItems] = useState<RouteInfo[]>();
-
-    function api<T>(url: string): Promise<T> {
-        return fetch(url)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(response.statusText)
-                }
-                return response.json() as Promise<T>
-            })
-    }
-
+    
     useEffect(() => {
         console.log("Inside useEffect on journey details");
 
