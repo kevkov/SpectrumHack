@@ -1,55 +1,50 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Card, CardItem, Content, Text, Left, Right, Body} from "native-base";
 import { FlatList, StyleSheet } from 'react-native';
-
-const routeInfoItems = [
-    {
-        key: "Route A",
-        routeLabel: "Route A",
-        colorInHex: "#ff0000",
-        pollutionPoint: 5,
-        travelTime: "01:27:00",
-        travelCost: 1.23,
-        schoolCount: 4,
-        distance: 12.4
-    },
-    {
-        key: "Route B",
-        routeLabel: "Route B",
-        colorInHex: "#00ff00",
-        pollutionPoint: 5,
-        travelTime: "01:27:00",
-        travelCost: 1.23,
-        schoolCount: 4,
-        distance: 11.9
-     },
-     {
-        key: "Route C",
-        routeLabel: "Route C",
-        colorInHex: "#0000ff",
-        pollutionPoint: 5,
-        travelTime: "01:27:00",
-        travelCost: 1.23,
-        schoolCount: 4,
-        distance: 12.8
-     }];
-
-const GetHeaderStyle = (backgroundColourHex: string) => {
-    return {
-        backgroundColor: backgroundColourHex,
-    };
-};
-
-const styles = StyleSheet.create({
-    headerText: {
-        fontWeight: '600'
-    },
-    content: {
-        padding: 10
-    }
-});
+import { RouteInfo } from '../../domain/types';
 
 export const JourneyDetails = (props) => {
+
+    const [routeInfoItems, setRouteInfoItems] = useState<RouteInfo[]>();
+
+    function api<T>(url: string): Promise<T> {
+        return fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(response.statusText)
+                }
+                return response.json() as Promise<T>
+            })
+    }
+
+    useEffect(() => {
+        console.log("Inside useEffect on journey details");
+
+        api<RouteInfo[]>("http://spectrummapapi.azurewebsites.net/api/map/routes/1/true/true/09:00")
+            .then(data => {
+                console.log("calling  route info api");
+                setRouteInfoItems(data);
+            });
+        }, [props.showPollution, props.showSchools, props.startTime]);
+
+    const GetHeaderStyle = (backgroundColourHex: string) => {
+        const blue = backgroundColourHex.substring(2,4);
+        const green = backgroundColourHex.substring(4,6);
+        const red = backgroundColourHex.substring(6);
+
+        return {
+            backgroundColor: '#' + red + green + blue
+        };
+    }
+
+    const styles = StyleSheet.create({
+        headerText: {
+            fontWeight: '600'
+        },
+        content: {
+            padding: 10
+        }
+    });
 
     return (
         <Content style={styles.content}>
@@ -70,10 +65,10 @@ export const JourneyDetails = (props) => {
                 </CardItem>
                 <CardItem>
                     <Left>
-                        <Text>Distance: {datum.item.distance}m</Text>
+                        <Text>Distance: {datum.item.distance}</Text>
                     </Left>
                     <Body>
-                        <Text>Travel Time: {datum.item.travelTime}</Text>
+                        <Text>Travel Time: {datum.item.duration}</Text>
                     </Body>
                 </CardItem>
                 <CardItem>
