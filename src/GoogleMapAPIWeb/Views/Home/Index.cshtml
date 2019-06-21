@@ -6,26 +6,33 @@
 @using MapApiCore.Models
 
 <div class="container-fluid">
-
+    <style type="text/css">
+        .nav-link {
+            text-decoration: none;
+            color: #212529;
+            font-weight: 400;
+            line-height: 1.5;
+            font-size: 1.2em;
+        }
+    </style>
     <div class="row">
-        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-            <div class="sidebar-sticky">
+        <nav class="col-md-2 d-none d-md-block bg-light">
+            <div>
+                <div class="container">
+                    <div class="row">
+                        <img class="rounded mx-auto d-block" width="250" height="300" src="https://upload.wikimedia.org/wikipedia/commons/5/56/Sadiq_Khan_November_2016.jpg" alt="Sadiq Khan">
+                    </div>
+                    <div class="row pt-2">
+                        <div class="col-8">
+                            <h5>Sadiq Khan</h5>
+                        </div>
+                        <div class="col-4 text-right">
+                                <span class="badge badge-pill badge-success">123</span>
+                        </div>
+                    </div>
+                </div>
                 <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">
-                            <img width ="80%" height ="80%" src="https://upload.wikimedia.org/wikipedia/commons/5/56/Sadiq_Khan_November_2016.jpg" alt="Sadiq Khan">
-                            <span class="sr-only">(current)</span>
-                        </a>
-                        <a class="nav-link active" href="#">
-                            Sadiq Khan
-                            <span class="sr-only">(current)</span>
-                        </a>
-                        <a class="nav-link active" href="#">
-                            53 available points
-                            <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
+                    <li><hr/></li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">
                             Pay
@@ -65,7 +72,6 @@
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Feedback</a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="#">Contact us</a>
-                            <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#">Help improve the app</a>
                             <a class="dropdown-item" href="#">Rate app</a>
                             <a class="dropdown-item" href="#">Share app</a>
@@ -107,8 +113,8 @@
             </div>
 
             <div id="mapContainer" class="my-4 w-100 mb-2"></div>
-            <h3>#</h3>
-            <div class="container">
+            <h6>&nbsp;</h6>
+            <div class="container ">
                 <div class="card-deck mb-3 text">
                     @foreach (var hvm in Model.RouteInfos)
                     {
@@ -130,7 +136,11 @@
                     }
                 </div>
             </div>
-            <h3># Traveling via less polluting car may significantly reduce your cost by up to 30%.</h3>
+
+            <div class="container">
+                <h4>Traveling via a less polluting car may significantly reduce your cost by up to 30%.</h4>
+            </div>
+            
 
         </main>
     </div>
