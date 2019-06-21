@@ -148,23 +148,23 @@
         var btnSchools = document.getElementById('btnSchools');
         var startTimeList = document.getElementById('startTimeList');
 
-        btnPollution.onclick = function () {
+        btnPollution.onclick = function() {
             showPollution = !showPollution;
             initMap();
         };
 
-        btnSchools.onclick = function () {
+        btnSchools.onclick = function() {
             showSchools = !showSchools;
             initMap();
         };
 
-        startTimeList.onchange = function () {
+        startTimeList.onchange = function() {
             startTime = startTimeList.options[startTimeList.selectedIndex].value;
 
             initMap();
         };
 
-        function initMap() {
+        async function initMap() {
             var src = 'https://spectrummapapi.azurewebsites.net/api/map/1?showPollution=' +
                 showPollution +
                 '&showSchools=' +
@@ -173,25 +173,35 @@
                 startTime +
                 '&startName=NorthGreenwich&startLongitude=0.00447&startLatitude=51.49847&endName=Westminster,endLongitude=-0.13563,endLatitude=51.4975';
 
-            var heatMapData = [
-                { location: new google.maps.LatLng(51.49847, 0.00447), weight: 90000 },
-                { location: new google.maps.LatLng(51.4975, -0.13563), weight: 90000 }
-            ];
+            const response = await fetch('http://localhost:52637/api/map/pollution');
+            const heatMapData = await response.json();
+    
+            heatMapResult = $.map(heatMapData, function(v) {
+                return {
+                    weight: v.weight,
+                    location: new google.maps.LatLng(v.location.latitude, v.location.longitude)
+                    }
+            });
 
-            map = new google.maps.Map(document.getElementById('mapContainer'), {
+        console.log(heatMapResult);
+
+        map = new google.maps.Map(document.getElementById('mapContainer'),
+            {
                 center: new google.maps.LatLng(51.49869, -0.12616),
                 zoom: 12.2,
                 mapTypeId: 'terrain'
             });
 
-            var heatMap = new google.maps.visualization.HeatmapLayer({
-                data: heatMapData,
-                dissipating: false,
-                radius: 100,
+        var heatMap = new google.maps.visualization.HeatmapLayer(
+            {
+                data: heatMapResult,
+                dissipating: true,
+                radius: 50,
                 map: map
             });
 
-            var kmlLayer = new google.maps.KmlLayer(src, {
+        var kmlLayer = new google.maps.KmlLayer(src,
+            {
                 suppressInfoWindows: false,
                 preserveViewport: true,
                 map: map

@@ -44,6 +44,8 @@ namespace MapApi
                 }, apiKey.Value));
 
             services.AddScoped<IPollutionService, LondonAirService>();
+
+            //services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,7 +61,9 @@ namespace MapApi
                 app.UseHsts();
             }
 
-            //app.UseHttpsRedirection();
+            app.UseCors(builder =>
+                builder.WithOrigins("http://localhost:52883"));
+            app.UseHttpsRedirection();
             app.UseMvc();
         }
     }

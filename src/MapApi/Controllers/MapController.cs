@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Microsoft.AspNetCore.Cors;
 
 namespace MapApi.Controllers
 {
@@ -57,6 +58,20 @@ namespace MapApi.Controllers
             RouteOptions fullJourneyOptions = await this.ProcessJourney(journeyId, new TimeSpan(startTime.Hour, startTime.Minute, startTime.Second), showPollution, showSchools);
 
             return CreateRouteInfo(fullJourneyOptions); ;
+        }
+
+        [Route("pollution")]
+        [HttpGet]
+        public async Task<ActionResult<List<HeatMapPoint>>> HeatMap()
+        {
+            var markers = this._pollutionRepo.GetMarkers();
+            var t = markers.Select(x => new HeatMapPoint()
+            {
+                Location = x.Coordinate,
+                Weight = x.Value * 10000
+            }).ToList();
+
+            return t;
         }
 
         private async Task<Journey> GetJourney()
