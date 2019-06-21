@@ -7,9 +7,13 @@ import {
     Left,
     View, Badge
 } from "native-base";
+import {Image} from "react-native";
 import {DrawerItemsProps, SectionList} from "react-navigation";
 import Constants from 'expo-constants';
 import {Journey} from "../../domain/types";
+// @ts-ignore
+import PersonImg from "../../assets/sadiqKhan.jpg"
+
 
 interface Section {
     title: string,
@@ -42,20 +46,7 @@ const myJourneys:Journey[] = [
             latitude: 51.5250836, longitude: -0.0769465
         },
         endName: "Heathrow"
-    },
-    {
-        id: 3,
-        name: "Mum's",
-        icon: "home",
-        start: {
-            latitude: 51.4511731, longitude: -0.2138706
-        },
-        startName: "Westminster",
-        end: {
-            latitude: 51.5250836, longitude: -0.0769465
-        },
-        endName: "Ealing"
-    },
+    }
 ];
 
 const menuItems : Section[] = [
@@ -78,17 +69,12 @@ export const SideBar = (props: DrawerItemsProps) => {
                     flexDirection: 'row',
                     alignItems: 'center',
                 }}>
-                    <Icon name={"md-person"}
-                          style={
-                              {
-                                  fontSize: 96
-                              }
-                          }/>
+                    <Image source={PersonImg} style={{width: 150, height:206}} />
                     <View style={{
                         marginLeft: 15
                     }}>
-                        <Text>Jane</Text>
-                        <Text>Public</Text>
+                        <Text>Sadiq</Text>
+                        <Text>Khan</Text>
                         <Badge success><Text>72</Text></Badge>
                     </View>
                 </View>
