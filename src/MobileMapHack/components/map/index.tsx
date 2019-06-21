@@ -64,7 +64,7 @@ export const Map = (props) => {
 
     useEffect(() => {
         if (journey != null) {
-            api<MapData>(`http://10.0.2.2:5000/api/map/mobile/${journey.id}?showPollution=${showPollution}&showSchools=${showSchools}`)
+            api<MapData>(`http://spectrummapapi.azurewebsites.net/api/map/mobile/${journey.id}?showPollution=${showPollution}&showSchools=${showSchools}`)
                 .then(data => {
                     console.log("*********** calling api");
                     setMapData(data);
@@ -119,10 +119,7 @@ export const Map = (props) => {
                 }}
                 onPress={() => toggleSearch(!showSearch)}
                 onMapReady={() => {
-                    console.log("*********** fitting elements");
-                    // does not currently run as the elements are loaded afterwards
-                    // left here as example
-                    mapRef.current.fitToElements(true);
+                    console.log("*********** map ready");
                 }}
             >
                 {mapData && mapData.lines.map((line, index) =>
