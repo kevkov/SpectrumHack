@@ -175,7 +175,7 @@
                 +
                 '&rand=' + Math.random();
             
-            const response = await fetch('http://localhost:52637/api/map/pollution');
+            const response = await fetch('https://spectrummapapi.azurewebsites.net/api/map/pollution');
             const heatMapData = await response.json();
     
             heatMapResult = $.map(heatMapData, function(v) {
@@ -209,7 +209,7 @@
         }
     </script>
     <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9wNb5Blyil-FPnHyuxNQi3-Zz1qBy2Pc&libraries=visualization&callback=initMap">
+            src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=visualization&callback=initMap">
     </script>
 
 }

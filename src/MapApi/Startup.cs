@@ -62,7 +62,7 @@ namespace MapApi
             }
 
             app.UseCors(builder =>
-                builder.WithOrigins("http://localhost:52883"));
+                builder.WithOrigins("http://localhost:52883", "http://localhost:52811", "https://spectrummapapi.azurewebsites.net", "https://spectrummapapi2.azurewebsites.net"));
             app.UseHttpsRedirection();
             app.UseMvc();
         }
