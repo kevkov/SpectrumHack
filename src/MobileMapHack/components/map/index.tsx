@@ -19,7 +19,7 @@ import ThreeImg from "../../assets/three.png"
 // @ts-ignore
 import FourImg from "../../assets/four.png"
 import {api} from "../../api"
-import {Option, some} from "fp-ts/lib/Option";
+import { fromNullable } from "fp-ts/lib/Option";
 import JourneyContext from "../../context/JourneyContext";
 
 const GOOGLE_MAPS_APIKEY = '';
@@ -43,9 +43,9 @@ export const Map = (props) => {
     let journey: Journey | null = props.navigation.getParam("journey");
 
     // should maybe based on map feature extents
-    let region = journey
-        ? calculateMapRegion(journey)
-        :  {centre: {latitude: 51.509864, longitude: -0.118092}, size: {latDelta: 0.0922, lonDelta: 0.0421}};
+    let region = fromNullable(journey)
+        .map(j => calculateMapRegion(j))
+        .getOrElse({centre: {latitude: 51.509864, longitude: -0.118092}, size: {latDelta: 0.0922, lonDelta: 0.0421}});
 
     const [fabActive, setFabActive] = useState(() => false);
     const {showPollution, showSchools, togglePollution, toggleSchools} = useContext(JourneyContext);
