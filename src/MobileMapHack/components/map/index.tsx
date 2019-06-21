@@ -1,9 +1,8 @@
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE} from "react-native-maps";
 //import MapViewDirections from "react-native-maps-directions";
-import {View} from "react-native";
-import React, {useEffect, useRef, useState} from "react";
-import {MapData, LatLng, Journey} from "../../domain/types";
-import {Button, Fab, Icon, Input, Card, Toast} from "native-base";
+import React, {useEffect, useRef, useState, useContext} from "react";
+import {MapData, LatLng, Journey, JourneySettings} from "../../domain/types";
+import {Button, Fab, Icon, Input, Card, Toast, CardItem, Badge, Label, Picker, View} from "native-base";
 // @ts-ignore
 import StartImg from "../../assets/start.png"
 // @ts-ignore
@@ -19,6 +18,9 @@ import ThreeImg from "../../assets/three.png"
 // @ts-ignore
 import FourImg from "../../assets/four.png"
 import {api} from "../../api"
+import { fromNullable } from "fp-ts/lib/Option";
+import JourneyContext from "../../context/JourneyContext";
+import {formatDataAsUrl} from "expo/build/takeSnapshotAsync/Utils.web";
 
 const GOOGLE_MAPS_APIKEY = '';
 
@@ -41,13 +43,12 @@ export const Map = (props) => {
     let journey: Journey | null = props.navigation.getParam("journey");
 
     // should maybe based on map feature extents
-    let region = journey
-        ? calculateMapRegion(journey)
-        :  {centre: {latitude: 51.509864, longitude: -0.118092}, size: {latDelta: 0.0922, lonDelta: 0.0421}};
+    let region = fromNullable(journey)
+        .map(j => calculateMapRegion(j))
+        .getOrElse({centre: {latitude: 51.509864, longitude: -0.118092}, size: {latDelta: 0.0922, lonDelta: 0.0421}});
 
     const [fabActive, setFabActive] = useState(() => false);
-    const [showPollution, togglePollution] = useState(() => true);
-    const [showSchools, toggleSchools] = useState(() => true);
+    const {showPollution, showSchools, togglePollution, toggleSchools} = useContext(JourneyContext);
     const [mapData, setMapData] = useState<MapData>();
     const mapRef = useRef<MapView>();
     const [showSearch, toggleSearch] = useState(() => false);
@@ -82,10 +83,22 @@ export const Map = (props) => {
     function maybeSearch() {
         if (showSearch) {
             return (
-                <Card style={{zIndex: 1, right: 10, left: 10, position: 'absolute'}}>
-                    <Input placeholder="From" style={{flex: 1}}/>
-                    <Input placeholder="From" style={{flex: 1}}/>
-                    <Input placeholder="From" style={{flex: 1}}/>
+                <Card style={{zIndex: 1, right: 10, left: 10, position: 'absolute', borderRadius: 5}}>
+                    <CardItem>
+                        <Input  placeholder="From" style={{flex: 4, borderWidth: 1, borderRadius: 5, borderColor: "#CCCCCC"}}/>
+                    </CardItem>
+                    <CardItem>
+                        <Input placeholder="To" style={{flex: 4, borderWidth: 1, borderRadius: 5, borderColor: "#CCCCCC"}}/>
+                    </CardItem>
+                    <CardItem style={{alignItems:"center"}}>
+                        <Label style={{marginRight: 5}}>Time</Label>
+                        <Picker mode="dropdown" placeholder="Time" style={{borderWidth: 1, borderRadius: 5, borderColor: "#CCCCCC"}}>
+                                <Picker.Item label="00:00" />
+                        </Picker>
+                        <Badge primary style={{width:50, height:50, borderRadius:25, alignItems:"center", justifyContent:"center"}}>
+                            <Icon name="search" type="MaterialIcons" />
+                        </Badge>
+                    </CardItem>
                 </Card>)
         } else {
             return null;

@@ -40,3 +40,12 @@ export interface RouteInfo {
     schoolCount: number,
     distance: number
 }
+
+export interface JourneySettings {
+    showPollution: boolean,
+    showSchools: boolean,
+    startTime: string,
+    togglePollution: (showPollution: boolean) => void,
+    toggleSchools: (showSchools: boolean) => void,
+    toggleStartTime: (startTime: string) => void
+}

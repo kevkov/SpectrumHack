@@ -13,9 +13,14 @@
                 <ul class="nav flex-column">
                     <li class="nav-item">
                         <a class="nav-link active" href="#">
-                            ********
-                            User Icon
+                            <img src="https://mdxvitals-res.cloudinary.com/private_images/q_auto/professionals/1881689/photo.jpg" alt="Neil Tanna">
+                            <span class="sr-only">(current)</span>
+                        </a>
+                        <a class="nav-link active" href="#">
                             Neil Tanna
+                            <span class="sr-only">(current)</span>
+                        </a>
+                        <a class="nav-link active" href="#">
                             53 available points
                             <span class="sr-only">(current)</span>
                         </a>
@@ -166,12 +171,24 @@
                 showSchools +
                 '&startTime=' +
                 startTime +
-                '&startName=NorthGreenwich&startLongitude=0.00447&startLatitude=51.49847&endName=Westerminster,endLongitude=-0.13563,endLatitude=51.4975';
-            
+                '&startName=NorthGreenwich&startLongitude=0.00447&startLatitude=51.49847&endName=Westminster,endLongitude=-0.13563,endLatitude=51.4975';
+
+            var heatMapData = [
+                { location: new google.maps.LatLng(51.49847, 0.00447), weight: 90000 },
+                { location: new google.maps.LatLng(51.4975, -0.13563), weight: 90000 }
+            ];
+
             map = new google.maps.Map(document.getElementById('mapContainer'), {
                 center: new google.maps.LatLng(51.49869, -0.12616),
                 zoom: 12.2,
                 mapTypeId: 'terrain'
+            });
+
+            var heatMap = new google.maps.visualization.HeatmapLayer({
+                data: heatMapData,
+                dissipating: false,
+                radius: 100,
+                map: map
             });
 
             var kmlLayer = new google.maps.KmlLayer(src, {
@@ -182,7 +199,7 @@
         }
     </script>
     <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9wNb5Blyil-FPnHyuxNQi3-Zz1qBy2Pc&callback=initMap">
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9wNb5Blyil-FPnHyuxNQi3-Zz1qBy2Pc&libraries=visualization&callback=initMap">
     </script>
 
 }
