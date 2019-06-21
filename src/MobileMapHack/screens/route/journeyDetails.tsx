@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useContext} from 'react';
-import {Card, CardItem, Content, Text, Left, Right, Body} from "native-base";
+import {Card, CardItem, Content, Text, Left, Right, Body, View} from "native-base";
 import { FlatList, StyleSheet } from 'react-native';
 import { RouteInfo, JourneySettings } from '../../domain/types';
 import { api } from '../../api';
@@ -24,18 +24,15 @@ export const JourneyDetails = (props) => {
             });
         }, []);
 
-    const GetHeaderStyle = (backgroundColourHex: string) => {
-        return {
-            backgroundColor: backgroundColourHex
-        };
-    }
-
     const styles = StyleSheet.create({
         headerText: {
             fontWeight: '600'
         },
         content: {
             padding: 10
+        },
+        detailItem: {
+            padding: 5
         }
     });
 
@@ -46,29 +43,20 @@ export const JourneyDetails = (props) => {
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={datum =>
             <Card>
-                <CardItem bordered style={GetHeaderStyle(datum.item.colorInHex)}>
-                    <Text style={styles.headerText}>{datum.item.routeLabel}</Text>
+                <CardItem bordered style={{backgroundColor: datum.item.colorInHex}}>
+                    <Text style={styles.headerText}>{datum.item.routeLabel} ({datum.item.modeOfTransport})</Text>
                 </CardItem>
-                <CardItem>
-                    <Left>
-                        <Text>Air Quality Index: {datum.item.pollutionPoint}</Text>
-                    </Left>
+                <CardItem style={{backgroundColor: '#eeeeee'}}>
                     <Body>
-                        <Text>Schools: {datum.item.schoolCount}</Text>
+                        <View>
+                            <Text style={styles.detailItem}>Green score: {datum.item.pollutionPoint}</Text>
+                            <Text style={styles.detailItem}>Schools: {datum.item.schoolCount}</Text>
+                            <Text style={styles.detailItem}>Distance: {datum.item.distance} miles</Text>
+                            <Text style={styles.detailItem}>Average Air Quality: {datum.item.pollutionZone}</Text>
+                            <Text style={styles.detailItem}>Travel time: {datum.item.duration}</Text>
+                            <Text style={styles.detailItem}>Travel cost: £{datum.item.travelCost.toFixed(2)}</Text>
+                        </View>
                     </Body>
-                </CardItem>
-                <CardItem>
-                    <Left>
-                        <Text>Distance: {datum.item.distance}</Text>
-                    </Left>
-                    <Body>
-                        <Text>Travel Time: {datum.item.duration}</Text>
-                    </Body>
-                </CardItem>
-                <CardItem>
-                    <Left>
-                        <Text style={styles.headerText}>Travel Cost: {datum.item.travelCost}</Text>
-                    </Left>
                 </CardItem>
             </Card>
             }/>
