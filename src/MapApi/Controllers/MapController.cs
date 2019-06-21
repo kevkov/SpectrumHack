@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Microsoft.AspNetCore.Cors;
 
 namespace MapApi.Controllers
 {
@@ -70,6 +71,21 @@ namespace MapApi.Controllers
             return CreateRouteInfo(fullJourneyOptions); ;
         }
 
+        [Route("pollution")]
+        [HttpGet]
+        public async Task<ActionResult<List<HeatMapPoint>>> HeatMap()
+        {
+            var markers = this._pollutionRepo.GetMarkers();
+            var t = markers.Select(x => new HeatMapPoint()
+            {
+                Location = x.Coordinate,
+                Weight = x.Value * 10000
+            }).ToList();
+
+            return t;
+        }
+
+        private async Task<Journey> GetJourney()
         private bool UseCacheData(int journeyId, double startLongitude, double startLatitude, double endLongitude, double endLatitude)
         {
             bool useCacheData = true;
