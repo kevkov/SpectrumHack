@@ -50,7 +50,7 @@
         [HttpGet]
         public async Task<ActionResult<string>> Get()
         {
-            return await this.Get(1, true, true, new TimeSpan(9, 0, 0), "North Greenwich", 0.00447m, 51.49847m, "Westminster", -0.13563m, 51.4975m);
+            return await this.Get(1, true, true, new TimeSpan(9, 0, 0), "North Greenwich", 0.00447m, 51.49847m, "Westminster", -0.13563m, 51.4975m, (new Random().Next()));
         }
 
         [Route("routes/{journeyId:int}/{showPollution:bool}/{showSchools:bool}/{startTime:DateTime}")]
@@ -206,10 +206,10 @@
             return duration;
         }
 
-        // GET api/map/1?showPollution=true&showSchools=true&startTime=09:00:00&startName=NorthGreenwich&startLongitude=0.00447&startLatitude=51.49847&endName=Westerminster&endLongitude=-0.13563&endLatitude=51.4975
+        // GET api/map/1?showPollution=true&showSchools=true&startTime=09:00:00&startName=NorthGreenwich&startLongitude=0.00447&startLatitude=51.49847&endName=Westerminster&endLongitude=-0.13563&endLatitude=51.4975&rand=12
         [HttpGet]
         [Route("{journeyId}")]
-        public async Task<ActionResult<string>> Get(int journeyId, [FromQuery]bool showPollution, [FromQuery]bool showSchools, [FromQuery]TimeSpan startTime, [FromQuery]string startName, [FromQuery]decimal startLongitude, [FromQuery]decimal startLatitude, [FromQuery]string endName, [FromQuery]decimal endLongitude, [FromQuery]decimal endLatitude)
+        public async Task<ActionResult<string>> Get(int journeyId, [FromQuery]bool showPollution, [FromQuery]bool showSchools, [FromQuery]TimeSpan startTime, [FromQuery]string startName, [FromQuery]decimal startLongitude, [FromQuery]decimal startLatitude, [FromQuery]string endName, [FromQuery]decimal endLongitude, [FromQuery]decimal endLatitude, [FromQuery]decimal rand)
         {
             RouteOptions fullJourneyOptions = await this.ProcessJourney(journeyId, startTime, showPollution, showSchools);
 
