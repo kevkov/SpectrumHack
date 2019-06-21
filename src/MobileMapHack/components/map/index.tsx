@@ -48,7 +48,7 @@ export const Map = (props) => {
         :  {centre: {latitude: 51.509864, longitude: -0.118092}, size: {latDelta: 0.0922, lonDelta: 0.0421}};
 
     const [fabActive, setFabActive] = useState(() => false);
-    const journeySettings = useContext(JourneyContext);
+    const {showPollution, showSchools, togglePollution, toggleSchools} = useContext(JourneyContext);
     const [mapData, setMapData] = useState<MapData>();
     const mapRef = useRef<MapView>();
     const [showSearch, toggleSearch] = useState(() => false);
@@ -65,7 +65,7 @@ export const Map = (props) => {
 
     useEffect(() => {
         if (journey != null) {
-            api<MapData>(`http://10.0.2.2:5000/api/map/mobile/${journey.id}?showPollution=${journeySettings.showPollution}&showSchools=${journeySettings.showSchools}`)
+            api<MapData>(`http://10.0.2.2:5000/api/map/mobile/${journey.id}?showPollution=${showPollution}&showSchools=${showSchools}`)
                 .then(data => {
                     console.log("*********** calling api");
                     setMapData(data);
@@ -78,7 +78,7 @@ export const Map = (props) => {
                     Toast.show({text: "There was a problem getting the route details", position: "bottom"});
                 });
         }
-    }, [journey, journeySettings.showPollution, journeySettings.showSchools]);
+    }, [journey, showPollution, showSchools]);
 
     function maybeSearch() {
         if (showSearch) {
@@ -139,13 +139,13 @@ export const Map = (props) => {
                 onPress={() => setFabActive(!fabActive)}>
                 <Icon name="playlist-add-check" type="MaterialIcons"/>
                 <Button
-                    onPress={() => journeySettings.togglePollution(!journeySettings.showPollution)}
-                    style={{backgroundColor: journeySettings.showPollution ? "#B5651D" : "#CCCCCC"}}>
+                    onPress={() => togglePollution(!showPollution)}
+                    style={{backgroundColor: showPollution ? "#B5651D" : "#CCCCCC"}}>
                     <Icon name="cloud-circle" type="MaterialIcons"/>
                 </Button>
                 <Button
-                    onPress={() => journeySettings.toggleSchools(!journeySettings.showSchools)}
-                    style={{backgroundColor: journeySettings.showSchools ? "#397D02" : "#CCCCCC"}}>
+                    onPress={() => toggleSchools(!showSchools)}
+                    style={{backgroundColor: showSchools ? "#397D02" : "#CCCCCC"}}>
                     <Icon name="school" type="MaterialIcons"/>
                 </Button>
             </Fab>

@@ -6,16 +6,16 @@ import { api } from '../../api';
 import JourneyContext from '../../context/JourneyContext';
 
 export const JourneyDetails = (props) => {
-    const journeySettings = useContext<JourneySettings>(JourneyContext);
+    const {showPollution, showSchools, startTime} = useContext(JourneyContext);
     const [routeInfoItems, setRouteInfoItems] = useState<RouteInfo[]>();
 
     useEffect(() => {
         var uri = "http://spectrummapapi.azurewebsites.net/api/map/routes/1/" +
-        journeySettings.showPollution + "/" +
-        journeySettings.showSchools + "/" +
-        journeySettings.startTime;
+        showPollution + "/" +
+        showSchools + "/" +
+        startTime;
 
-        console.log(journeySettings.showPollution);
+        console.log(showPollution);
 
         api<RouteInfo[]>(uri)
             .then(data => {
@@ -43,6 +43,7 @@ export const JourneyDetails = (props) => {
         <Content style={styles.content}>
             <FlatList
                     data={routeInfoItems}
+                    keyExtractor={(item, index) => index.toString()}
                     renderItem={datum =>
             <Card>
                 <CardItem bordered style={GetHeaderStyle(datum.item.colorInHex)}>

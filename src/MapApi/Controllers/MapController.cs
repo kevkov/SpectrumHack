@@ -173,7 +173,7 @@ namespace MapApi.Controllers
                 }
             }
 
-             return duration;
+            return duration;
         }
 
         // GET api/map/1?showPollution=true&showSchools=true&startTime=09:00:00&startName=NorthGreenwich&startLongitude=0.00447&startLatitude=51.49847&endName=Westerminster&endLongitude=-0.13563&endLatitude=51.4975
