@@ -1,14 +1,8 @@
-﻿using GoogleMapAPIWeb.Models;
-using MapApi.ViewModels;
-using System.Drawing;
-using System.Globalization;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using Microsoft.AspNetCore.Cors;
-
-namespace MapApi.Controllers
+﻿namespace MapApi.Controllers
 {
+    using GeoCoordinatePortable;
+    using GoogleMapAPIWeb.Models;
+    using MapApi.ViewModels;
     using MapApiCore.Interfaces;
     using MapApiCore.Models;
     using MapApiCore.Models.Kml;
@@ -16,17 +10,20 @@ namespace MapApi.Controllers
     using Services.Interfaces;
     using System;
     using System.Collections.Generic;
+    using System.Drawing;
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.Text;
+    using System.Threading.Tasks;
     using System.Xml;
+    using System.Xml.Linq;
     using System.Xml.Serialization;
 
     [Route("api/[controller]")]
     [ApiController]
     public class MapController : ControllerBase
     {
-        private Dictionary<string, string> _parameter = new Dictionary<string, string>();
         private Journey journey = new Journey();
 
         private const double MarkerIntersectionRangeInMetres = 200;
@@ -47,20 +44,13 @@ namespace MapApi.Controllers
             _journeyRepo = journeyRepo;
             _interactionService = interactionService;
             _directionService = directionService;
-
-            _parameter.Add("JourneyId", "");
-            _parameter.Add("ShowPollution", "");
-            _parameter.Add("ShowSchool", "");
-            _parameter.Add("DepartureTime", "");
-            _parameter.Add("StartLocation", "");
-            _parameter.Add("EndLocation", "");
         }
 
         // GET api/map
         [HttpGet]
         public async Task<ActionResult<string>> Get()
         {
-            return await this.Get(1, true, true, new TimeSpan(9, 0, 0), "North Greenwich", 0.00447m, 51.49847m, "Westminster", -0.13563m, 51.4975m);
+            return await this.Get(1, true, true, new TimeSpan(9, 0, 0), "North Greenwich", 0.00447m, 51.49847m, "Westminster", -0.13563m, 51.4975m, (new Random().Next()));
         }
 
         [Route("routes/{journeyId:int}/{showPollution:bool}/{showSchools:bool}/{startTime:DateTime}")]
@@ -85,58 +75,27 @@ namespace MapApi.Controllers
             return t;
         }
 
-        private async Task<Journey> GetJourney()
-        private bool UseCacheData(int journeyId, double startLongitude, double startLatitude, double endLongitude, double endLatitude)
-        {
-            bool useCacheData = true;
-
-            if (!_parameter["JourneyId"].Equals(journeyId.ToString()))
-            {
-                _parameter["JourneyId"] = journeyId.ToString();
-                useCacheData = false;
-            }
-            else if (!_parameter["StartLocation"].Equals
-                ($"{startLatitude.ToString(CultureInfo.InvariantCulture)},{startLongitude.ToString(CultureInfo.InvariantCulture)}"))
-            {
-                _parameter["StartLocation"] =
-                    $"{startLatitude.ToString(CultureInfo.InvariantCulture)},{startLongitude.ToString(CultureInfo.InvariantCulture)}";
-                useCacheData = false;
-            }
-            else if (!_parameter["EndLocation"].Equals
-                ($"{endLatitude.ToString(CultureInfo.InvariantCulture)},{endLongitude.ToString(CultureInfo.InvariantCulture)}"))
-            {
-                _parameter["EndLocation"] =
-                    $"{endLatitude.ToString(CultureInfo.InvariantCulture)},{endLongitude.ToString(CultureInfo.InvariantCulture)}";
-                useCacheData = false;
-            }
-
-            return useCacheData;
-        }
-
         private async Task<Journey> GetJourney(int journeyId, double startLongitude, double startLatitude, double endLongitude, double endLatitude)
         {
-            if (!UseCacheData(journeyId, startLongitude, startLatitude, endLongitude, endLatitude))
-            {
-                if (journeyId > 0)
-                {
-                    journey = _journeyRepo.GetJourney(journeyId);
-                }
-                else
-                {
-                    //  Start Lng = 0.00447,   Start Lat = 51.49847
-                    //  End Lng = -0.13563,     End Lat = 51.4975
-                    var xmlResponse = await _directionService.GetAsync(new Coordinate(startLongitude, 51.49847),
-                                            new Coordinate(endLongitude, endLatitude));
+            journey = _journeyRepo.GetJourney(journeyId);
 
-                    journey = ParseResponseToPopulateRouteOption(xmlResponse);
-                }
-            }
+            //var firstGeoCoordinate = new GeoCoordinate(startLatitude, startLongitude);
+            //var secondGeoCoordinate = new GeoCoordinate(journey.Start.Latitude, journey.End.Longitude);
+
+            //if (firstGeoCoordinate.GetDistanceTo(secondGeoCoordinate) > 200)
+            //{
+            //    //  Start Lng = 0.00447,   Start Lat = 51.49847
+            //    //  End Lng = -0.13563,     End Lat = 51.4975
+            //    var xmlResponse = await _directionService.GetAsync(new Coordinate(startLongitude, 51.49847),
+            //                            new Coordinate(endLongitude, endLatitude));
+
+            //    journey = ParseResponseToPopulateRouteOption(xmlResponse, startLongitude, startLatitude, endLongitude, endLatitude);
+            //}
 
             return journey;
         }
 
-
-        private Journey ParseResponseToPopulateRouteOption(string response)
+        private Journey ParseResponseToPopulateRouteOption(string response, double startLongitude, double startLatitude, double endLongitude, double endLatitude)
         {
             var txtXml = response.Replace("&nbsp;", "&#160;");
 
@@ -169,6 +128,10 @@ namespace MapApi.Controllers
                      };
 
             journey.Routes = new List<Route>();
+            journey.JourneyId = 1;
+            journey.Start = new PointDetails("Start", startLongitude, startLatitude);
+            journey.End = new PointDetails("End", endLongitude, endLatitude);
+
             try
             {
                 foreach (var r in rt)
@@ -243,14 +206,14 @@ namespace MapApi.Controllers
             return duration;
         }
 
-        // GET api/map/1?showPollution=true&showSchools=true&startTime=09:00:00&startName=NorthGreenwich&startLongitude=0.00447&startLatitude=51.49847&endName=Westerminster&endLongitude=-0.13563&endLatitude=51.4975
+        // GET api/map/1?showPollution=true&showSchools=true&startTime=09:00:00&startName=NorthGreenwich&startLongitude=0.00447&startLatitude=51.49847&endName=Westerminster&endLongitude=-0.13563&endLatitude=51.4975&rand=12
         [HttpGet]
         [Route("{journeyId}")]
-        public async Task<ActionResult<string>> Get(int journeyId, [FromQuery]bool showPollution, [FromQuery]bool showSchools, [FromQuery]TimeSpan startTime, [FromQuery]string startName, [FromQuery]decimal startLongitude, [FromQuery]decimal startLatitude, [FromQuery]string endName, [FromQuery]decimal endLongitude, [FromQuery]decimal endLatitude)
+        public async Task<ActionResult<string>> Get(int journeyId, [FromQuery]bool showPollution, [FromQuery]bool showSchools, [FromQuery]TimeSpan startTime, [FromQuery]string startName, [FromQuery]decimal startLongitude, [FromQuery]decimal startLatitude, [FromQuery]string endName, [FromQuery]decimal endLongitude, [FromQuery]decimal endLatitude, [FromQuery]decimal rand)
         {
             RouteOptions fullJourneyOptions = await this.ProcessJourney(journeyId, startTime, showPollution, showSchools);
 
-            var kmlString =await this.CreateTestKmlString(fullJourneyOptions, journeyId, showPollution, showSchools);
+            var kmlString = await this.CreateTestKmlString(fullJourneyOptions, journeyId, showPollution, showSchools);
             return kmlString;
         }
 
@@ -475,7 +438,7 @@ namespace MapApi.Controllers
                             {
                                 Name = route.Label,
                                 StyleUrl = $"#line-{route.GreenScore}-{route.Cost}-{route.Colour}",
-                                Point = new Point()
+                                Point = new MapApiCore.Models.Kml.Point()
                                 {
                                     Coordinates = $"{markerCoordinate.Longitude},{markerCoordinate.Latitude},0"
                                 }
@@ -514,7 +477,7 @@ namespace MapApi.Controllers
                             {
                                 Name = routeOptions.StartLocation.Name,
                                 StyleUrl = "#icon-route-start",
-                                Point = new Point()
+                                Point = new MapApiCore.Models.Kml.Point()
                                 {
                                     Coordinates = $"{routeOptions.StartLocation.Longitude},{routeOptions.StartLocation.Latitude},0"
                                 }
@@ -524,7 +487,7 @@ namespace MapApi.Controllers
                             {
                                 Name = routeOptions.EndLocation.Name,
                                 StyleUrl = "#icon-route-end",
-                                Point = new Point()
+                                Point = new MapApiCore.Models.Kml.Point()
                                 {
                                     Coordinates = $"{routeOptions.EndLocation.Longitude},{routeOptions.EndLocation.Latitude},0"
                                 }
@@ -548,7 +511,7 @@ namespace MapApi.Controllers
                 var er = new EnrichedRoute()
                 {
                     Label = $"Option:{i}",
-                    RouteMarkers = journeyOption.Coordinates.Select(x => new Marker(new Coordinate(x.Longitude, x.Latitude), 0, string.Empty)).ToList(),
+                    RouteMarkers = journeyOption.Coordinates.Select(x => new MapApiCore.Models.Marker(new Coordinate(x.Longitude, x.Latitude), 0, string.Empty)).ToList(),
                     PollutionMarkers = GetPollutionMarkersForRoute(journeyOption.Coordinates, startTime),
                     SchoolMarkers = GetSchoolMarkersForRoute(journeyOption.Coordinates, MarkerIntersectionRangeInMetres, startTime)
                 };
@@ -589,14 +552,14 @@ namespace MapApi.Controllers
             };
         }
 
-        private async Task<List<Marker>> GetPollutionMarkersForJourney(int journeyId)
+        private async Task<List<MapApiCore.Models.Marker>> GetPollutionMarkersForJourney(int journeyId)
         {
             // var journey = _journeyRepo.GetJourney(journeyId);
             var journeyOptions = await GetJourney(journeyId, 0, 0, 0, 0);
 
             var pollutionMarkers = this._pollutionRepo.GetMarkers();
 
-            var matchedMarkers = new List<Marker>();
+            var matchedMarkers = new List<MapApiCore.Models.Marker>();
 
             foreach (var journeyRoute in journey.Routes)
             {
@@ -607,13 +570,13 @@ namespace MapApi.Controllers
             return matchedMarkers;
         }
 
-        private async Task<List<Marker>> GetSchoolMarkersForJourney(int journeyId)
+        private async Task<List<MapApiCore.Models.Marker>> GetSchoolMarkersForJourney(int journeyId)
         {
             // var journey = _journeyRepo.GetJourney(journeyId);
             var journeyOptions = await GetJourney(journeyId, 0, 0, 0, 0);
             var schoolMarkers = this._schoolRepo.GetMarkers();
 
-            var matchedMarkers = new List<Marker>();
+            var matchedMarkers = new List<MapApiCore.Models.Marker>();
 
             foreach (var journeyRoute in journey.Routes)
             {
@@ -624,7 +587,7 @@ namespace MapApi.Controllers
             return matchedMarkers;
         }
 
-        private List<Marker> GetPollutionMarkersForRoute(List<Coordinate> routeCoordinates, TimeSpan? startTime = null)
+        private List<MapApiCore.Models.Marker> GetPollutionMarkersForRoute(List<Coordinate> routeCoordinates, TimeSpan? startTime = null)
         {
             var pollutionMarkers = this._pollutionRepo.GetMarkers();
             var markers = _interactionService.FindMarkersOnRoute(routeCoordinates, pollutionMarkers, MarkerIntersectionRangeInMetres, startTime);
@@ -632,7 +595,7 @@ namespace MapApi.Controllers
             return markers;
         }
 
-        private List<Marker> GetSchoolMarkersForRoute(List<Coordinate> routeCoordinates, double rangeInMetres, TimeSpan? startTime = null)
+        private List<MapApiCore.Models.Marker> GetSchoolMarkersForRoute(List<Coordinate> routeCoordinates, double rangeInMetres, TimeSpan? startTime = null)
         {
             var schoolMarkers = this._schoolRepo.GetMarkers();
             var markers = _interactionService.FindMarkersOnRoute(routeCoordinates, schoolMarkers, rangeInMetres, startTime);
@@ -669,7 +632,7 @@ namespace MapApi.Controllers
             return path;
         }
 
-        private List<Placemark> CreatePlacemarks(List<Marker> markers, string style = "#icon-1769-0F9D58-nodesc-normal")
+        private List<Placemark> CreatePlacemarks(List<MapApiCore.Models.Marker> markers, string style = "#icon-1769-0F9D58-nodesc-normal")
         {
             var placemarks = new List<Placemark>();
 
@@ -679,14 +642,14 @@ namespace MapApi.Controllers
                 {
                     Name = $"{marker.Description}",
                     StyleUrl = style,
-                    Point = new Point { Coordinates = $"{marker.Coordinate.Longitude},{marker.Coordinate.Latitude}" }
+                    Point = new MapApiCore.Models.Kml.Point { Coordinates = $"{marker.Coordinate.Longitude},{marker.Coordinate.Latitude}" }
                 });
             }
 
             return placemarks;
         }
 
-        private List<Placemark> CreatePlacemarksVariable(List<Marker> markers, string stylePrefix)
+        private List<Placemark> CreatePlacemarksVariable(List<MapApiCore.Models.Marker> markers, string stylePrefix)
         {
             var placemarks = new List<Placemark>();
 
@@ -696,7 +659,7 @@ namespace MapApi.Controllers
                 {
                     Name = $"{marker.Description}",
                     StyleUrl = stylePrefix + marker.Value,
-                    Point = new Point { Coordinates = $"{marker.Coordinate.Longitude},{marker.Coordinate.Latitude}" }
+                    Point = new MapApiCore.Models.Kml.Point { Coordinates = $"{marker.Coordinate.Longitude},{marker.Coordinate.Latitude}" }
                 });
             }
 

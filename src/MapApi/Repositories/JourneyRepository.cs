@@ -1,9 +1,9 @@
 ﻿namespace MapApi.Repositories
 {
-    using System.Collections.Generic;
-    using System.Linq;
     using MapApiCore.Interfaces;
     using MapApiCore.Models;
+    using System.Collections.Generic;
+    using System.Linq;
 
     public class JourneyRepository : RepositoryBase, IJourneyRepository
     {
@@ -14,6 +14,11 @@
         public JourneyRepository()
         {
             this._journeys = ReadData<Journey>(fileName);
+        }
+
+        public void WriteJourney(List<Journey> journeys)
+        {
+            WriteData<Journey>(fileName, journeys);
         }
 
         public Journey GetJourney(int journeyId)

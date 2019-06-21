@@ -1,9 +1,9 @@
 ﻿namespace MapApi.Repositories
 {
+    using Newtonsoft.Json;
     using System.Collections.Generic;
     using System.IO;
     using System.Reflection;
-    using Newtonsoft.Json;
 
     public abstract class RepositoryBase
     {
