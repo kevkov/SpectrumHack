@@ -171,8 +171,10 @@
                 showSchools +
                 '&startTime=' +
                 startTime +
-                '&startName=NorthGreenwich&startLongitude=0.00447&startLatitude=51.49847&endName=Westminster,endLongitude=-0.13563,endLatitude=51.4975';
-
+                '&startName=NorthGreenwich&startLongitude=0.00447&startLatitude=51.49847&endName=Westminster&endLongitude=-0.13563&endLatitude=51.4975'
+                +
+                '&rand=' + Math.random();
+            
             const response = await fetch('http://localhost:52637/api/map/pollution');
             const heatMapData = await response.json();
     
@@ -182,8 +184,6 @@
                     location: new google.maps.LatLng(v.location.latitude, v.location.longitude)
                     }
             });
-
-        console.log(heatMapResult);
 
         map = new google.maps.Map(document.getElementById('mapContainer'),
             {
