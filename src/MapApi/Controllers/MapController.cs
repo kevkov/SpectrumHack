@@ -85,7 +85,6 @@ namespace MapApi.Controllers
             return t;
         }
 
-        private async Task<Journey> GetJourney()
         private bool UseCacheData(int journeyId, double startLongitude, double startLatitude, double endLongitude, double endLatitude)
         {
             bool useCacheData = true;
