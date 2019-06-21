@@ -2,17 +2,19 @@ import React from "react";
 import {
     Content,
     Text,
-    ListItem,
     Icon,
     Container,
     Left,
-    Right,
     View, Badge
 } from "native-base";
-import {DrawerItemsProps} from "react-navigation";
+import {DrawerItemsProps, SectionList} from "react-navigation";
 import Constants from 'expo-constants';
-import {FlatList} from "react-native";
 import {Journey} from "../../domain/types";
+
+interface Section {
+    title: string,
+    data: Journey[]
+}
 
 const myJourneys:Journey[] = [
     {
@@ -56,6 +58,17 @@ const myJourneys:Journey[] = [
     },
 ];
 
+const menuItems : Section[] = [
+    {title: 'Pay', data: []},
+    {title: 'Rewards', data: []},
+    {title: 'Badges', data: []},
+    {title: 'Places', data: myJourneys},
+    {title: 'History', data: []},
+    {title: 'Help', data: []},
+    {title: 'Feedback', data: []},
+    {title: 'Logout', data: []},
+]
+
 export const SideBar = (props: DrawerItemsProps) => {
     return (
         <Container style={{paddingTop: Constants.statusBarHeight}}>
@@ -79,32 +92,36 @@ export const SideBar = (props: DrawerItemsProps) => {
                         <Badge success><Text>72</Text></Badge>
                     </View>
                 </View>
-                <FlatList
-                    data={myJourneys}
-                    keyExtractor={(item) => item.id.toString()}
-                    renderItem={datum =>
-                        <ListItem
-                            button
-                            noBorder
-                            onPress={() => {
-                                props.navigation.closeDrawer();
-                                props.navigation.navigate("Route",
-                                    {journey: datum.item});
-                            }}
-                        >
-                            <Left>
-                                <Icon
-                                    active
-                                    type={"MaterialIcons"}
-                                    name={datum.item.icon}
-                                    style={{color: "#777", fontSize: 26, width: 30}}
-                                />
-                                <Text>
-                                    {datum.item.name}
-                                </Text>
-                            </Left>
-                            <Right />
-                        </ListItem>}
+                <SectionList style={{marginLeft: 15}}
+                    sections = {menuItems}
+                    renderItem = {({item}) => 
+                    (
+                        <View style={{marginLeft: 10, padding: 10, flexDirection: 'row'}} >
+                            <Icon
+                                onPress={() => {
+                                    props.navigation.closeDrawer();
+                                    props.navigation.navigate("Route",
+                                        {journey: item});
+                                }}
+                                active
+                                type={"MaterialIcons"}
+                                name={item.icon}
+                                style={{color: "#777", fontSize: 26, width: 30}}
+                            />
+                            <Text 
+                                style={{paddingTop: 5}} 
+                                onPress={() => {
+                                    props.navigation.closeDrawer();
+                                    props.navigation.navigate("Route",
+                                        {journey: item});
+                                }}>
+                                {item.name}
+                            </Text>
+                        </View>
+                        
+                    )}
+                    renderSectionHeader = 
+                    {({section: {title}}) => (<Text style={{padding: 10, fontWeight: 'bold'}}>{title}</Text>)}
                 />
             </Content>
         </Container>

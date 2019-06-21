@@ -48,7 +48,7 @@ export const Map = (props) => {
         .getOrElse({centre: {latitude: 51.509864, longitude: -0.118092}, size: {latDelta: 0.0922, lonDelta: 0.0421}});
 
     const [fabActive, setFabActive] = useState(() => false);
-    const {showPollution, showSchools, togglePollution, toggleSchools} = useContext(JourneyContext);
+    const {showPollution, showSchools, togglePollution, toggleSchools, startTime} = useContext(JourneyContext);
     const [mapData, setMapData] = useState<MapData>();
     const mapRef = useRef<MapView>();
     const [showSearch, toggleSearch] = useState(() => false);
@@ -65,9 +65,12 @@ export const Map = (props) => {
 
     useEffect(() => {
         if (journey != null) {
-            api<MapData>(`http://10.0.2.2:5000/api/map/mobile/${journey.id}?showPollution=${showPollution}&showSchools=${showSchools}`)
+            const url = `https://spectrummapapi.azurewebsites.net/api/map/mobile/${journey.id}?showPollution=${showPollution}&showSchools=${showSchools}&startTime=${startTime}`;
+            console.log('Calling api at: ' + url);
+            
+            api<MapData>(url)
                 .then(data => {
-                    console.log("*********** calling api");
+                    console.log("*********** called api, setting map data." );
                     setMapData(data);
                     // not yet
                     // mapRef.current.fitToElements(true);
@@ -77,6 +80,9 @@ export const Map = (props) => {
                     // todo: can't have any other position that bottom does not show up
                     Toast.show({text: "There was a problem getting the route details", position: "bottom"});
                 });
+        }
+        else {
+            console.log('Map will not load: journey is null.');
         }
     }, [journey, showPollution, showSchools]);
 
