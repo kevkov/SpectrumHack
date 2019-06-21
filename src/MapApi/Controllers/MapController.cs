@@ -1,13 +1,8 @@
-﻿using GoogleMapAPIWeb.Models;
-using MapApi.ViewModels;
-using System.Drawing;
-using System.Globalization;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-
-namespace MapApi.Controllers
+﻿namespace MapApi.Controllers
 {
+    using GeoCoordinatePortable;
+    using GoogleMapAPIWeb.Models;
+    using MapApi.ViewModels;
     using MapApiCore.Interfaces;
     using MapApiCore.Models;
     using MapApiCore.Models.Kml;
@@ -15,17 +10,20 @@ namespace MapApi.Controllers
     using Services.Interfaces;
     using System;
     using System.Collections.Generic;
+    using System.Drawing;
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.Text;
+    using System.Threading.Tasks;
     using System.Xml;
+    using System.Xml.Linq;
     using System.Xml.Serialization;
 
     [Route("api/[controller]")]
     [ApiController]
     public class MapController : ControllerBase
     {
-        private Dictionary<string, string> _parameter = new Dictionary<string, string>();
         private Journey journey = new Journey();
 
         private const double MarkerIntersectionRangeInMetres = 200;
@@ -46,13 +44,6 @@ namespace MapApi.Controllers
             _journeyRepo = journeyRepo;
             _interactionService = interactionService;
             _directionService = directionService;
-
-            _parameter.Add("JourneyId", "");
-            _parameter.Add("ShowPollution", "");
-            _parameter.Add("ShowSchool", "");
-            _parameter.Add("DepartureTime", "");
-            _parameter.Add("StartLocation", "");
-            _parameter.Add("EndLocation", "");
         }
 
         // GET api/map
@@ -70,57 +61,27 @@ namespace MapApi.Controllers
             return CreateRouteInfo(fullJourneyOptions); ;
         }
 
-        private bool UseCacheData(int journeyId, double startLongitude, double startLatitude, double endLongitude, double endLatitude)
-        {
-            bool useCacheData = true;
-
-            if (!_parameter["JourneyId"].Equals(journeyId.ToString()))
-            {
-                _parameter["JourneyId"] = journeyId.ToString();
-                useCacheData = false;
-            }
-            else if (!_parameter["StartLocation"].Equals
-                ($"{startLatitude.ToString(CultureInfo.InvariantCulture)},{startLongitude.ToString(CultureInfo.InvariantCulture)}"))
-            {
-                _parameter["StartLocation"] =
-                    $"{startLatitude.ToString(CultureInfo.InvariantCulture)},{startLongitude.ToString(CultureInfo.InvariantCulture)}";
-                useCacheData = false;
-            }
-            else if (!_parameter["EndLocation"].Equals
-                ($"{endLatitude.ToString(CultureInfo.InvariantCulture)},{endLongitude.ToString(CultureInfo.InvariantCulture)}"))
-            {
-                _parameter["EndLocation"] =
-                    $"{endLatitude.ToString(CultureInfo.InvariantCulture)},{endLongitude.ToString(CultureInfo.InvariantCulture)}";
-                useCacheData = false;
-            }
-
-            return useCacheData;
-        }
-
         private async Task<Journey> GetJourney(int journeyId, double startLongitude, double startLatitude, double endLongitude, double endLatitude)
         {
-            if (!UseCacheData(journeyId, startLongitude, startLatitude, endLongitude, endLatitude))
-            {
-                if (journeyId > 0)
-                {
-                    journey = _journeyRepo.GetJourney(journeyId);
-                }
-                else
-                {
-                    //  Start Lng = 0.00447,   Start Lat = 51.49847
-                    //  End Lng = -0.13563,     End Lat = 51.4975
-                    var xmlResponse = await _directionService.GetAsync(new Coordinate(startLongitude, 51.49847),
-                                            new Coordinate(endLongitude, endLatitude));
+            journey = _journeyRepo.GetJourney(journeyId);
 
-                    journey = ParseResponseToPopulateRouteOption(xmlResponse);
-                }
+            var firstGeoCoordinate = new GeoCoordinate(startLatitude, startLongitude);
+            var secondGeoCoordinate = new GeoCoordinate(journey.Start.Latitude, journey.End.Longitude);
+
+            if (firstGeoCoordinate.GetDistanceTo(secondGeoCoordinate) > 200)
+            {
+                //  Start Lng = 0.00447,   Start Lat = 51.49847
+                //  End Lng = -0.13563,     End Lat = 51.4975
+                var xmlResponse = await _directionService.GetAsync(new Coordinate(startLongitude, 51.49847),
+                                        new Coordinate(endLongitude, endLatitude));
+
+                journey = ParseResponseToPopulateRouteOption(xmlResponse, startLongitude, startLatitude, endLongitude, endLatitude);
             }
 
             return journey;
         }
 
-
-        private Journey ParseResponseToPopulateRouteOption(string response)
+        private Journey ParseResponseToPopulateRouteOption(string response, double startLongitude, double startLatitude, double endLongitude, double endLatitude)
         {
             var txtXml = response.Replace("&nbsp;", "&#160;");
 
@@ -153,6 +114,10 @@ namespace MapApi.Controllers
                      };
 
             journey.Routes = new List<Route>();
+            journey.JourneyId = 1;
+            journey.Start = new PointDetails("Start", startLongitude, startLatitude);
+            journey.End = new PointDetails("End", endLongitude, endLatitude);
+
             try
             {
                 foreach (var r in rt)
@@ -234,7 +199,7 @@ namespace MapApi.Controllers
         {
             RouteOptions fullJourneyOptions = await this.ProcessJourney(journeyId, startTime, showPollution, showSchools);
 
-            var kmlString =await this.CreateTestKmlString(fullJourneyOptions, journeyId, showPollution, showSchools);
+            var kmlString = await this.CreateTestKmlString(fullJourneyOptions, journeyId, showPollution, showSchools);
             return kmlString;
         }
 

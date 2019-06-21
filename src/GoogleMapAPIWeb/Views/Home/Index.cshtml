@@ -113,17 +113,17 @@
                     @foreach (var hvm in Model.RouteInfos)
                     {
                         <div class="card mb-4 shadow-sm">
-                            <div class="card-header">
+                            <div class="card-header" style="background-color: @hvm.ColorInHex">
                                 <h4 my-0-font-weight-normat> @hvm.RouteLabel (@hvm.ModeOfTransport) </h4>
                             </div>
-                            <div class="card-body" style="background-color: @hvm.ColorInHex">
+                            <div class="card-body" >
                                 <ul class="list-unstyled mt-3 mb-4">
                                     <li><h6>Green score: @hvm.PollutionPoint</h6></li>
-                                    <li><h6>Pollution zone: @hvm.PollutionZone</h6></li>
-                                    <li><h6>Distance: @hvm.Distance miles</h6></li>
-                                    <li><h6>Travel time: @hvm.Duration</h6></li>
-                                    <li><h6>Travel cost: @hvm.TravelCost</h6></li>
                                     <li><h6>Schools: @(hvm.SchoolCount == 0 ? "N/A" : hvm.SchoolCount.ToString())</h6></li>
+                                    <li><h6>Distance: @hvm.Distance miles</h6></li>
+                                    <li><h6>Average Air Quality: @hvm.PollutionZone</h6></li>
+                                    <li><h6>Travel time: @hvm.Duration</h6></li>
+                                    <li><h6>Travel cost: £@hvm.TravelCost</h6></li>
                                 </ul>
                             </div>
                         </div>
