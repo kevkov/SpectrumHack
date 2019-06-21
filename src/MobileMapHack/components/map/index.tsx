@@ -1,8 +1,8 @@
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE} from "react-native-maps";
 //import MapViewDirections from "react-native-maps-directions";
 import React, {useEffect, useRef, useState, useContext} from "react";
-import {MapData, LatLng, Journey, JourneySettings} from "../../domain/types";
-import {Button, Fab, Icon, Input, Card, Toast, CardItem, Badge, Label, Picker, View} from "native-base";
+import {MapData, LatLng, Journey} from "../../domain/types";
+import {Button, Fab, Icon, Input, Card, Toast, CardItem, Label, Picker, View} from "native-base";
 // @ts-ignore
 import StartImg from "../../assets/start.png"
 // @ts-ignore
@@ -20,7 +20,6 @@ import FourImg from "../../assets/four.png"
 import {api} from "../../api"
 import { fromNullable } from "fp-ts/lib/Option";
 import JourneyContext from "../../context/JourneyContext";
-import {formatDataAsUrl} from "expo/build/takeSnapshotAsync/Utils.web";
 
 const GOOGLE_MAPS_APIKEY = '';
 
@@ -90,14 +89,14 @@ export const Map = (props) => {
                     <CardItem>
                         <Input placeholder="To" style={{flex: 4, borderWidth: 1, borderRadius: 5, borderColor: "#CCCCCC"}}/>
                     </CardItem>
-                    <CardItem style={{alignItems:"center"}}>
+                    <CardItem>
                         <Label style={{marginRight: 5}}>Time</Label>
-                        <Picker mode="dropdown" placeholder="Time" style={{borderWidth: 1, borderRadius: 5, borderColor: "#CCCCCC"}}>
+                        <Picker mode="dropdown">
                                 <Picker.Item label="00:00" />
                         </Picker>
-                        <Badge primary style={{width:50, height:50, borderRadius:25, alignItems:"center", justifyContent:"center"}}>
+                        <Button primary style={{width:50, height:50, borderRadius:25, alignItems:"center", justifyContent:"center"}}>
                             <Icon name="search" type="MaterialIcons" />
-                        </Badge>
+                        </Button>
                     </CardItem>
                 </Card>)
         } else {
