@@ -61,7 +61,21 @@
             return CreateRouteInfo(fullJourneyOptions); ;
         }
 
-        private async Task<Journey> GetJourney(int journeyId, double startLongitude, double startLatitude, double endLongitude, double endLatitude)
+        [Route("pollution")]
+        [HttpGet]
+        public async Task<ActionResult<List<HeatMapPoint>>> HeatMap()
+        {
+            var markers = this._pollutionRepo.GetMarkers();
+            var t = markers.Select(x => new HeatMapPoint()
+            {
+                Location = x.Coordinate,
+                Weight = x.Value * 10000
+            }).ToList();
+
+            return t;
+        }
+
+        private bool UseCacheData(int journeyId, double startLongitude, double startLatitude, double endLongitude, double endLatitude)
         {
             journey = _journeyRepo.GetJourney(journeyId);
 
