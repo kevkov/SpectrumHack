@@ -1,9 +1,11 @@
 import React, { useEffect, useState} from 'react';
 import { api } from '../api';
-import { RouteInfo } from '../domain/RouteInfo';
+import { RouteInfo } from '../domain/Types';
 import SideBar from './sideBar';
+import RouteMap from './routeMap';
 
 const MapContainer: React.FC = () => {
+    const googleApiKey = 'AIzaSyCjQApmRLPeuXLNBIKgnFpiHNpXU21mjWQ';
     const journeyId = 1;
     const [showPollution, togglePollution] = useState(() => false);
     const [showSchools, toggleSchools] = useState(() => false);
@@ -95,8 +97,17 @@ const MapContainer: React.FC = () => {
                             </div>
                         </div>
                     </div>
+                    
+                    <RouteMap
+                        googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${googleApiKey}&v=3.exp&libraries=geometry,drawing,places,visualization,drawing,places`}
+                        loadingElement={<div style={{ height: `100%` }} />}
+                        containerElement={<div style={{ height: `400px` }} />}
+                        mapElement={<div style={{ height: `100%` }} />}
+                        showPollution={showPollution}
+                        showSchools={showSchools}
+                        startTime={startTime}                                                
+                    />
 
-                    <div id="mapContainer" className="my-4 w-100 mb-2"></div>
                     <h6>&nbsp;</h6>
                     <div className="container ">
                         <div className="card-deck mb-3 text">
