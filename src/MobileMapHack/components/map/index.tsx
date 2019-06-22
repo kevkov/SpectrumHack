@@ -168,7 +168,7 @@ const SearchPanel = (props:{show:boolean}) => {
 
     console.log(" ******** rendering search");
     return (
-        <Animated.View style={{top: top, position: 'absolute', right: 10, left: 10, zIndex: 1}}>
+        <Animated.View style={{top: top, position: 'absolute', right: 10, left: 10}}>
         <Card style={{borderRadius: 5}}>
             <CardItem>
                 <Input  placeholder="From" style={{flex: 4, borderWidth: 1, borderRadius: 5, borderColor: "#CCCCCC"}}/>
