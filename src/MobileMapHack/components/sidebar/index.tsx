@@ -4,7 +4,6 @@ import {
     Text,
     Icon,
     Container,
-    Left,
     View, Badge
 } from "native-base";
 import {Image} from "react-native";
@@ -20,7 +19,7 @@ interface Section {
     data: Journey[]
 }
 
-const myJourneys:Journey[] = [
+const myJourneys: Journey[] = [
     {
         id: 1,
         name: "Home to Work",
@@ -49,7 +48,7 @@ const myJourneys:Journey[] = [
     }
 ];
 
-const menuItems : Section[] = [
+const menuItems: Section[] = [
     {title: 'Pay', data: []},
     {title: 'Rewards', data: []},
     {title: 'Badges', data: []},
@@ -58,7 +57,7 @@ const menuItems : Section[] = [
     {title: 'Help', data: []},
     {title: 'Feedback', data: []},
     {title: 'Logout', data: []},
-]
+];
 
 export const SideBar = (props: DrawerItemsProps) => {
     return (
@@ -69,7 +68,7 @@ export const SideBar = (props: DrawerItemsProps) => {
                     flexDirection: 'row',
                     alignItems: 'center',
                 }}>
-                    <Image source={PersonImg} style={{width: 150, height:206}} />
+                    <Image source={PersonImg} style={{width: 150, height: 206}}/>
                     <View style={{
                         marginLeft: 15
                     }}>
@@ -79,35 +78,37 @@ export const SideBar = (props: DrawerItemsProps) => {
                     </View>
                 </View>
                 <SectionList style={{marginLeft: 15}}
-                    sections = {menuItems}
-                    renderItem = {({item}) => 
-                    (
-                        <View style={{marginLeft: 10, padding: 10, flexDirection: 'row'}} >
-                            <Icon
-                                onPress={() => {
-                                    props.navigation.closeDrawer();
-                                    props.navigation.navigate("Route",
-                                        {journey: item});
-                                }}
-                                active
-                                type={"MaterialIcons"}
-                                name={item.icon}
-                                style={{color: "#777", fontSize: 26, width: 30}}
-                            />
-                            <Text 
-                                style={{paddingTop: 5}} 
-                                onPress={() => {
-                                    props.navigation.closeDrawer();
-                                    props.navigation.navigate("Route",
-                                        {journey: item});
-                                }}>
-                                {item.name}
-                            </Text>
-                        </View>
-                        
-                    )}
-                    renderSectionHeader = 
-                    {({section: {title}}) => (<Text style={{padding: 10, fontWeight: 'bold'}}>{title}</Text>)}
+                             sections={menuItems}
+                             keyExtractor={((item, index) => item + index)}
+                             renderItem={({item}) =>
+                                 (
+                                     <View style={{marginLeft: 10, padding: 10, flexDirection: 'row'}}>
+                                         <Icon
+                                             onPress={() => {
+                                                 props.navigation.closeDrawer();
+                                                 props.navigation.navigate("Route",
+                                                     {journey: item});
+                                             }}
+                                             active
+                                             type={"MaterialIcons"}
+                                             name={item.icon}
+                                             style={{color: "#777", fontSize: 26, width: 30}}
+                                         />
+                                         <Text
+                                             style={{paddingTop: 5}}
+                                             onPress={() => {
+                                                 props.navigation.closeDrawer();
+                                                 props.navigation.navigate("Route",
+                                                     {journey: item});
+                                             }}>
+                                             {item.name}
+                                         </Text>
+                                     </View>
+
+                                 )}
+                             renderSectionHeader=
+                                 {({section: {title}}) => (
+                                     <Text style={{padding: 10, fontWeight: 'bold'}}>{title}</Text>)}
                 />
             </Content>
         </Container>
