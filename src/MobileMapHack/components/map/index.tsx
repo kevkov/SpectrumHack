@@ -143,6 +143,7 @@ const SearchPanel = (props:{show:boolean}) => {
 
     const {show} = props;
     const [visible, setVisible] = useState(false);
+    const [time, setTime] = useState("08:00");
 
     let startTop = new Animated.Value(-250);
     let endTop = 10;
@@ -178,13 +179,16 @@ const SearchPanel = (props:{show:boolean}) => {
             </CardItem>
             <CardItem>
                 <Label style={{marginRight: 5}}>Time</Label>
-                <Picker mode="dropdown">
+                <Picker
+                    mode="dropdown"
+                    onValueChange={(value) => setTime(value)}
+                    selectedValue={time}
+                >
                     {range.map((_, index) => {
                         const hour = Math.floor(index / 2);
                         const mins = index % 2 == 0 ? "00" : "30";
-                        const time = `${hour < 10 ? "0" + hour : hour.toString()}:${mins}`;
-                        console.log(time)
-                        return (<Picker.Item label={time} value={time} key={time}/>);
+                        const timeOption = `${hour < 10 ? "0" + hour : hour.toString()}:${mins}`;
+                        return (<Picker.Item label={timeOption} value={timeOption} key={timeOption}/>);
                     })}
                 </Picker>
                 <Button primary style={{width:50, height:50, borderRadius:25, alignItems:"center", justifyContent:"center"}}>
