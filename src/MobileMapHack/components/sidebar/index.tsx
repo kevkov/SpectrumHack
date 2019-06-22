@@ -68,7 +68,7 @@ export const SideBar = (props: DrawerItemsProps) => {
                     flexDirection: 'row',
                     alignItems: 'center',
                 }}>
-                    <Image source={PersonImg} style={{width: 150, height: 206}}/>
+                    <Image source={PersonImg} style={{width: 100, height: 100, borderRadius: 100, marginTop: 10}}/>
                     <View style={{
                         marginLeft: 15
                     }}>
