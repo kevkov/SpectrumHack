@@ -1,4 +1,4 @@
-import {Animated, Easing} from "react-native";
+import {Animated} from "react-native";
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE} from "react-native-maps";
 //import MapViewDirections from "react-native-maps-directions";
 import React, {useEffect, useRef, useState, useContext} from "react";
@@ -89,7 +89,7 @@ export const Map = (props) => {
             <MapView
                 ref={mapRef}
                 provider={PROVIDER_GOOGLE}
-                style={{flex: 1, zIndex: -1}}
+                style={{flex: 1 }}
                 initialRegion={{
                     latitude: region.centre.latitude,
                     longitude: region.centre.longitude,
@@ -118,7 +118,7 @@ export const Map = (props) => {
                     />
                 )}
             </MapView>
-            { showSearch ? <SearchPanel /> : null }
+            <SearchPanel show={showSearch} />
             <Fab
                 direction="up"
                 position="bottomRight"
@@ -139,20 +139,36 @@ export const Map = (props) => {
         </View>)
 };
 
+const SearchPanel = (props:{show:boolean}) => {
 
-const SearchPanel = () => {
-    let top = new Animated.Value(-250);
+    const {show} = props;
+    const [visible, setVisible] = useState(false);
+
+    let startTop = new Animated.Value(-250);
+    let endTop = 10;
+    let top = (visible ? endTop : startTop);
+
     useEffect(() => {
-        Animated.timing(
-            top,
-            {
-                toValue: 10,
-                duration: 500,
-            }
-        ).start()
+        if (show == true && visible === false) {
+            Animated.timing(
+                startTop,
+                {
+                    toValue: endTop,
+                    duration: 500,
+                }
+            ).start(() => setVisible(true));
+        }
     });
+
+    if (show === false)
+    {
+        if (visible !== false) setVisible(false);
+        return null;
+    }
+
+    console.log(" ******** rendering search");
     return (
-        <Animated.View style={{top: top, position: 'absolute', right: 10, left: 10}}>
+        <Animated.View style={{top: top, position: 'absolute', right: 10, left: 10, zIndex: 1}}>
         <Card style={{borderRadius: 5}}>
             <CardItem>
                 <Input  placeholder="From" style={{flex: 4, borderWidth: 1, borderRadius: 5, borderColor: "#CCCCCC"}}/>
