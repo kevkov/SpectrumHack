@@ -145,27 +145,33 @@ const SearchPanel = (props:{show:boolean}) => {
     const [visible, setVisible] = useState(false);
     const [time, setTime] = useState("08:00");
 
-    let startTop = new Animated.Value(-250);
-    let endTop = 10;
-    let top = (visible ? endTop : startTop);
+    const showTop = 10;
+    const hideTop = -290;
+    let hidingTop = new Animated.Value(hideTop);
+    let showingTop = new Animated.Value(showTop);
+    let top = (visible ? showingTop : hidingTop);
 
     useEffect(() => {
         if (show == true && visible === false) {
             Animated.timing(
-                startTop,
+                hidingTop,
                 {
-                    toValue: endTop,
+                    toValue: showTop,
                     duration: 500,
                 }
             ).start(() => setVisible(true));
         }
+        else if (visible === true && show === false)
+        {
+            Animated.timing(
+                showingTop,
+                {
+                    toValue: hideTop,
+                    duration: 500,
+                }
+            ).start(() => setVisible(false));
+        }
     });
-
-    if (show === false)
-    {
-        if (visible !== false) setVisible(false);
-        return null;
-    }
 
     const range = new Array(47).fill(0);
     return (
