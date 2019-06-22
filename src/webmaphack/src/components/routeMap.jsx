@@ -42,34 +42,6 @@ async function FetchPollutionData() {
   });
 }
 
-async function GetHeatmapData() {
-  const heatMapData = await FetchPollutionData();
-
-  console.log('HM DATA');
-  console.log(heatMapData);
-
-  // const heatMapResult = heatMapData.map((item) => { 
-  //   return new google.maps.LatLng(item.location.latitude, item.location.longitude)
-  // });
-  
-//    heatMapData.map(function(v) {
-//      return {
-//         weight: v.weight,
-//          location: new google.maps.LatLng(v.location.latitude, v.location.longitude)
-//          }
-//      });
-
-  const heatMapResult = [
-    {weight: 10000, location: new google.maps.LatLng(51.513329, -0.088950)},
-    {weight: 10000, location: new google.maps.LatLng(51.513329, -0.088950)}
-];
-
-//     console.log('HMResult');
-     console.log(heatMapResult);
-
-    return heatMapResult;
-}
-
 const RouteMap = withScriptjs(withGoogleMap((props) =>   
 {
   const [heatMapData, setHeatMapData] = useState(() => []);

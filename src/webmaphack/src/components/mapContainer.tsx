@@ -5,7 +5,7 @@ import SideBar from './sideBar';
 import RouteMap from './routeMap';
 
 const MapContainer: React.FC = () => {
-    const googleApiKey = 'AIzaSyCjQApmRLPeuXLNBIKgnFpiHNpXU21mjWQ';
+    const googleApiKey = 'YOUR_API_KEY';
     const journeyId = 1;
     const [showPollution, togglePollution] = useState(() => false);
     const [showSchools, toggleSchools] = useState(() => false);
