@@ -1,3 +1,4 @@
+import {Animated, Easing} from "react-native";
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE} from "react-native-maps";
 //import MapViewDirections from "react-native-maps-directions";
 import React, {useEffect, useRef, useState, useContext} from "react";
@@ -66,7 +67,7 @@ export const Map = (props) => {
         if (journey != null) {
             const url = `https://spectrummapapi.azurewebsites.net/api/map/mobile/${journey.id}?showPollution=${showPollution}&showSchools=${showSchools}&startTime=${startTime}`;
             console.log('Calling api at: ' + url);
-            
+
             api<MapData>(url)
                 .then(data => {
                     console.log("*********** called api, setting map data." );
@@ -80,35 +81,7 @@ export const Map = (props) => {
                     Toast.show({text: "There was a problem getting the route details", position: "bottom"});
                 });
         }
-        else {
-            console.log('Map will not load: journey is null.');
-        }
     }, [journey, showPollution, showSchools]);
-
-    function maybeSearch() {
-        if (showSearch) {
-            return (
-                <Card style={{zIndex: 1, right: 10, left: 10, position: 'absolute', borderRadius: 5}}>
-                    <CardItem>
-                        <Input  placeholder="From" style={{flex: 4, borderWidth: 1, borderRadius: 5, borderColor: "#CCCCCC"}}/>
-                    </CardItem>
-                    <CardItem>
-                        <Input placeholder="To" style={{flex: 4, borderWidth: 1, borderRadius: 5, borderColor: "#CCCCCC"}}/>
-                    </CardItem>
-                    <CardItem>
-                        <Label style={{marginRight: 5}}>Time</Label>
-                        <Picker mode="dropdown">
-                                <Picker.Item label="00:00" />
-                        </Picker>
-                        <Button primary style={{width:50, height:50, borderRadius:25, alignItems:"center", justifyContent:"center"}}>
-                            <Icon name="search" type="MaterialIcons" />
-                        </Button>
-                    </CardItem>
-                </Card>)
-        } else {
-            return null;
-        }
-    }
 
     console.log("*********** rendering");
     return (
@@ -145,7 +118,7 @@ export const Map = (props) => {
                     />
                 )}
             </MapView>
-            {maybeSearch()}
+            { showSearch ? <SearchPanel /> : null }
             <Fab
                 direction="up"
                 position="bottomRight"
@@ -164,4 +137,39 @@ export const Map = (props) => {
                 </Button>
             </Fab>
         </View>)
+};
+
+
+const SearchPanel = () => {
+    let top = new Animated.Value(-250);
+    useEffect(() => {
+        Animated.timing(
+            top,
+            {
+                toValue: 10,
+                duration: 500,
+            }
+        ).start()
+    });
+    return (
+        <Animated.View style={{top: top, position: 'absolute', right: 10, left: 10}}>
+        <Card style={{borderRadius: 5}}>
+            <CardItem>
+                <Input  placeholder="From" style={{flex: 4, borderWidth: 1, borderRadius: 5, borderColor: "#CCCCCC"}}/>
+            </CardItem>
+            <CardItem>
+                <Input placeholder="To" style={{flex: 4, borderWidth: 1, borderRadius: 5, borderColor: "#CCCCCC"}}/>
+            </CardItem>
+            <CardItem>
+                <Label style={{marginRight: 5}}>Time</Label>
+                <Picker mode="dropdown">
+                    <Picker.Item label="00:00" />
+                </Picker>
+                <Button primary style={{width:50, height:50, borderRadius:25, alignItems:"center", justifyContent:"center"}}>
+                    <Icon name="search" type="MaterialIcons" />
+                </Button>
+            </CardItem>
+        </Card>
+        </Animated.View>
+    )
 };
