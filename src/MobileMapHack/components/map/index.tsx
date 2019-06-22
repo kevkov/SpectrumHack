@@ -78,7 +78,7 @@ export const Map = (props) => {
                 .catch(reason => {
                     console.log(`***********  error calling map api: ${reason}`);
                     // todo: can't have any other position that bottom does not show up
-                    Toast.show({text: "There was a problem getting the route details", position: "bottom"});
+                    Toast.show({text: "There was a problem getting the route details", position: "bottom", type: "warning"});
                 });
         }
     }, [journey, showPollution, showSchools]);
@@ -166,7 +166,7 @@ const SearchPanel = (props:{show:boolean}) => {
         return null;
     }
 
-    console.log(" ******** rendering search");
+    const range = new Array(47).fill(0);
     return (
         <Animated.View style={{top: top, position: 'absolute', right: 10, left: 10}}>
         <Card style={{borderRadius: 5}}>
@@ -179,7 +179,13 @@ const SearchPanel = (props:{show:boolean}) => {
             <CardItem>
                 <Label style={{marginRight: 5}}>Time</Label>
                 <Picker mode="dropdown">
-                    <Picker.Item label="00:00" />
+                    {range.map((_, index) => {
+                        const hour = Math.floor(index / 2);
+                        const mins = index % 2 == 0 ? "00" : "30";
+                        const time = `${hour < 10 ? "0" + hour : hour.toString()}:${mins}`;
+                        console.log(time)
+                        return (<Picker.Item label={time} value={time} key={time}/>);
+                    })}
                 </Picker>
                 <Button primary style={{width:50, height:50, borderRadius:25, alignItems:"center", justifyContent:"center"}}>
                     <Icon name="search" type="MaterialIcons" />
