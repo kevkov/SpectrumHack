@@ -1,7 +1,5 @@
 ﻿namespace MapApi.Controllers
 {
-    using GeoCoordinatePortable;
-    using GoogleMapAPIWeb.Models;
     using MapApi.ViewModels;
     using MapApiCore.Interfaces;
     using MapApiCore.Models;
@@ -58,7 +56,7 @@
         {
             RouteOptions fullJourneyOptions = await this.ProcessJourney(journeyId, new TimeSpan(startTime.Hour, startTime.Minute, startTime.Second), showPollution, showSchools);
 
-            return CreateRouteInfo(fullJourneyOptions); ;
+            return CreateRouteInfo(fullJourneyOptions, showPollution, showSchools);
         }
 
         [Route("pollution")]
@@ -154,7 +152,7 @@
 
         }
 
-        private ActionResult<List<RouteInfo>> CreateRouteInfo(RouteOptions fullJourneyOptions)
+        private ActionResult<List<RouteInfo>> CreateRouteInfo(RouteOptions fullJourneyOptions, bool showPollution, bool showSchools)
         {
             if (fullJourneyOptions == null)
             {
@@ -172,9 +170,9 @@
                     {
                         ColorInHex = $"#{enrichedRoute.Colour.Substring(6, 2)}{enrichedRoute.Colour.Substring(4, 2)}{enrichedRoute.Colour.Substring(2, 2)}",
                         PollutionPoint = enrichedRoute.GreenScore,
-                        PollutionZone = enrichedRoute.PollutionMarkers.Count,
+                        PollutionZone = showPollution ? enrichedRoute.PollutionMarkers.Average(p => (decimal)p.Value) : (decimal?)null,
                         RouteLabel = enrichedRoute.Label,
-                        SchoolCount = enrichedRoute.SchoolMarkers?.Count ?? 0,
+                        SchoolCount = showSchools ? enrichedRoute.SchoolMarkers?.Count ?? 0 : (int?)null,
                         TravelCost = enrichedRoute.Cost,
                         Duration = CalculateTime(enrichedRoute),
                         Distance = enrichedRoute.Distance,
@@ -521,7 +519,8 @@
                 er.Duration = journeyOption.Duration;
                 er.ModeOfTransport = journeyOption.ModeOfTransport;
 
-                var pollutionFactor = showPollution ? er.PollutionMarkers.Count * 10 : 0;
+                var averageAirQualityIndex = er.PollutionMarkers.Average(p => (decimal)p.Value);
+                var pollutionFactor = showPollution ? (int)Math.Ceiling(averageAirQualityIndex * 20) : 0;
                 var schoolFactor = showSchools ? er.SchoolMarkers.Count * 40 : 0;
                 Color col;
 
@@ -535,7 +534,7 @@
 
                 if (journeyOption.ModeOfTransport == "car")
                 {
-                    er.GreenScore = Math.Clamp(100 - pollutionFactor - schoolFactor, 0, 75);
+                    er.GreenScore = Math.Clamp(100 -pollutionFactor - schoolFactor, 0, 75);
                     er.Cost = Math.Round(((10 - ((decimal)er.GreenScore) / 10)) * er.Distance, 2);
                     col = GetBlendedColor(er.GreenScore);
                     er.Colour = "FF" + col.B.ToString("X2") + col.G.ToString("X2") + col.R.ToString("X2");

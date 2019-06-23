@@ -10,10 +10,11 @@ const MapContainer: React.FC = () => {
     const [showPollution, togglePollution] = useState(() => false);
     const [showSchools, toggleSchools] = useState(() => false);
     const [startTime, setStartTime] = useState(() => '12:00');
+    const [showHeatmap, toggleHeatmap] = useState(() => false);
     const [routeInfoItems, setRouteInfoItems] = useState<RouteInfo[]>(() => []);
 
     useEffect(() => {
-        var uri = "http://spectrummapapi.azurewebsites.net/api/map/routes/1/" +
+        var uri = "http://spectrummapapi.azurewebsites.net/api/map/routes/1/" +        
         showPollution + "/" +
         showSchools + "/" +
         startTime;
@@ -92,8 +93,9 @@ const MapContainer: React.FC = () => {
                         <h3>Route Map</h3>
                         <div className="btn-toolbar mb-2 mb-md-0">
                             <div className="btn-group mr-2">
-                                <button type="button" id="btnPollution" className={"btn btn-sm " + (showPollution ? 'btn-primary' : 'btn-outline-primary')} onClick={() => togglePollution(!showPollution)}>Air Quality Index</button>
                                 <button type="button" id="btnSchools" className={"btn btn-sm " + (showSchools ? 'btn-primary' : 'btn-outline-primary')} onClick={() => toggleSchools(!showSchools)}>Schools</button>
+                                <button type="button" id="btnHeatmap" className={"btn btn-sm " + (showHeatmap ? 'btn-primary' : 'btn-outline-primary')} onClick={() => toggleHeatmap(!showHeatmap)}>Air Quality Heatmap</button>
+                                <button type="button" id="btnPollution" className={"btn btn-sm " + (showPollution ? 'btn-primary' : 'btn-outline-primary')} onClick={() => togglePollution(!showPollution)}>Air Quality Index</button>
                             </div>
                         </div>
                     </div>
@@ -105,7 +107,8 @@ const MapContainer: React.FC = () => {
                         mapElement={<div style={{ height: `100%` }} />}
                         showPollution={showPollution}
                         showSchools={showSchools}
-                        startTime={startTime}                                                
+                        startTime={startTime}
+                        showHeatmap={showHeatmap}
                     />
 
                     <h6>&nbsp;</h6>
@@ -120,11 +123,11 @@ const MapContainer: React.FC = () => {
                                     <div className="card-body bg-light">
                                         <ul className="list-unstyled mt-3 mb-4">
                                             <li><h6>Green score: {item.pollutionPoint}</h6></li>
-                                            <li><h6>Schools: {item.schoolCount === 0 ? "N/A" : item.schoolCount}</h6></li>
+                                            <li><h6>Schools: {item.schoolCount === null || item.schoolCount === undefined ? "N/A" : item.schoolCount}</h6></li>
                                             <li><h6>Distance: {item.distance} miles</h6></li>
-                                            <li><h6>Average Air Quality: {item.pollutionZone}</h6></li>
+                                            <li><h6>Average Air Quality: {item.pollutionZone === null || item.pollutionZone === undefined ? "N/A" : item.pollutionZone.toFixed(2)}</h6></li>
                                             <li><h6>Travel time: {item.duration}</h6></li>
-                                            <li><h6>Travel cost: £{item.travelCost}</h6></li>
+                                            <li><h6>Travel cost: £{item.travelCost.toFixed(2)}</h6></li>
                                         </ul>
                                     </div>
                                 </div>

@@ -18,39 +18,45 @@ const GetKmlUri = (showPollution, showSchools, startTime) => {
     return kmlUrl;
 }
 
-async function FetchPollutionData() {
-  const url = 'https://spectrummapapi.azurewebsites.net/api/map/pollution';
-
-  return fetch(url)
-  .then(response => {
-      if (!response.ok) {
-          console.log(`*********** error calling endpoint ${url}: statusText: ${response.statusText}`);
-          throw new Error(response.statusText)
-      }
-      return response.json()
-  })
-  .then(jsonData => {
-    console.log('LAST THEN');
-    console.log(jsonData.length);
-
-    return jsonData.map((item) => {
-      return {
-        weight: item.weight,
-        location: new google.maps.LatLng(item.location.latitude, item.location.longitude)
-      }
-    });
-  });
-}
-
 const RouteMap = withScriptjs(withGoogleMap((props) =>   
 {
-  const [heatMapData, setHeatMapData] = useState(() => []);
+  const [heatmapData, setheatmapData] = useState(() => []);
 
-  useEffect(async () => {
-    const updatedHeaMapData = await FetchPollutionData();
+  async function FetchPollutionData() {
+    const url = 'https://spectrummapapi.azurewebsites.net/api/map/pollution';
+  
+    return fetch(url)
+    .then(response => {
+        if (!response.ok) {
+            console.log(`*********** error calling endpoint ${url}: statusText: ${response.statusText}`);
+            throw new Error(response.statusText)
+        }
+        return response.json()
+    })
+    .then(jsonData => {
+      console.log('LAST THEN');
+      console.log(jsonData.length);
+  
+      var updatedheatmapData = jsonData.map((item) => {
+        return {
+          weight: item.weight,
+          location: new google.maps.LatLng(item.location.latitude, item.location.longitude)
+        }
+      });
+
+      setheatmapData(updatedheatmapData);
+    });
+  }
+
+  useEffect(() => {
     
-    setHeatMapData(updatedHeaMapData);
-  }, []);
+    if (props.showHeatmap) {      
+      FetchPollutionData();
+    }
+    else {
+      setheatmapData([]);
+    }
+  }, [props.showHeatmap]);
 
   return <GoogleMap
     defaultZoom={12}
@@ -62,7 +68,7 @@ const RouteMap = withScriptjs(withGoogleMap((props) =>
     />
 
     <HeatmapLayer
-    data={heatMapData}
+    data={heatmapData}
     options={{dissapting: true, radius: 50}}
      />
   </GoogleMap>

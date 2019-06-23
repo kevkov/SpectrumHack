@@ -1,11 +1,11 @@
 export interface RouteInfo {
     colorInHex: string,
     routeLabel: string,
-    pollutionPoint: number,
-    pollutionZone: number,
+    pollutionPoint?: number,
+    pollutionZone?: number,
     duration: string,
     travelCost: number,
-    schoolCount: number,
+    schoolCount?: number,
     distance: number,
     modeOfTransport: string
 }
