@@ -4,8 +4,19 @@ import { RouteInfo } from '../domain/Types';
 import SideBar from './sideBar';
 import RouteMap from './routeMap';
 
+import {
+    Accordion,
+    AccordionItem,
+    AccordionItemHeading,
+    AccordionItemButton,
+    AccordionItemPanel,
+} from 'react-accessible-accordion';
+
+// Demo styles, see 'Styles' section below for some notes on use.
+import 'react-accessible-accordion/dist/fancy-example.css';
+
 const MapContainer: React.FC = () => {
-    const googleApiKey = 'YOUR_API_KEY';
+    const googleApiKey = 'API_KEY';
     const journeyId = 1;
     const [showPollution, togglePollution] = useState(() => false);
     const [showSchools, toggleSchools] = useState(() => false);
@@ -109,30 +120,55 @@ const MapContainer: React.FC = () => {
                         showSchools={showSchools}
                         startTime={startTime}
                         showHeatmap={showHeatmap}
-                    />
+                              />
 
-                    <h6>&nbsp;</h6>
-                    <div className="container ">
-                        <div className="card-deck mb-3 text">
-                            
-                            {routeInfoItems.map((item) => {
-                                return <div key={item.routeLabel} className="card border-secondary mb-4 shadow-sm">
-                                    <div className="card-header" style={{backgroundColor: item.colorInHex}}>
-                                        <h4> {item.routeLabel} ({item.modeOfTransport}) </h4>
+                    <div className="row">
+                             
+                        <div className="container">
+                            <div className="card-deck mb-3 text">
+                                
+                                {routeInfoItems.map((item) => {
+                                    return <div key={item.routeLabel} className="card border-secondary mb-4 shadow-sm">
+                                        <div className="card-header" style={{backgroundColor: item.colorInHex}}>
+                                            <h4> {item.routeLabel} ({item.modeOfTransport}) </h4>
+                                        </div>
+                                        <div className="card-body bg-light">
+                                            <ul className="list-unstyled mt-3 mb-4">
+                                                <li><h6>Green score: {item.pollutionPoint}</h6></li>
+                                                <li><h6>Schools: {item.schoolCount === null || item.schoolCount === undefined ? "N/A" : item.schoolCount}</h6></li>
+                                                <li><h6>Distance: {item.distance} miles</h6></li>
+                                                <li><h6>Average Air Quality: {item.pollutionZone === null || item.pollutionZone === undefined ? "N/A" : item.pollutionZone.toFixed(2)}</h6></li>
+                                                <li><h6>Travel time: {item.duration}</h6></li>
+                                                <li><h6>Travel cost: £{item.travelCost.toFixed(2)}</h6></li>
+                                                <Accordion allowZeroExpanded={true}>
+                                                    <AccordionItem>
+                                                        <AccordionItemHeading>
+                                                            <AccordionItemButton>
+                                                                <i>Calculation</i>
+                                                            </AccordionItemButton>
+                                                        </AccordionItemHeading>
+                                                        <AccordionItemPanel>
+                                                            <p>
+                                                                Green score is capped at 75 for cars.
+                                                                <br />
+                                                                <br />
+                                                                Green Score = <br />
+                                                                Start: 100 <br />
+                                                                Pollution: - ({item.pollutionZone === null || item.pollutionZone === undefined ? "0" : item.pollutionZone.toFixed(2)} * 20) = val1 <br />
+                                                                - Schools: - ({item.schoolCount === null || item.schoolCount === undefined ? "0" : item.schoolCount} * 40) = {item.pollutionPoint} <br />
+                                                                <br />
+                                                                        Cost = (10-({item.pollutionPoint} (Green Score) / 10)) * {item.distance} (miles)
+
+                                                            </p>
+                                                        </AccordionItemPanel>
+                                                    </AccordionItem>
+                                                </Accordion>
+                                            </ul>
+                                        </div>
                                     </div>
-                                    <div className="card-body bg-light">
-                                        <ul className="list-unstyled mt-3 mb-4">
-                                            <li><h6>Green score: {item.pollutionPoint}</h6></li>
-                                            <li><h6>Schools: {item.schoolCount === null || item.schoolCount === undefined ? "N/A" : item.schoolCount}</h6></li>
-                                            <li><h6>Distance: {item.distance} miles</h6></li>
-                                            <li><h6>Average Air Quality: {item.pollutionZone === null || item.pollutionZone === undefined ? "N/A" : item.pollutionZone.toFixed(2)}</h6></li>
-                                            <li><h6>Travel time: {item.duration}</h6></li>
-                                            <li><h6>Travel cost: £{item.travelCost.toFixed(2)}</h6></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                })
-                            }                    
+                                    })
+                                }                    
+                            </div>
                         </div>
                     </div>
 
