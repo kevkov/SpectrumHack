@@ -22,6 +22,8 @@ import { fromNullable } from "fp-ts/lib/Option";
 import JourneyContext from "../../context/JourneyContext";
 import { SearchPanel } from "./searchPanel"
 import { JourneyDetails } from "../../screens/route/journeyDetails";
+import {useSlideInOutAnimation} from "../../hooks/animation";
+import {Animated} from "react-native";
 
 const GOOGLE_MAPS_APIKEY = '';
 
@@ -130,11 +132,9 @@ export const Map = (props: any | {showSearch: boolean}) => {
                 )}
             </MapView>
             <SearchPanel show={props.showSearch} journey={journey} />
-            { showDetails
-                ? (<View style={{position: "absolute", top: 50, bottom: 100, left: 20, right: 20 }}>
-                    <JourneyDetails/>
-                </View>)
-                : null}
+            <Animated.View style={{position: "absolute", top: useSlideInOutAnimation(showDetails, 50, 750), bottom: 100, left: 20, right: 20 }}>
+                <JourneyDetails/>
+            </Animated.View>
             <Fab
                 position="bottomLeft"
             >
