@@ -69,7 +69,7 @@ const RouteMap = withScriptjs(withGoogleMap((props) =>
 
     <HeatmapLayer
     data={heatmapData}
-    options={{dissapting: true, radius: 50}}
+    options={{dissapting: false, radius: 50}}
      />
   </GoogleMap>
 }
