@@ -16,7 +16,7 @@ import {
 import 'react-accessible-accordion/dist/fancy-example.css';
 
 const MapContainer: React.FC = () => {
-    const googleApiKey = 'API_KEY';
+    const googleApiKey = 'AIzaSyCmLOoMOOcDlU9zIoKH0_UfAsUUlCE6PRM';
     const journeyId = 1;
     const [showPollution, togglePollution] = useState(() => false);
     const [showSchools, toggleSchools] = useState(() => false);
@@ -140,29 +140,35 @@ const MapContainer: React.FC = () => {
                                                 <li><h6>Average Air Quality: {item.pollutionZone === null || item.pollutionZone === undefined ? "N/A" : item.pollutionZone.toFixed(2)}</h6></li>
                                                 <li><h6>Travel time: {item.duration}</h6></li>
                                                 <li><h6>Travel cost: £{item.travelCost.toFixed(2)}</h6></li>
-                                                <Accordion allowZeroExpanded={true}>
-                                                    <AccordionItem>
-                                                        <AccordionItemHeading>
-                                                            <AccordionItemButton>
-                                                                <i>Calculation</i>
-                                                            </AccordionItemButton>
-                                                        </AccordionItemHeading>
-                                                        <AccordionItemPanel>
-                                                            <p>
-                                                                Green score is capped at 75 for cars.
-                                                                <br />
-                                                                <br />
-                                                                Green Score = <br />
-                                                                Start: 100 <br />
-                                                                Pollution: - ({item.pollutionZone === null || item.pollutionZone === undefined ? "0" : item.pollutionZone.toFixed(2)} * 20) = val1 <br />
-                                                                - Schools: - ({item.schoolCount === null || item.schoolCount === undefined ? "0" : item.schoolCount} * 40) = {item.pollutionPoint} <br />
-                                                                <br />
-                                                                        Cost = (10-({item.pollutionPoint} (Green Score) / 10)) * {item.distance} (miles)
-
-                                                            </p>
-                                                        </AccordionItemPanel>
-                                                    </AccordionItem>
-                                                </Accordion>
+                                                <div>
+                                                    <Accordion allowZeroExpanded={true}>
+                                                        <AccordionItem>
+                                                            <AccordionItemHeading>
+                                                                <AccordionItemButton>
+                                                                    <i>Calculation</i>
+                                                                </AccordionItemButton>
+                                                            </AccordionItemHeading>
+                                                            <AccordionItemPanel>
+                                                                <p>
+                                                                    Green score is capped at 75 for cars.
+                                                                    <br />
+                                                                    <br />
+                                                                    Green Score = <br />
+                                                                    Start: 100 <br />
+                                                                    Pollution: - ({item.pollutionZone === null || item.pollutionZone === undefined ? "0" : item.pollutionZone.toFixed(2)} * 20) =
+                                                                                 {item.pollutionZone === null || item.pollutionZone === undefined ? "0" : (parseInt(item.pollutionZone.toFixed(2)) * 20)}<br />
+                                                                    - Schools: - ({item.schoolCount === null || item.schoolCount === undefined ? "0" : item.schoolCount} * 40) = {item.pollutionPoint} <br />
+                                                                    <br />
+                                                                    Cost = <br />
+                                                                    Start: 10 <br />
+                                                                    Green Factor: - {item.pollutionPoint} / 10 <br />
+                                                                    Distance: * {item.distance} (miles) = <br />
+                                                                    {item.travelCost.toFixed(2)}
+                                                                </p>
+                                                            </AccordionItemPanel>
+                                                        </AccordionItem>
+                                                    </Accordion>
+                                                </div>
                                             </ul>
                                         </div>
                                     </div>
