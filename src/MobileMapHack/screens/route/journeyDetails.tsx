@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useContext} from 'react';
-import {Card, CardItem, Content, Text, Left, Right, Body, View} from "native-base";
+import {Card, CardItem, Content, Text, Left, Right, Body, View, Accordion} from "native-base";
 import { FlatList, StyleSheet } from 'react-native';
 import { RouteInfo, JourneySettings } from '../../domain/types';
 import { api } from '../../api';
@@ -55,6 +55,23 @@ export const JourneyDetails = (props) => {
                             <Text style={styles.detailItem}>Average Air Quality: {datum.item.pollutionZone}</Text>
                             <Text style={styles.detailItem}>Travel time: {datum.item.duration}</Text>
                             <Text style={styles.detailItem}>Travel cost: £{datum.item.travelCost.toFixed(2)}</Text>
+
+                            <Accordion dataArray={[{ title: "Calculation", content: "Lorem ipsum dolor sit amet" }]} expanded={0} />
+                                                        <Text style={styles.detailItem}>
+                                                            Green score is capped at 75 for cars.
+                                                            <br /><br />
+                                                            Green Score = <br />
+                                                            Start: 100 <br />
+                                                            Pollution: - ({datum.item.pollutionZone * 20}) <br />
+                                                            Schools: - ({datum.item.schoolCount} * 40) = <br />
+                                                            {datum.item.pollutionPoint}<br />
+                                                            <br />
+                                                            Cost = <br />
+                                                            Start: 10 <br />
+                                                            Green Factor: - {datum.item.pollutionPoint} / 10 <br />
+                                                            Distance: * {datum.item.distance} (miles) = <br />
+                                                            {datum.item.travelCost.toFixed(2)}
+                                                        </Text>
                         </View>
                     </Body>
                 </CardItem>
