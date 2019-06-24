@@ -32,18 +32,13 @@ namespace MapApi.ViewModels
 
     public class Marker
     {
-        public Marker()
-        {
-            IntersectingRouteIndices = new List<int>();
-        }
-
         public string Title { get; set; }
 
         public string Image { get; set; }
 
         public LatLng Coordinates { get; set; }
 
-        public List<int> IntersectingRouteIndices { get; set; }
+        public int[] IntersectingRouteIndices { get; set; }
     }
 
     public class Map

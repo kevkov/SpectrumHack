@@ -44,6 +44,28 @@
             _directionService = directionService;
         }
 
+        [HttpPost]
+        public async Task<ActionResult> PostTemplateFile()
+        {
+            using (var reader = new StreamReader(Request.Body))
+            {
+                var body = reader.ReadToEnd();
+
+                var filePath = GetFilePath("Test.kml");
+                System.IO.File.WriteAllText(filePath, body);
+            }
+            
+            return Ok();
+        }
+
+        [HttpGet("gettemplatefile")]
+        public ActionResult<string> GetTemplateFile()
+        {
+            var kmlString = System.IO.File.ReadAllText(GetFilePath("Test.kml"));
+
+            return kmlString;
+        }
+
         // GET api/map
         [HttpGet]
         public async Task<ActionResult<string>> Get()
@@ -289,14 +311,14 @@
                         pollutionImage = "four";
                     }
 
-                    var intersections = GetPollutionMarkerIntersectionIndicies(fullJourneyOptions, marker);
+                    var intersections = GetPollutionMarkerIntersectionIndices(fullJourneyOptions, marker);
 
                     map.Markers.Add(new ViewModels.Marker()
                     {
                         Image = pollutionImage,
                         Title = marker.Description,
                         Coordinates = new LatLng(marker.Coordinate.Latitude, marker.Coordinate.Longitude),
-                        IntersectingRouteIndices = intersections
+                        IntersectingRouteIndices = intersections.ToArray()
                     });
                 }
             }
@@ -305,14 +327,14 @@
             {
                 foreach (var marker in await GetSchoolMarkersForJourney(journeyId))
                 {
-                    var intersections = GetSchoolMarkerIntersectionIndicies(fullJourneyOptions, marker);
+                    var intersections = GetSchoolMarkerIntersectionIndices(fullJourneyOptions, marker);
 
                     map.Markers.Add(new ViewModels.Marker
                     {
                         Image = "school",
                         Title = marker.Description + " - " + marker.Value,
                         Coordinates = new LatLng(marker.Coordinate.Latitude, marker.Coordinate.Longitude),
-                        IntersectingRouteIndices = intersections
+                        IntersectingRouteIndices = intersections.ToArray()
                     });
                 }
             }
@@ -320,7 +342,7 @@
             return map;
         }
 
-        private static List<int> GetPollutionMarkerIntersectionIndicies(RouteOptions fullJourneyOptions, MapApiCore.Models.Marker marker)
+        private static List<int> GetPollutionMarkerIntersectionIndices(RouteOptions fullJourneyOptions, MapApiCore.Models.Marker marker)
         {
             var intersections = new List<int>();
 
@@ -338,7 +360,7 @@
             return intersections;
         }
 
-        private static List<int> GetSchoolMarkerIntersectionIndicies(RouteOptions fullJourneyOptions, MapApiCore.Models.Marker marker)
+        private static List<int> GetSchoolMarkerIntersectionIndices(RouteOptions fullJourneyOptions, MapApiCore.Models.Marker marker)
         {
             var intersections = new List<int>();
 
