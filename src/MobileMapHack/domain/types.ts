@@ -29,6 +29,7 @@ export interface Journey {
     startName: string
     end: LatLng
     endName: string
+    startTime: string
 }
 
 export interface RouteInfo {
@@ -49,5 +50,5 @@ export interface JourneySettings {
     startTime: string,
     togglePollution: (showPollution: boolean) => void,
     toggleSchools: (showSchools: boolean) => void,
-    toggleStartTime: (startTime: string) => void
+    setStartTime: (startTime: string) => void
 }
