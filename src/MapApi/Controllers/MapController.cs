@@ -458,6 +458,7 @@
                     new Folder()
                     {
                         Name = $"From {routeOptions.StartLocation.Name} to {routeOptions.EndLocation.Name}",
+                        Description = $"From {routeOptions.StartLocation.Name} to {routeOptions.EndLocation.Name}",
                         Placemark = new List<Placemark>()
                         {
                             // route placemark
@@ -474,6 +475,7 @@
                             new Placemark()
                             {
                                 Name = routeOptions.StartLocation.Name,
+                                Description = $"From {routeOptions.StartLocation.Name} to {routeOptions.EndLocation.Name}",
                                 StyleUrl = "#icon-route-start",
                                 Point = new MapApiCore.Models.Kml.Point()
                                 {
@@ -484,6 +486,7 @@
                             new Placemark()
                             {
                                 Name = routeOptions.EndLocation.Name,
+                                Description = $"From {routeOptions.StartLocation.Name} to {routeOptions.EndLocation.Name}",
                                 StyleUrl = "#icon-route-end",
                                 Point = new MapApiCore.Models.Kml.Point()
                                 {
