@@ -52,7 +52,8 @@ export const Map = (props) => {
     const [mapData, setMapData] = useState<MapData>();
     const mapRef = useRef<MapView>();
     const [showSearch, toggleSearch] = useState(() => false);
-
+    const [selectedRouteIndex, setSelectedRouteIndex] = useState<number>(() => -1);
+    
     const imgs = {
         "start": StartImg,
         "finish": FinishImg,
@@ -82,6 +83,15 @@ export const Map = (props) => {
                 });
         }
     }, [journey, showPollution, showSchools]);
+    
+    function getRouteStrokeWidth(defaultWidth: number, index:number): number {
+        if (index === selectedRouteIndex) {
+            return defaultWidth + 3;
+        }
+        else {
+            return defaultWidth;
+        }
+    }
 
     console.log("*********** rendering");
     return (
@@ -96,7 +106,7 @@ export const Map = (props) => {
                     latitudeDelta: 1.05 * region.size.latDelta,
                     longitudeDelta: 1.05 * region.size.lonDelta
                 }}
-                onPress={() => toggleSearch(!showSearch)}
+                //onPress={() => toggleSearch(!showSearch)}
                 onMapReady={() => {
                     console.log("*********** map ready");
                 }}
@@ -105,8 +115,10 @@ export const Map = (props) => {
                     <Polyline
                         key={"line" + index}
                         coordinates={line.coordinates}
-                        strokeWidth={line.strokeWidth}
+                        strokeWidth={getRouteStrokeWidth(line.strokeWidth, index)}
                         strokeColor={line.strokeColor}
+                        tappable={true}
+                        onPress={() => setSelectedRouteIndex(index)}
                     />
                 )}
                 {mapData && mapData.markers.map((marker, index) =>
