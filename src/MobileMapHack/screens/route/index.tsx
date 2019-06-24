@@ -16,8 +16,8 @@ const getContent = (tab:Tab, props) => {
     return (<JourneyDetails />);
 };
 export const Route = (props) => {
-    const [showPollution, togglePollution] = useState(() => true);
-    const [showSchools, toggleSchools] = useState(() => true);
+    const [showPollution, togglePollution] = useState(() => false);
+    const [showSchools, toggleSchools] = useState(() => false);
     const [startTime, toggleStartTime] = useState(() => '12:00');
     const [currentTab, setCurrentTab] = useState<Tab>(Tab.MAP);
 
