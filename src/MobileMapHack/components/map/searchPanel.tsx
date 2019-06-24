@@ -1,44 +1,18 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useState} from "react";
 import {Animated} from "react-native";
 import {Button, Card, CardItem, Icon, Input, Label, Picker} from "native-base";
 import {Journey} from "../../domain/types";
 import {fromNullable} from "fp-ts/lib/Option";
 import JourneyContext from "../../context/JourneyContext";
+import {useSlideInOutAnimation} from "../../hooks/animation";
 
 export const SearchPanel = (props:{show:boolean, journey:Journey | null}) => {
 
     const {show} = props;
-    const [visible, setVisible] = useState(false);
     const [time, setTime] = useState("08:00");
     const {setStartTime} = useContext(JourneyContext);
 
-    const showTop = 10;
-    const hideTop = -290;
-    let hidingTop = new Animated.Value(hideTop);
-    let showingTop = new Animated.Value(showTop);
-    let top = (visible ? showingTop : hidingTop);
-
-    useEffect(() => {
-        if (show == true && visible === false) {
-            Animated.timing(
-                hidingTop,
-                {
-                    toValue: showTop,
-                    duration: 500,
-                }
-            ).start(() => setVisible(true));
-        }
-        else if (visible === true && show === false)
-        {
-            Animated.timing(
-                showingTop,
-                {
-                    toValue: hideTop,
-                    duration: 500,
-                }
-            ).start(() => setVisible(false));
-        }
-    });
+    let top = useSlideInOutAnimation(show, 10, -290);
 
     const journeyDetails = fromNullable(props.journey)
         .map(j => ({startName: j.startName, endName: j.endName, startTime: j.startTime}))

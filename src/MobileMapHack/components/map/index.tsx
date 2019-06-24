@@ -130,7 +130,6 @@ export const Map = (props: any | {showSearch: boolean}) => {
             <SearchPanel show={props.showSearch} journey={journey} />
             <Fab
                 position="bottomLeft"
-
             >
                 <Icon name="list" type="MaterialIcons" />
             </Fab>
