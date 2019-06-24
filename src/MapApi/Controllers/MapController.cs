@@ -535,8 +535,8 @@
                     PollutionMarkers = GetPollutionMarkersForRoute(journeyOption.Coordinates, startTime),
                     SchoolMarkers = GetSchoolMarkersForRoute(journeyOption.Coordinates, MarkerIntersectionRangeInMetres, startTime)
                 };
-
                 i++;
+
                 er.Distance = Math.Round(journeyOption.Distance * 10 * 0.0006213712m, 2);
                 er.Duration = journeyOption.Duration;
                 er.ModeOfTransport = journeyOption.ModeOfTransport;
