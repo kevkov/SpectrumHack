@@ -1,9 +1,8 @@
-import {Animated} from "react-native";
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE} from "react-native-maps";
 //import MapViewDirections from "react-native-maps-directions";
 import React, {useEffect, useRef, useState, useContext} from "react";
 import {MapData, LatLng, Journey} from "../../domain/types";
-import {Button, Fab, Icon, Input, Card, Toast, CardItem, Label, Picker, View} from "native-base";
+import {Button, Fab, Icon, Toast, View} from "native-base";
 // @ts-ignore
 import StartImg from "../../assets/start.png"
 // @ts-ignore
@@ -21,6 +20,10 @@ import FourImg from "../../assets/four.png"
 import {api} from "../../api"
 import { fromNullable } from "fp-ts/lib/Option";
 import JourneyContext from "../../context/JourneyContext";
+import { SearchPanel } from "./searchPanel"
+import { JourneyDetails } from "../../screens/route/journeyDetails";
+import {useSlideInOutAnimation} from "../../hooks/animation";
+import {Animated} from "react-native";
 
 const GOOGLE_MAPS_APIKEY = '';
 
@@ -39,7 +42,7 @@ function calculateMapRegion(journey: Journey): { centre:LatLng, size: {latDelta:
     return { centre, size: {latDelta, lonDelta} };
 }
 
-export const Map = (props) => {
+export const Map = (props: any | {showSearch: boolean}) => {
     let journey: Journey | null = props.navigation.getParam("journey");
 
     // should maybe based on map feature extents
@@ -51,9 +54,8 @@ export const Map = (props) => {
     const {showPollution, showSchools, togglePollution, toggleSchools, startTime} = useContext(JourneyContext);
     const [mapData, setMapData] = useState<MapData>();
     const mapRef = useRef<MapView>();
-    const [showSearch, toggleSearch] = useState(() => false);
     const [selectedRouteIndex, setSelectedRouteIndex] = useState<number>(() => -1);
-    
+    const [showDetails, setShowDetails] = useState(false);
     const imgs = {
         "start": StartImg,
         "finish": FinishImg,
@@ -82,8 +84,8 @@ export const Map = (props) => {
                     Toast.show({text: "There was a problem getting the route details", position: "bottom", type: "warning"});
                 });
         }
-    }, [journey, showPollution, showSchools]);
-    
+    }, [journey, showPollution, showSchools, startTime]);
+
     function getRouteStrokeWidth(defaultWidth: number, index:number): number {
         if (index === selectedRouteIndex) {
             return defaultWidth + 3;
@@ -106,7 +108,6 @@ export const Map = (props) => {
                     latitudeDelta: 1.05 * region.size.latDelta,
                     longitudeDelta: 1.05 * region.size.lonDelta
                 }}
-                //onPress={() => toggleSearch(!showSearch)}
                 onMapReady={() => {
                     console.log("*********** map ready");
                 }}
@@ -130,13 +131,25 @@ export const Map = (props) => {
                     />
                 )}
             </MapView>
-            <SearchPanel show={showSearch} />
+            <SearchPanel show={props.showSearch} journey={journey} />
+            <Animated.View style={{position: "absolute", top: useSlideInOutAnimation(showDetails, 50, 750), bottom: 100, left: 20, right: 20 }}>
+                <JourneyDetails/>
+            </Animated.View>
+            <Fab
+                position="bottomLeft"
+            >
+                <Icon
+                    name="list"
+                    type="MaterialIcons"
+                    onPress={() => setShowDetails(!showDetails)}
+                />
+            </Fab>
             <Fab
                 direction="up"
                 position="bottomRight"
                 active={fabActive}
                 onPress={() => setFabActive(!fabActive)}>
-                <Icon name="playlist-add-check" type="MaterialIcons"/>
+                <Icon name="settings" type="MaterialIcons"/>
                 <Button
                     onPress={() => togglePollution(!showPollution)}
                     style={{backgroundColor: showPollution ? "#B5651D" : "#CCCCCC"}}>
@@ -149,71 +162,4 @@ export const Map = (props) => {
                 </Button>
             </Fab>
         </View>)
-};
-
-const SearchPanel = (props:{show:boolean}) => {
-
-    const {show} = props;
-    const [visible, setVisible] = useState(false);
-    const [time, setTime] = useState("08:00");
-
-    const showTop = 10;
-    const hideTop = -290;
-    let hidingTop = new Animated.Value(hideTop);
-    let showingTop = new Animated.Value(showTop);
-    let top = (visible ? showingTop : hidingTop);
-
-    useEffect(() => {
-        if (show == true && visible === false) {
-            Animated.timing(
-                hidingTop,
-                {
-                    toValue: showTop,
-                    duration: 500,
-                }
-            ).start(() => setVisible(true));
-        }
-        else if (visible === true && show === false)
-        {
-            Animated.timing(
-                showingTop,
-                {
-                    toValue: hideTop,
-                    duration: 500,
-                }
-            ).start(() => setVisible(false));
-        }
-    });
-
-    const range = new Array(47).fill(0);
-    return (
-        <Animated.View style={{top: top, position: 'absolute', right: 10, left: 10}}>
-        <Card style={{borderRadius: 5}}>
-            <CardItem>
-                <Input  placeholder="From" style={{flex: 4, borderWidth: 1, borderRadius: 5, borderColor: "#CCCCCC"}}/>
-            </CardItem>
-            <CardItem>
-                <Input placeholder="To" style={{flex: 4, borderWidth: 1, borderRadius: 5, borderColor: "#CCCCCC"}}/>
-            </CardItem>
-            <CardItem>
-                <Label style={{marginRight: 5}}>Time</Label>
-                <Picker
-                    mode="dropdown"
-                    onValueChange={(value) => setTime(value)}
-                    selectedValue={time}
-                >
-                    {range.map((_, index) => {
-                        const hour = Math.floor(index / 2);
-                        const mins = index % 2 == 0 ? "00" : "30";
-                        const timeOption = `${hour < 10 ? "0" + hour : hour.toString()}:${mins}`;
-                        return (<Picker.Item label={timeOption} value={timeOption} key={timeOption}/>);
-                    })}
-                </Picker>
-                <Button primary style={{width:50, height:50, borderRadius:25, alignItems:"center", justifyContent:"center"}}>
-                    <Icon name="search" type="MaterialIcons" />
-                </Button>
-            </CardItem>
-        </Card>
-        </Animated.View>
-    )
 };
