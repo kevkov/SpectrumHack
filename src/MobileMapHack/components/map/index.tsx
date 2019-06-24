@@ -139,6 +139,8 @@ export const Map = (props) => {
         </View>)
 };
 
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+
 const SearchPanel = (props:{show:boolean}) => {
 
     const {show} = props;
@@ -178,7 +180,26 @@ const SearchPanel = (props:{show:boolean}) => {
         <Animated.View style={{top: top, position: 'absolute', right: 10, left: 10}}>
         <Card style={{borderRadius: 5}}>
             <CardItem>
-                <Input  placeholder="From" style={{flex: 4, borderWidth: 1, borderRadius: 5, borderColor: "#CCCCCC"}}/>
+                <GooglePlacesAutocomplete
+                    nearbyPlacesAPI='GoogleReverseGeocoding'
+                    placeholder="From"
+                    minLength={2}
+                    autoFocus={false}
+                    listViewDisplayed="false"
+                    fetchDetails={false}
+                    renderDescription={row => row.description} // custom description render
+                    onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
+                        console.log(data, details);
+                    }}
+
+                    getDefaultValue={() => ''}
+                    query={{
+                        // available options: https://developers.google.com/places/web-service/autocomplete
+                        key: 'AIzaSyB5rjbqMTTV_XntRSwXb4wxzC3pUW5l6tg',
+                        language: 'en', // language of the results
+                        types: 'geocode' // '(cities)'
+                    }}
+                />
             </CardItem>
             <CardItem>
                 <Input placeholder="To" style={{flex: 4, borderWidth: 1, borderRadius: 5, borderColor: "#CCCCCC"}}/>
