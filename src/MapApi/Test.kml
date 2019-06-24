@@ -7,9 +7,8 @@
     <Style id="icon-school">
       <IconStyle>
         <scale>1</scale>
-        <color>ffff0000</color>
         <Icon>
-          <href>http://maps.google.com/mapfiles/kml/pal2/icon10.png</href> 
+          <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href> 
         </Icon> 
       </IconStyle> 
       <LabelStyle>
