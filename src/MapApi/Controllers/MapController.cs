@@ -502,7 +502,7 @@
             //var journeyOptions = _journeyRepo.GetJourney(journeyId);
             var journeyOptions = await GetJourney(journeyId, 0, 0, 0, 0);
 
-            int i = 0;
+            int i = 1;
             IList<EnrichedRoute> enrichedRoute = new List<EnrichedRoute>();
             foreach (var journeyOption in journeyOptions.Routes)
             {
@@ -513,8 +513,8 @@
                     PollutionMarkers = GetPollutionMarkersForRoute(journeyOption.Coordinates, startTime),
                     SchoolMarkers = GetSchoolMarkersForRoute(journeyOption.Coordinates, MarkerIntersectionRangeInMetres, startTime)
                 };
-
                 i++;
+
                 er.Distance = Math.Round(journeyOption.Distance * 10 * 0.0006213712m, 2);
                 er.Duration = journeyOption.Duration;
                 er.ModeOfTransport = journeyOption.ModeOfTransport;
