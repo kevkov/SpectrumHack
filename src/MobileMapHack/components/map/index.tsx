@@ -21,6 +21,7 @@ import {api} from "../../api"
 import { fromNullable } from "fp-ts/lib/Option";
 import JourneyContext from "../../context/JourneyContext";
 import { SearchPanel } from "./searchPanel"
+import { JourneyDetails } from "../../screens/route/journeyDetails";
 
 const GOOGLE_MAPS_APIKEY = '';
 
@@ -52,6 +53,7 @@ export const Map = (props: any | {showSearch: boolean}) => {
     const [mapData, setMapData] = useState<MapData>();
     const mapRef = useRef<MapView>();
     const [selectedRouteIndex, setSelectedRouteIndex] = useState<number>(() => -1);
+    const [showDetails, setShowDetails] = useState(false);
     const imgs = {
         "start": StartImg,
         "finish": FinishImg,
@@ -128,10 +130,19 @@ export const Map = (props: any | {showSearch: boolean}) => {
                 )}
             </MapView>
             <SearchPanel show={props.showSearch} journey={journey} />
+            { showDetails
+                ? (<View style={{position: "absolute", top: 50, bottom: 100, left: 20, right: 20 }}>
+                    <JourneyDetails/>
+                </View>)
+                : null}
             <Fab
                 position="bottomLeft"
             >
-                <Icon name="list" type="MaterialIcons" />
+                <Icon
+                    name="list"
+                    type="MaterialIcons"
+                    onPress={() => setShowDetails(!showDetails)}
+                />
             </Fab>
             <Fab
                 direction="up"

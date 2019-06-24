@@ -1,11 +1,11 @@
 import React, {useEffect, useState, useContext} from 'react';
-import {Card, CardItem, Content, Text, Left, Right, Body, View} from "native-base";
+import {Card, CardItem, Content, Text, Body, View} from "native-base";
 import { FlatList, StyleSheet } from 'react-native';
-import { RouteInfo, JourneySettings } from '../../domain/types';
+import { RouteInfo } from '../../domain/types';
 import { api } from '../../api';
 import JourneyContext from '../../context/JourneyContext';
 
-export const JourneyDetails = (props) => {
+export const JourneyDetails = () => {
     const {showPollution, showSchools, startTime} = useContext(JourneyContext);
     const [routeInfoItems, setRouteInfoItems] = useState<RouteInfo[]>();
 
@@ -22,7 +22,7 @@ export const JourneyDetails = (props) => {
                 console.log(`api callback in journey details ${uri}`);
                 setRouteInfoItems(data);
             });
-        }, []);
+        }, [showPollution, showSchools, startTime]);
 
     const styles = StyleSheet.create({
         headerText: {
