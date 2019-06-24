@@ -658,6 +658,7 @@
                 placemarks.Add(new Placemark
                 {
                     Name = $"{marker.Description}",
+                    Description = $"{marker.Description}",
                     StyleUrl = stylePrefix + marker.Value,
                     Point = new MapApiCore.Models.Kml.Point { Coordinates = $"{marker.Coordinate.Longitude},{marker.Coordinate.Latitude}" }
                 });
