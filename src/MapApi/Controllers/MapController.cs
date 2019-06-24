@@ -261,6 +261,9 @@
                 Coordinates = new LatLng(fullJourneyOptions.EndLocation.Latitude, fullJourneyOptions.EndLocation.Longitude)
             });
 
+            // Add route markers
+            map.Markers.AddRange(GetRouteLabelsForMobile(fullJourneyOptions));
+
             if (showPollution)
             {
                 foreach (var markers in await GetPollutionMarkersForJourney(journeyId))
@@ -419,6 +422,25 @@
             return xml;
         }
 
+        private IEnumerable<ViewModels.Marker> GetRouteLabelsForMobile(RouteOptions fullJourneyOptions)
+        {
+            var routeMarkers = new List<ViewModels.Marker>();
+
+            foreach (var route in fullJourneyOptions.EnrichedRoute)
+            {
+                var markerCoordinate = route.RouteMarkers[route.RouteMarkers.Count / 2].Coordinate;
+
+                routeMarkers.Add(new ViewModels.Marker
+                {
+                    Title = route.Label,
+                    Coordinates = new LatLng(markerCoordinate.Latitude, markerCoordinate.Longitude)
+                });
+            }
+
+            return routeMarkers;
+        }
+
+
         private List<Folder> GetRouteLabelsFolders(RouteOptions routeOptions)
         {
             var folders = new List<Folder>();
@@ -502,7 +524,7 @@
             //var journeyOptions = _journeyRepo.GetJourney(journeyId);
             var journeyOptions = await GetJourney(journeyId, 0, 0, 0, 0);
 
-            int i = 0;
+            int i = 1;
             IList<EnrichedRoute> enrichedRoute = new List<EnrichedRoute>();
             foreach (var journeyOption in journeyOptions.Routes)
             {
