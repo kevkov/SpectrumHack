@@ -31,7 +31,8 @@ const myJourneys: Journey[] = [
         end: {
             latitude: 51.5250836, longitude: -0.0769465
         },
-        endName: "North Greenwich"
+        endName: "North Greenwich",
+        startTime: "08:30"
     },
     {
         id: 2,
@@ -44,7 +45,8 @@ const myJourneys: Journey[] = [
         end: {
             latitude: 51.5250836, longitude: -0.0769465
         },
-        endName: "Heathrow"
+        endName: "Heathrow",
+        startTime: "08:30"
     }
 ];
 
