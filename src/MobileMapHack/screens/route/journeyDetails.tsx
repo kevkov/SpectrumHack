@@ -59,17 +59,16 @@ export const JourneyDetails = () => {
                             <Accordion dataArray={[{ title: "Calculation", content: "Lorem ipsum dolor sit amet" }]} expanded={0} />
                                                         <Text style={styles.detailItem}>
                                                             Green score is capped at 75 for cars.
-                                                            <br /><br />
-                                                            Green Score = <br />
-                                                            Start: 100 <br />
-                                                            Pollution: - ({datum.item.pollutionZone * 20}) <br />
-                                                            Schools: - ({datum.item.schoolCount} * 40) = <br />
-                                                            {datum.item.pollutionPoint}<br />
-                                                            <br />
-                                                            Cost = <br />
-                                                            Start: 10 <br />
-                                                            Green Factor: - {datum.item.pollutionPoint} / 10 <br />
-                                                            Distance: * {datum.item.distance} (miles) = <br />
+                                                            Green Score = 
+                                                            Start: 100 
+                                                            Pollution: - ({datum.item.pollutionZone * 20}) 
+                                                            Schools: - ({datum.item.schoolCount} * 40) = 
+                                                            {datum.item.pollutionPoint}
+                                                            
+                                                            Cost = 
+                                                            Start: 10
+                                                            Green Factor: - {datum.item.pollutionPoint} / 10 
+                                                            Distance: * {datum.item.distance} (miles) = 
                                                             {datum.item.travelCost.toFixed(2)}
                                                         </Text>
                         </View>
