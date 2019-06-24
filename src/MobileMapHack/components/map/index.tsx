@@ -24,6 +24,7 @@ import { SearchPanel } from "./searchPanel"
 import { JourneyDetails } from "../../screens/route/journeyDetails";
 import {useSlideInOutAnimation} from "../../hooks/animation";
 import {Animated} from "react-native";
+import {Marker as DomainMarker} from '../../domain/types';
 
 const GOOGLE_MAPS_APIKEY = '';
 
@@ -95,6 +96,22 @@ export const Map = (props: any | {showSearch: boolean}) => {
         }
     }
 
+    function getMarkerOpacity(marker: DomainMarker) : number {
+        // No selected route
+        if (selectedRouteIndex === -1) {
+            return 1.0;
+        }
+
+        // Selected route exists and marker intersects with selected route
+        if (marker.intersectingRouteIndices != null && 
+            marker.intersectingRouteIndices.includes(selectedRouteIndex)) {
+                return 1.0;
+        } 
+
+        // Selected route exists, but marker doesn't intersect
+        return 0.5;
+    }
+
     console.log("*********** rendering");
     return (
         <View style={{flex: 1}}>
@@ -128,6 +145,7 @@ export const Map = (props: any | {showSearch: boolean}) => {
                         title={marker.title}
                         image={imgs[marker.image]}
                         coordinate={marker.coordinates}
+                        opacity={getMarkerOpacity(marker)}
                     />
                 )}
             </MapView>
