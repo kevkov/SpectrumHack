@@ -4,14 +4,6 @@ import { RouteInfo } from '../domain/Types';
 import SideBar from './sideBar';
 import RouteMap from './routeMap';
 
-import {
-    Accordion,
-    AccordionItem,
-    AccordionItemHeading,
-    AccordionItemButton,
-    AccordionItemPanel,
-} from 'react-accessible-accordion';
-
 // Demo styles, see 'Styles' section below for some notes on use.
 import 'react-accessible-accordion/dist/fancy-example.css';
 
@@ -122,7 +114,7 @@ const MapContainer: React.FC = () => {
                         showHeatmap={showHeatmap}
                               />
 
-                    <div className="row">
+                    <div className="row pt-3">
                              
                         <div className="container">
                             <div className="card-deck mb-3 text">
@@ -132,8 +124,8 @@ const MapContainer: React.FC = () => {
                                         <div className="card-header" style={{backgroundColor: item.colorInHex}}>
                                             <h4> {item.routeLabel} ({item.modeOfTransport}) </h4>
                                         </div>
-                                        <div className="card-body bg-light">
-                                            <ul className="list-unstyled mt-3 mb-4">
+                                        <div className="card-body bg-light nopadding">
+                                            <ul className="list-unstyled mt-2 pl-2">
                                                 <li><h6>Green score: {item.pollutionPoint}</h6></li>
                                                 <li><h6>Schools: {item.schoolCount === null || item.schoolCount === undefined ? "N/A" : item.schoolCount}</h6></li>
                                                 <li><h6>Distance: {item.distance} miles</h6></li>
@@ -141,33 +133,7 @@ const MapContainer: React.FC = () => {
                                                 <li><h6>Travel time: {item.duration}</h6></li>
                                                 <li><h6>Travel cost: £{item.travelCost.toFixed(2)}</h6></li>
                                                 <div>
-                                                    <Accordion allowZeroExpanded={true}>
-                                                        <AccordionItem>
-                                                            <AccordionItemHeading>
-                                                                <AccordionItemButton>
-                                                                    <i>Calculation</i>
-                                                                </AccordionItemButton>
-                                                            </AccordionItemHeading>
-                                                            <AccordionItemPanel>
-                                                                <p>
-                                                                    Green score is capped at 75 for cars.
-                                                                    <br />
-                                                                    <br />
-                                                                    Green Score = <br />
-                                                                    Start: 100 <br />
-                                                                    Pollution: - ({item.pollutionZone === null || item.pollutionZone === undefined ? "0" : item.pollutionZone.toFixed(2)} * 20) =
-                                                                                 {item.pollutionZone === null || item.pollutionZone === undefined ? "0" : (parseInt(item.pollutionZone.toFixed(2)) * 20)}<br />
-                                                                    - Schools: - ({item.schoolCount === null || item.schoolCount === undefined ? "0" : item.schoolCount} * 40) = {item.pollutionPoint} <br />
-                                                                    <br />
-                                                                    Cost = <br />
-                                                                    Start: 10 <br />
-                                                                    Green Factor: - {item.pollutionPoint} / 10 <br />
-                                                                    Distance: * {item.distance} (miles) = <br />
-                                                                    {item.travelCost.toFixed(2)}
-                                                                </p>
-                                                            </AccordionItemPanel>
-                                                        </AccordionItem>
-                                                    </Accordion>
+                                                  
                                                 </div>
                                             </ul>
                                         </div>
@@ -176,10 +142,6 @@ const MapContainer: React.FC = () => {
                                 }                    
                             </div>
                         </div>
-                    </div>
-
-                    <div className="container">
-                        <h4>Traveling via a less polluting car may significantly reduce your cost by up to 30%.</h4>
                     </div>
                 </main>
             </div>
