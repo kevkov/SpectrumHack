@@ -83,7 +83,7 @@ const ChargingCalculation: React.FC = () => {
                     <p></p>
 
                     <p>
-                      Cost = (10 - (Green Score x 0.1)) x Distance)
+                      Cost = (10 - (Green Score x 0.1)) x Distance
                   
   </p>
 
