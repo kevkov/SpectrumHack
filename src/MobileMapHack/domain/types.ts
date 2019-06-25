@@ -88,3 +88,7 @@ export const myJourneys: Journey[] = [
         startTime: "08:30"
     }
 ];
+
+export interface Achievement {
+    title: string
+}
