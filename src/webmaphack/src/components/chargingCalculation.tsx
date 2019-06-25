@@ -83,7 +83,7 @@ const ChargingCalculation: React.FC = () => {
                     <p></p>
 
                     <p>
-                      Cost = (10 - (Green Score x 0.1)) x Distance)
+                      Cost = (10 - (Green Score x 0.1)) x Distance
                   
   </p>
 
@@ -105,9 +105,7 @@ const ChargingCalculation: React.FC = () => {
                   </Alert>
 
                 </div>
-                <div className="container">
-                  <h4>Travelling via a less polluting car may significantly reduce your cost by up to 30%.</h4>
-                </div>
+              
               </main>
             </div>
           </div>

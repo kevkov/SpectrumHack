@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useContext} from 'react';
-import { Card, CardItem, Content, Text, Body, View, Accordion } from "native-base";
+import { Card, CardItem, Content, Text, Body, View } from "native-base";
 import { FlatList, StyleSheet } from 'react-native';
 import { RouteInfo } from '../../domain/types';
 import { api } from '../../api';
@@ -55,22 +55,6 @@ export const JourneyDetails = () => {
                             <Text style={styles.detailItem}>Average Air Quality: {datum.item.pollutionZone}</Text>
                             <Text style={styles.detailItem}>Travel time: {datum.item.duration}</Text>
                             <Text style={styles.detailItem}>Travel cost: £{datum.item.travelCost.toFixed(2)}</Text>
-
-                            <Accordion dataArray={[{ title: "Calculation", content: "Lorem ipsum dolor sit amet" }]} expanded={0} />
-                                                        <Text style={styles.detailItem}>
-                                                            Green score is capped at 75 for cars.
-                                                            Green Score = 
-                                                            Start: 100 
-                                                            Pollution: - ({datum.item.pollutionZone * 20}) 
-                                                            Schools: - ({datum.item.schoolCount} * 40) = 
-                                                            {datum.item.pollutionPoint}
-                                                            
-                                                            Cost = 
-                                                            Start: 10
-                                                            Green Factor: - {datum.item.pollutionPoint} / 10 
-                                                            Distance: * {datum.item.distance} (miles) = 
-                                                            {datum.item.travelCost.toFixed(2)}
-                                                        </Text>
                         </View>
                     </Body>
                 </CardItem>
