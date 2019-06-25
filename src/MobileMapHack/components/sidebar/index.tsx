@@ -33,7 +33,7 @@ function getRouteForSection(sectionTitle: string) {
 export const SideBar = (props: DrawerItemsProps) => {
 
         const [openSections, setOpenSections] = useState<string[]>([]);
-        const renderBadge = ({item, section}) => {
+        const renderBadge = ({item, index, section}) => {
             if (openSections.includes(section.title)) {
                 return (
                     <View style={{marginLeft: 10, padding: 10, flexDirection: 'row'}}>
@@ -44,9 +44,9 @@ export const SideBar = (props: DrawerItemsProps) => {
                         </Text>
                         <Icon
                             active
-                            type={"MaterialCommunityIcons"}
-                            name={"trophy-award"}
-                            style={{color: "#ffd700", fontSize: 26, width: 30}}
+                            name={item.icon}
+                            type={item.iconType}
+                            style={{color: item.iconColour, fontSize: 26, width: 30}}
                         />
                     </View>
                 )
@@ -54,6 +54,7 @@ export const SideBar = (props: DrawerItemsProps) => {
                 return null;
             }
         };
+
         const renderJourney = ({item, section}) => {
             if (openSections.includes(section.title)) {
                 return (
@@ -87,7 +88,10 @@ export const SideBar = (props: DrawerItemsProps) => {
 
         const badges: Achievement[] = [
             {
-                title: "Gold Eco"
+                title: "Gold Eco",
+                icon: "trophy-award" ,
+                iconType: "MaterialCommunityIcons",
+                iconColour: "#ffd700"
             }
         ];
 
@@ -140,6 +144,12 @@ export const SideBar = (props: DrawerItemsProps) => {
                                              }}>
                                              {section.title}
                                          </Text>)}
+                                 renderSectionFooter={({section}) =>
+                                     (section.title === "Badges" && openSections.includes(section.title)
+                                         ? <Text
+                                             style={{marginLeft: 10, padding: 10}}
+                                         >All badges ...</Text>
+                                         : null)}
                     />
                 </Content>
             </Container>

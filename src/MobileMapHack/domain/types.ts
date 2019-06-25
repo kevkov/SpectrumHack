@@ -90,5 +90,8 @@ export const myJourneys: Journey[] = [
 ];
 
 export interface Achievement {
-    title: string
+    title: string,
+    icon: string,
+    iconType: string,
+    iconColour: string
 }
