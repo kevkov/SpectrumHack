@@ -269,18 +269,22 @@
 
             map.Markers = new List<ViewModels.Marker>();
 
+            var allRouteIndicies = Enumerable.Range(1, fullJourneyOptions.EnrichedRoute.Count).Select(x => x-1).ToArray();
+
             map.Markers.Add(new ViewModels.Marker
             {
                 Image = "start",
                 Title = fullJourneyOptions.StartLocation.Name,
-                Coordinates = new LatLng(fullJourneyOptions.StartLocation.Latitude, fullJourneyOptions.StartLocation.Longitude)
+                Coordinates = new LatLng(fullJourneyOptions.StartLocation.Latitude, fullJourneyOptions.StartLocation.Longitude),
+                IntersectingRouteIndices = allRouteIndicies
             });
 
             map.Markers.Add(new ViewModels.Marker
             {
                 Image = "finish",
                 Title = fullJourneyOptions.EndLocation.Name,
-                Coordinates = new LatLng(fullJourneyOptions.EndLocation.Latitude, fullJourneyOptions.EndLocation.Longitude)
+                Coordinates = new LatLng(fullJourneyOptions.EndLocation.Latitude, fullJourneyOptions.EndLocation.Longitude),
+                IntersectingRouteIndices = allRouteIndicies
             });
 
             // Add route markers
@@ -493,14 +497,16 @@
         {
             var routeMarkers = new List<ViewModels.Marker>();
 
-            foreach (var route in fullJourneyOptions.EnrichedRoute)
+            for(var i = 0; i < fullJourneyOptions.EnrichedRoute.Count; i++)
             {
+                var route = fullJourneyOptions.EnrichedRoute[i];
                 var markerCoordinate = route.RouteMarkers[route.RouteMarkers.Count / 2].Coordinate;
 
                 routeMarkers.Add(new ViewModels.Marker
                 {
                     Title = route.Label,
-                    Coordinates = new LatLng(markerCoordinate.Latitude, markerCoordinate.Longitude)
+                    Coordinates = new LatLng(markerCoordinate.Latitude, markerCoordinate.Longitude),
+                    IntersectingRouteIndices = new [] { i }
                 });
             }
 
