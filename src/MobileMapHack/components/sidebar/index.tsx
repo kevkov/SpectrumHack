@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
     Content,
     Text,
@@ -12,7 +12,6 @@ import Constants from 'expo-constants';
 import {Journey, myJourneys} from "../../domain/types";
 // @ts-ignore
 import PersonImg from "../../assets/sadiqKhan.jpg";
-import mainBadgeImg from "../../assets/mainpagebadge.png";
 
 interface Section {
     title: string,
@@ -23,7 +22,7 @@ const menuItems: Section[] = [
     {title: 'Pay', data: []},
     {title: 'Rewards', data: []},
     {title: 'Badges', data: []},
-    {title: 'Places', data: myJourneys},
+    {title: 'My Journeys', data: myJourneys},
     {title: 'History', data: []},
     {title: 'Help', data: []},
     {title: 'Feedback', data: []},
@@ -42,6 +41,9 @@ function getRouteForSection(sectionTitle: string) {
 }
 
 export const SideBar = (props: DrawerItemsProps) => {
+
+    const [openSections, setOpenSections] = useState<string[]>([]);
+
     return (
         <Container style={{paddingTop: Constants.statusBarHeight}}>
             <Content>
@@ -57,47 +59,58 @@ export const SideBar = (props: DrawerItemsProps) => {
                         <Text>Sadiq</Text>
                         <Text>Khan</Text>
                         <Badge success><Text>72</Text></Badge>
-                        <Image source={mainBadgeImg} style={{ width: 50, height: 50, marginTop: 10 }} />
-
                     </View>
                 </View>
                 <SectionList style={{marginLeft: 15}}
                              sections={menuItems}
                              keyExtractor={((item, index) => item + index)}
-                             renderItem={({item}) =>
-                                 (
-                                     <View style={{marginLeft: 10, padding: 10, flexDirection: 'row'}}>
-                                         <Icon
-                                             onPress={() => {
-                                                 props.navigation.closeDrawer();
-                                                 props.navigation.navigate("Route",
-                                                     {journey: item});
-                                             }}
-                                             active
-                                             type={"MaterialIcons"}
-                                             name={item.icon}
-                                             style={{color: "#777", fontSize: 26, width: 30}}
-                                         />
-                                         <Text
-                                             style={{paddingTop: 5}}
-                                             onPress={() => {
-                                                 props.navigation.closeDrawer();
-                                                 props.navigation.navigate("Route",
-                                                     {journey: item});
-                                             }}>
-                                             {item.name}
-                                         </Text>
-                                     </View>
-                                 )}
+                             renderItem={(data) => {
+                                 //console.log(JSON.stringify(data));
+                                 if (openSections.includes(data.section.title)) {
+                                     return (
+                                         <View style={{marginLeft: 10, padding: 10, flexDirection: 'row'}}>
+                                             <Icon
+                                                 onPress={() => {
+                                                     props.navigation.closeDrawer();
+                                                     props.navigation.navigate("Route",
+                                                         {journey: data.item});
+                                                 }}
+                                                 active
+                                                 type={"MaterialIcons"}
+                                                 name={data.item.icon}
+                                                 style={{color: "#777", fontSize: 26, width: 30}}
+                                             />
+                                             <Text
+                                                 style={{paddingTop: 5}}
+                                                 onPress={() => {
+                                                     props.navigation.closeDrawer();
+                                                     props.navigation.navigate("Route",
+                                                         {journey: data.item});
+                                                 }}>
+                                                 {data.item.name}
+                                             </Text>
+                                         </View>
+                                     )
+                                 } else {
+                                     return null;
+                                 }}}
                              renderSectionHeader=
-                                 {({section: {title}}) => (
+                                 {(data) => (
                                      <Text
                                         style={{padding: 10, fontWeight: 'bold'}}
                                         onPress={() => {
-                                            props.navigation.closeDrawer();
-                                            props.navigation.navigate(getRouteForSection(title));
+                                            if (data.section.data) {
+                                                if (openSections.includes(data.section.title)) {
+                                                    setOpenSections(openSections.filter((s) => s !== data.section.title));
+                                                } else {
+                                                    setOpenSections(openSections.concat(data.section.title));
+                                                }
+                                            } else {
+                                                props.navigation.closeDrawer();
+                                                props.navigation.navigate(getRouteForSection(data.section.title));
+                                            }
                                         }}>
-                                     {title}
+                                     {data.section.title}
                                      </Text>)}
                 />
             </Content>
