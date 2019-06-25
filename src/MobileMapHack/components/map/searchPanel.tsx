@@ -20,7 +20,7 @@ export const SearchPanel = (props:{show:boolean, journey:Journey | null}) => {
         .getOrElse({startName: "", endName: "", startTime: "08:00"});
     const range = new Array(47).fill(0);
     let queryParams = {
-        key: 'AIzaSyB5rjbqMTTV_XntRSwXb4wxzC3pUW5l6tg',
+        key: '',
         language: 'en', // language of the results
         types: 'geocode' // '(cities)'
     };
