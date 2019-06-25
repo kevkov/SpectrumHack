@@ -11,8 +11,8 @@ import {DrawerItemsProps, SectionList} from "react-navigation";
 import Constants from 'expo-constants';
 import {Journey, myJourneys} from "../../domain/types";
 // @ts-ignore
-import PersonImg from "../../assets/sadiqKhan.jpg"
-
+import PersonImg from "../../assets/sadiqKhan.jpg";
+import mainBadgeImg from "../../assets/mainpagebadge.png";
 
 interface Section {
     title: string,
@@ -57,6 +57,8 @@ export const SideBar = (props: DrawerItemsProps) => {
                         <Text>Sadiq</Text>
                         <Text>Khan</Text>
                         <Badge success><Text>72</Text></Badge>
+                        <Image source={mainBadgeImg} style={{ width: 50, height: 50, marginTop: 10 }} />
+
                     </View>
                 </View>
                 <SectionList style={{marginLeft: 15}}
