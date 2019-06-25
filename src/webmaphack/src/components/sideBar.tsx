@@ -1,5 +1,6 @@
 import React from 'react';
 import './sideBar.css';
+import mainPageBadge from './mainpagebadge.png';
 
 const SideBar: React.FC = () => {
   return (
@@ -10,11 +11,19 @@ const SideBar: React.FC = () => {
                         <img className="rounded mx-auto d-block" width="250" height="300" src="https://upload.wikimedia.org/wikipedia/commons/5/56/Sadiq_Khan_November_2016.jpg" alt="Sadiq Khan" />
                     </div>
                     <div className="row pt-2">
-                        <div className="col-8">
-                            <h5>Sadiq Khan</h5>
+                        <div className="col-7">
+                            <h6>Sadiq Khan</h6>
+                        </div>
+                        <div className="col-5 text-right">
+                                <h6>Level 32</h6>
+                        </div>
+                    </div>
+                    <div className="row pt-2">
+                      <div className="col-8">
+                          <img className="rounded mx-auto d-block" width="40" height="40" src="{mainPageBadge}" alt="badge" />
                         </div>
                         <div className="col-4 text-right">
-                                <span className="badge badge-pill badge-success">123</span>
+                            <span className="badge badge-pill badge-success">123 points</span>
                         </div>
                     </div>
                 </div>
@@ -31,9 +40,7 @@ const SideBar: React.FC = () => {
                         </a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" href="/">
-                            Badges
-                        </a>
+                        <Link className="nav-link" to="/badges">Badges</Link>                        
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" href="/">
