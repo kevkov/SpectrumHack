@@ -24,7 +24,7 @@
     {
         private Journey journey = new Journey();
 
-        private const double MarkerIntersectionRangeInMetres = 200;
+        private const double MarkerIntersectionRangeInMetres = 250;
         private const double MarkerDisplayRangeInMetres = 1000;
 
         private readonly IPollutionRepository _pollutionRepo;
