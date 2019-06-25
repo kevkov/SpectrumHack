@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { api } from '../api';
 import { RouteInfo } from '../domain/Types';
 import SideBar from './sideBar';
@@ -19,19 +19,19 @@ const MapContainer: React.FC = () => {
     const [routeInfoItems, setRouteInfoItems] = useState<RouteInfo[]>(() => []);
 
     useEffect(() => {
-        var uri = "http://spectrummapapi.azurewebsites.net/api/map/routes/1/" +        
-        showPollution + "/" +
-        showSchools + "/" +
-        startTime;
+        var uri = "http://spectrummapapi.azurewebsites.net/api/map/routes/1/" +
+            showPollution + "/" +
+            showSchools + "/" +
+            startTime;
 
         console.log('Calling api at: ' + uri);
-        
+
         api<RouteInfo[]>(uri)
             .then(data => {
                 console.log(`api callback in journey details ${uri}`);
                 setRouteInfoItems(data);
             });
-    },[showPollution, showSchools, startTime]);
+    }, [showPollution, showSchools, startTime]);
 
   return (
     <div>    
@@ -151,13 +151,13 @@ const MapContainer: React.FC = () => {
         </main>
     </div>
 
-    <footer className="border-top footer text-muted">
-        <div className="container">
-            &copy; 2019 - Spectrum
+            <footer className="border-top footer text-muted">
+                <div className="container">
+                    &copy; 2019 - Spectrum
         </div>
-    </footer>
-  </div>    
-  );
+            </footer>
+        </div>
+    );
 }
 
 export default MapContainer;
