@@ -1,5 +1,6 @@
 import React from 'react';
 import './sideBar.css';
+import { Link } from 'react-router-dom';
 import mainPageBadge from './mainpagebadge.png';
 
 const SideBar: React.FC = () => {
@@ -58,9 +59,7 @@ const SideBar: React.FC = () => {
                         </a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" href="/">
-                            Help
-                        </a>
+                        <Link className="nav-link" to="/chargingCalculation">Help</Link>                        
                     </li>
                     <li className="nav-item dropdown">
                         <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="/" role="button" aria-haspopup="true" aria-expanded="false">Feedback</a>

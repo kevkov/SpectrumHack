@@ -4,6 +4,7 @@ import { createDrawerNavigator, createStackNavigator, createAppContainer } from 
 import { SideBar } from "./components/sidebar";
 import { Home } from './screens/home'
 import { Route } from './screens/route'
+import { Help } from './screens/help';
 import {Root} from "native-base";
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
@@ -18,7 +19,8 @@ import {AppLoading} from "expo";
 const Drawer = createDrawerNavigator(
     {
         Home: { screen: Home },
-        Route: { screen: Route }
+        Route: { screen: Route },
+        Help: {screen: Help}
     },
     {
         initialRouteName: "Route",

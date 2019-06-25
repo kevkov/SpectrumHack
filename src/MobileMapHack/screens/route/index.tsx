@@ -6,8 +6,8 @@ import JourneyContext from '../../context/JourneyContext';
 import { JourneySettings } from '../../domain/types';
 
 export const Route = (props) => {
-    const [showPollution, togglePollution] = useState(() => true);
-    const [showSchools, toggleSchools] = useState(() => true);
+    const [showPollution, togglePollution] = useState(() => false);
+    const [showSchools, toggleSchools] = useState(() => false);
     const [startTime, setStartTime] = useState(() => '12:00');
     const [showSearch, toggleSearch] = useState(false);
 
