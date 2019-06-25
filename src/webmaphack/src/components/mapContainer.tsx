@@ -16,8 +16,10 @@ import {
 import 'react-accessible-accordion/dist/fancy-example.css';
 
 const MapContainer: React.FC = () => {
-    const googleApiKey = 'AIzaSyCmLOoMOOcDlU9zIoKH0_UfAsUUlCE6PRM';
+    const googleApiKey = 'Your Api Key';
     const journeyId = 1;
+    const[fromMap, setFromMap]=useState(()=>"North Greenwich");
+    const[toMap, setToMap]=useState(()=>"Westminster");
     const [showPollution, togglePollution] = useState(() => false);
     const [showSchools, toggleSchools] = useState(() => false);
     const [startTime, setStartTime] = useState(() => '12:00');
@@ -85,9 +87,9 @@ const MapContainer: React.FC = () => {
                     <option>23:00</option>
                 </select>
                 <span className="navbar-text text-white pl-2 pr-2">From:</span>
-                <input className="form-control mr-sm-2" type="text" placeholder="From" aria-label="From" value="North Greenwich" readOnly />
+                <input className="form-control mr-sm-2" type="text" placeholder="From" aria-label="From" onChange={()=>setFromMap(fromMap)} value={fromMap} readOnly />
                 <span className="navbar-text text-white pl-2 pr-2">To:</span>
-                <input className="form-control mr-sm-2" type="text" placeholder="To" aria-label="To" value="Westminster" readOnly />
+                <input className="form-control mr-sm-2" type="text" placeholder="To" aria-label="To" onChange={()=>setToMap(fromMap)} value={toMap} readOnly />
                 <button className="btn btn-success my-2 my-sm-0" type="submit">Show Route</button>
             </form>
         </div>
@@ -101,7 +103,7 @@ const MapContainer: React.FC = () => {
                 <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
 
                     <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-1 pb-1 mb-3 border-bottom">
-                        <h3>Route Map</h3>
+                        <h3>{fromMap} to {toMap}</h3>
                         <div className="btn-toolbar mb-2 mb-md-0">
                             <div className="btn-group mr-2">
                                 <button type="button" id="btnSchools" className={"btn btn-sm " + (showSchools ? 'btn-primary' : 'btn-outline-primary')} onClick={() => toggleSchools(!showSchools)}>Schools</button>
