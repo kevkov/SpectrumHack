@@ -4,7 +4,7 @@ import { RouteInfo } from '../domain/Types';
 import SideBar from './sideBar';
 import RouteMap from './routeMap';
 import Autocomplete from 'react-google-autocomplete';
-import Geocode from 'react-geocode';
+
 
 // Demo styles, see 'Styles' section below for some notes on use.
 import 'react-accessible-accordion/dist/fancy-example.css';
@@ -23,7 +23,7 @@ const MapContainer: React.FC = () => {
     const [showHeatmap, toggleHeatmap] = useState(() => false);
     const [routeInfoItems, setRouteInfoItems] = useState<RouteInfo[]>(() => []);
     // set Google Maps Geocoding API for purposes of quota management. Its optional but recommended.
-    Geocode.setApiKey(googleApiKey);
+    
 
     
 
