@@ -44,6 +44,28 @@
             _directionService = directionService;
         }
 
+        [HttpPost]
+        public async Task<ActionResult> PostTemplateFile()
+        {
+            using (var reader = new StreamReader(Request.Body))
+            {
+                var body = reader.ReadToEnd();
+
+                var filePath = GetFilePath("Test.kml");
+                System.IO.File.WriteAllText(filePath, body);
+            }
+            
+            return Ok();
+        }
+
+        [HttpGet("gettemplatefile")]
+        public ActionResult<string> GetTemplateFile()
+        {
+            var kmlString = System.IO.File.ReadAllText(GetFilePath("Test.kml"));
+
+            return kmlString;
+        }
+
         // GET api/map
         [HttpGet]
         public async Task<ActionResult<string>> Get()
@@ -261,22 +283,25 @@
                 Coordinates = new LatLng(fullJourneyOptions.EndLocation.Latitude, fullJourneyOptions.EndLocation.Longitude)
             });
 
+            // Add route markers
+            map.Markers.AddRange(GetRouteLabelsForMobile(fullJourneyOptions));
+
             if (showPollution)
             {
-                foreach (var markers in await GetPollutionMarkersForJourney(journeyId))
+                foreach (var marker in await GetPollutionMarkersForJourney(journeyId))
                 {
                     string pollutionImage = string.Empty;
-                    if (markers.Value == 1)
+                    if (marker.Value == 1)
                     {
                         pollutionImage = "one";
                     }
 
-                    if (markers.Value == 2)
+                    if (marker.Value == 2)
                     {
                         pollutionImage = "two";
                     }
 
-                    if (markers.Value == 3)
+                    if (marker.Value == 3)
                     {
                         pollutionImage = "three";
                     }
@@ -286,30 +311,71 @@
                         pollutionImage = "four";
                     }
 
+                    var intersections = GetPollutionMarkerIntersectionIndices(fullJourneyOptions, marker);
+
                     map.Markers.Add(new ViewModels.Marker()
                     {
                         Image = pollutionImage,
-                        Title = markers.Description,
-                        Coordinates = new LatLng(markers.Coordinate.Latitude, markers.Coordinate.Longitude)
+                        Title = marker.Description,
+                        Coordinates = new LatLng(marker.Coordinate.Latitude, marker.Coordinate.Longitude),
+                        IntersectingRouteIndices = intersections.ToArray()
                     });
                 }
             }
 
             if (showSchools)
             {
-                foreach (var markers in await GetSchoolMarkersForJourney(journeyId))
+                foreach (var marker in await GetSchoolMarkersForJourney(journeyId))
                 {
-                    map.Markers.Add(new ViewModels.Marker()
+                    var intersections = GetSchoolMarkerIntersectionIndices(fullJourneyOptions, marker);
+
+                    map.Markers.Add(new ViewModels.Marker
                     {
                         Image = "school",
-                        Title = markers.Description + " - " + markers.Value,
-                        Coordinates = new LatLng(markers.Coordinate.Latitude, markers.Coordinate.Longitude)
+                        Title = marker.Description + " - " + marker.Value,
+                        Coordinates = new LatLng(marker.Coordinate.Latitude, marker.Coordinate.Longitude),
+                        IntersectingRouteIndices = intersections.ToArray()
                     });
                 }
-
             }
 
             return map;
+        }
+
+        private static List<int> GetPollutionMarkerIntersectionIndices(RouteOptions fullJourneyOptions, MapApiCore.Models.Marker marker)
+        {
+            var intersections = new List<int>();
+
+            for (var i = 0; i < fullJourneyOptions.EnrichedRoute.Count; i++)
+            {
+                var pollutionMarkers = fullJourneyOptions.EnrichedRoute[i].PollutionMarkers;
+                if (pollutionMarkers.Any(m =>
+                    m.Coordinate.Longitude == marker.Coordinate.Longitude &&
+                    m.Coordinate.Latitude == marker.Coordinate.Latitude))
+                {
+                    intersections.Add(i);
+                }
+            }
+
+            return intersections;
+        }
+
+        private static List<int> GetSchoolMarkerIntersectionIndices(RouteOptions fullJourneyOptions, MapApiCore.Models.Marker marker)
+        {
+            var intersections = new List<int>();
+
+            for (var i = 0; i < fullJourneyOptions.EnrichedRoute.Count; i++)
+            {
+                var schoolMarkers = fullJourneyOptions.EnrichedRoute[i].SchoolMarkers;
+                if (schoolMarkers.Any(m =>
+                    m.Coordinate.Longitude == marker.Coordinate.Longitude &&
+                    m.Coordinate.Latitude == marker.Coordinate.Latitude))
+                {
+                    intersections.Add(i);
+                }
+            }
+
+            return intersections;
         }
 
         private async Task<string> CreateTestKmlString(RouteOptions routeOptions, int journeyId, bool showPollution, bool showSchools)
@@ -374,17 +440,39 @@
             StringBuilder sb = new StringBuilder();
             foreach (var route in routeOptions.EnrichedRoute)
             {
+                sb.AppendLine(String.Format(styleMapString, $"line-{route.GreenScore}-{route.Cost}-{route.Colour}"));
                 sb.AppendLine(String.Format(styleString, $"line-{route.GreenScore}-{route.Cost}-{route.Colour}", route.Colour.ToLower()));
             }
 
             return sb.ToString();
         }
 
+        private string styleMapString =
+            "<StyleMap id =\"{0}\">" +
+            "<Pair>" +
+            "<key>normal</key>" +
+            "<styleUrl>#{0}-normal</styleUrl>" +
+            "</Pair>" +
+            "<Pair>" +
+            "<key>highlight</key>" +
+            "<styleUrl>#{0}-highlight</styleUrl>" +
+            "</Pair>" +
+            "</StyleMap>";
+
         private string styleString =
-            "<Style id =\"{0}\">" +
+            "<Style id =\"{0}-normal\">" +
             "<LineStyle>" +
             "<color>{1}</color>" +
             "<width>5</width>" +
+            "</LineStyle>" +
+            "<LabelStyle>" +
+            "<scale>0</scale>" +
+            "</LabelStyle>" +
+            "</Style>" +
+            "<Style id =\"{0}-highlight\">" +
+            "<LineStyle>" +
+            "<color>ff000000</color>" +
+            "<width>13</width>" +
             "</LineStyle>" +
             "<LabelStyle>" +
             "<scale>1</scale>" +
@@ -418,6 +506,25 @@
 
             return xml;
         }
+
+        private IEnumerable<ViewModels.Marker> GetRouteLabelsForMobile(RouteOptions fullJourneyOptions)
+        {
+            var routeMarkers = new List<ViewModels.Marker>();
+
+            foreach (var route in fullJourneyOptions.EnrichedRoute)
+            {
+                var markerCoordinate = route.RouteMarkers[route.RouteMarkers.Count / 2].Coordinate;
+
+                routeMarkers.Add(new ViewModels.Marker
+                {
+                    Title = route.Label,
+                    Coordinates = new LatLng(markerCoordinate.Latitude, markerCoordinate.Longitude)
+                });
+            }
+
+            return routeMarkers;
+        }
+
 
         private List<Folder> GetRouteLabelsFolders(RouteOptions routeOptions)
         {
@@ -505,7 +612,7 @@
             //var journeyOptions = _journeyRepo.GetJourney(journeyId);
             var journeyOptions = await GetJourney(journeyId, 0, 0, 0, 0);
 
-            int i = 0;
+            int i = 1;
             IList<EnrichedRoute> enrichedRoute = new List<EnrichedRoute>();
             foreach (var journeyOption in journeyOptions.Routes)
             {
@@ -516,8 +623,8 @@
                     PollutionMarkers = GetPollutionMarkersForRoute(journeyOption.Coordinates, startTime),
                     SchoolMarkers = GetSchoolMarkersForRoute(journeyOption.Coordinates, MarkerIntersectionRangeInMetres, startTime)
                 };
-
                 i++;
+
                 er.Distance = Math.Round(journeyOption.Distance * 10 * 0.0006213712m, 2);
                 er.Duration = journeyOption.Duration;
                 er.ModeOfTransport = journeyOption.ModeOfTransport;
