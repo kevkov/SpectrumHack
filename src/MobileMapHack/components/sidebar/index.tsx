@@ -30,6 +30,17 @@ const menuItems: Section[] = [
     {title: 'Logout', data: []},
 ];
 
+function getRouteForSection(sectionTitle: string) {
+    switch(sectionTitle) {
+        case 'Help':
+            return 'Help';
+        case 'Places':
+            return 'Route';
+        default:
+            return 'Home';
+    }
+}
+
 export const SideBar = (props: DrawerItemsProps) => {
     return (
         <Container style={{paddingTop: Constants.statusBarHeight}}>
@@ -75,11 +86,17 @@ export const SideBar = (props: DrawerItemsProps) => {
                                              {item.name}
                                          </Text>
                                      </View>
-
                                  )}
                              renderSectionHeader=
                                  {({section: {title}}) => (
-                                     <Text style={{padding: 10, fontWeight: 'bold'}}>{title}</Text>)}
+                                     <Text
+                                        style={{padding: 10, fontWeight: 'bold'}}
+                                        onPress={() => {
+                                            props.navigation.closeDrawer();
+                                            props.navigation.navigate(getRouteForSection(title));
+                                        }}>
+                                     {title}
+                                     </Text>)}
                 />
             </Content>
         </Container>

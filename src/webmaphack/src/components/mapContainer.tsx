@@ -1,23 +1,17 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { api } from '../api';
 import { RouteInfo } from '../domain/Types';
 import SideBar from './sideBar';
 import RouteMap from './routeMap';
 
-import {
-    Accordion,
-    AccordionItem,
-    AccordionItemHeading,
-    AccordionItemButton,
-    AccordionItemPanel,
-} from 'react-accessible-accordion';
-
 // Demo styles, see 'Styles' section below for some notes on use.
 import 'react-accessible-accordion/dist/fancy-example.css';
 
 const MapContainer: React.FC = () => {
-    const googleApiKey = 'AIzaSyCmLOoMOOcDlU9zIoKH0_UfAsUUlCE6PRM';
+    const googleApiKey = 'Your Api Key';
     const journeyId = 1;
+    const[fromMap, setFromMap]=useState(()=>"North Greenwich");
+    const[toMap, setToMap]=useState(()=>"Westminster");
     const [showPollution, togglePollution] = useState(() => false);
     const [showSchools, toggleSchools] = useState(() => false);
     const [startTime, setStartTime] = useState(() => '12:00');
@@ -25,19 +19,19 @@ const MapContainer: React.FC = () => {
     const [routeInfoItems, setRouteInfoItems] = useState<RouteInfo[]>(() => []);
 
     useEffect(() => {
-        var uri = "http://spectrummapapi.azurewebsites.net/api/map/routes/1/" +        
-        showPollution + "/" +
-        showSchools + "/" +
-        startTime;
+        var uri = "http://spectrummapapi.azurewebsites.net/api/map/routes/1/" +
+            showPollution + "/" +
+            showSchools + "/" +
+            startTime;
 
         console.log('Calling api at: ' + uri);
-        
+
         api<RouteInfo[]>(uri)
             .then(data => {
                 console.log(`api callback in journey details ${uri}`);
                 setRouteInfoItems(data);
             });
-    },[showPollution, showSchools, startTime]);
+    }, [showPollution, showSchools, startTime]);
 
   return (
     <div>    
@@ -85,9 +79,9 @@ const MapContainer: React.FC = () => {
                     <option>23:00</option>
                 </select>
                 <span className="navbar-text text-white pl-2 pr-2">From:</span>
-                <input className="form-control mr-sm-2" type="text" placeholder="From" aria-label="From" value="North Greenwich" readOnly />
+                <input className="form-control mr-sm-2" type="text" placeholder="From" aria-label="From" onChange={()=>setFromMap(fromMap)} value={fromMap} readOnly />
                 <span className="navbar-text text-white pl-2 pr-2">To:</span>
-                <input className="form-control mr-sm-2" type="text" placeholder="To" aria-label="To" value="Westminster" readOnly />
+                <input className="form-control mr-sm-2" type="text" placeholder="To" aria-label="To" onChange={()=>setToMap(fromMap)} value={toMap} readOnly />
                 <button className="btn btn-success my-2 my-sm-0" type="submit">Show Route</button>
             </form>
         </div>
@@ -101,7 +95,7 @@ const MapContainer: React.FC = () => {
                 <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
 
                     <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-1 pb-1 mb-3 border-bottom">
-                        <h3>Route Map</h3>
+                        <h3>{fromMap} to {toMap}</h3>
                         <div className="btn-toolbar mb-2 mb-md-0">
                             <div className="btn-group mr-2">
                                 <button type="button" id="btnSchools" className={"btn btn-sm " + (showSchools ? 'btn-primary' : 'btn-outline-primary')} onClick={() => toggleSchools(!showSchools)}>Schools</button>
@@ -122,7 +116,7 @@ const MapContainer: React.FC = () => {
                         showHeatmap={showHeatmap}
                               />
 
-                    <div className="row">
+                    <div className="row pt-3">
                              
                         <div className="container">
                             <div className="card-deck mb-3 text">
@@ -132,8 +126,8 @@ const MapContainer: React.FC = () => {
                                         <div className="card-header" style={{backgroundColor: item.colorInHex}}>
                                             <h4> {item.routeLabel} ({item.modeOfTransport}) </h4>
                                         </div>
-                                        <div className="card-body bg-light">
-                                            <ul className="list-unstyled mt-3 mb-4">
+                                        <div className="card-body bg-light nopadding">
+                                            <ul className="list-unstyled mt-2 pl-2">
                                                 <li><h6>Green score: {item.pollutionPoint}</h6></li>
                                                 <li><h6>Schools: {item.schoolCount === null || item.schoolCount === undefined ? "N/A" : item.schoolCount}</h6></li>
                                                 <li><h6>Distance: {item.distance} miles</h6></li>
@@ -141,33 +135,7 @@ const MapContainer: React.FC = () => {
                                                 <li><h6>Travel time: {item.duration}</h6></li>
                                                 <li><h6>Travel cost: £{item.travelCost.toFixed(2)}</h6></li>
                                                 <div>
-                                                    <Accordion allowZeroExpanded={true}>
-                                                        <AccordionItem>
-                                                            <AccordionItemHeading>
-                                                                <AccordionItemButton>
-                                                                    <i>Calculation</i>
-                                                                </AccordionItemButton>
-                                                            </AccordionItemHeading>
-                                                            <AccordionItemPanel>
-                                                                <p>
-                                                                    Green score is capped at 75 for cars.
-                                                                    <br />
-                                                                    <br />
-                                                                    Green Score = <br />
-                                                                    Start: 100 <br />
-                                                                    Pollution: - ({item.pollutionZone === null || item.pollutionZone === undefined ? "0" : item.pollutionZone.toFixed(2)} * 20) =
-                                                                                 {item.pollutionZone === null || item.pollutionZone === undefined ? "0" : (parseInt(item.pollutionZone.toFixed(2)) * 20)}<br />
-                                                                    - Schools: - ({item.schoolCount === null || item.schoolCount === undefined ? "0" : item.schoolCount} * 40) = {item.pollutionPoint} <br />
-                                                                    <br />
-                                                                    Cost = <br />
-                                                                    Start: 10 <br />
-                                                                    Green Factor: - {item.pollutionPoint} / 10 <br />
-                                                                    Distance: * {item.distance} (miles) = <br />
-                                                                    {item.travelCost.toFixed(2)}
-                                                                </p>
-                                                            </AccordionItemPanel>
-                                                        </AccordionItem>
-                                                    </Accordion>
+                                                  
                                                 </div>
                                             </ul>
                                         </div>
@@ -177,23 +145,19 @@ const MapContainer: React.FC = () => {
                             </div>
                         </div>
                     </div>
-
-                    <div className="container">
-                        <h4>Traveling via a less polluting car may significantly reduce your cost by up to 30%.</h4>
-                    </div>
                 </main>
             </div>
         </div>
         </main>
     </div>
 
-    <footer className="border-top footer text-muted">
-        <div className="container">
-            &copy; 2019 - Spectrum
+            <footer className="border-top footer text-muted">
+                <div className="container">
+                    &copy; 2019 - Spectrum
         </div>
-    </footer>
-  </div>    
-  );
+            </footer>
+        </div>
+    );
 }
 
 export default MapContainer;

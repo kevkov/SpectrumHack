@@ -9,6 +9,9 @@
         [XmlElement(ElementName = "name")]
         public string Name { get; set; }
 
+        [XmlElement(ElementName = "description")]
+        public string Description { get; set; }
+
         [XmlElement(ElementName = "Placemark")]
         public List<Placemark> Placemark { get; set; }
     }
