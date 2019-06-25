@@ -26,19 +26,23 @@ const BadgeContainer: React.FC = () => {
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>Golden Crown</td>
+                                                <td><img className="rounded mx-auto d-block" width="100" height="100" src="goldCrown.jpg" alt="Golden Crown" /></td>
                                                 <td>Used tube instead of car for a month</td>
                                             </tr>
                                             <tr>
-                                                <td>Tortoise</td>
+                                                <td><img className="rounded mx-auto d-block" width="100" height="100" src="normaltortoise.jpg" alt="Tortoise" /></td>
                                                 <td>Used tunnel near Isle of Dogs to cross Thames</td>
                                             </tr>
                                             <tr>
-                                                <td>Locked</td>
+                                                <td>
+                                                    <img className="rounded mx-auto d-block" width="100" height="100" src="lockedbadge.jpg" alt="Locked" />
+                                                </td>
                                                 <td>Used all bridge in London at least once.</td>
                                             </tr>
                                             <tr>
-                                                <td>Locked</td>
+                                                <td>
+                                                    <img className="rounded mx-auto d-block" width="100" height="100" src="lockedbadge.jpg" alt="Locked" />
+                                                </td>
                                                 <td>Commute by walking part of your journey for 10 miles.</td>
                                             </tr>
                                         </tbody>
