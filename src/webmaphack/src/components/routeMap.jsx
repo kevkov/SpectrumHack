@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
-import { withScriptjs, withGoogleMap, GoogleMap, KmlLayer } from "react-google-maps"
+import { withGoogleMap, GoogleMap, KmlLayer } from "react-google-maps"
 import HeatmapLayer from 'react-google-maps/lib/components/visualization/HeatmapLayer';
 
 const getKmlUri = (showPollution, showSchools, startTime, startLatitude, startLongitude, endLatitude, endLongitude) => {  
@@ -30,7 +30,7 @@ const getKmlUri = (showPollution, showSchools, startTime, startLatitude, startLo
     return kmlUrl;
 }
 
-const RouteMap = withScriptjs(withGoogleMap((props) =>   
+const RouteMap = withGoogleMap((props) =>   
 {
   const [heatmapData, setheatmapData] = useState(() => []);
 
@@ -84,7 +84,6 @@ const RouteMap = withScriptjs(withGoogleMap((props) =>
     options={{dissapting: false, radius: 50}}
      />
   </GoogleMap>
-}
-))
+})
 
 export default RouteMap;

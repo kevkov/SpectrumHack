@@ -7,25 +7,17 @@ const SideBar: React.FC = () => {
     <nav className="col-md-2 d-none d-md-block bg-light">
             <div>
                 <div className="container">
-                  <div className="row">
-                      <img className="mx-auto d-block img-round" width="250" height="300" src="https://upload.wikimedia.org/wikipedia/commons/5/56/Sadiq_Khan_November_2016.jpg" alt="Sadiq Khan" />
+                  <div className="row pt-3">
+                      <img className="mx-auto d-block rounded-circle" width="150" height="200" src="https://upload.wikimedia.org/wikipedia/commons/5/56/Sadiq_Khan_November_2016.jpg" alt="Sadiq Khan" />
                     </div>
                     <div className="row pt-2">
-                        <div className="col-7">
-                            <h6>Sadiq Khan</h6>
-                        </div>
-                        <div className="col-5 text-right">
-                                <h6>Level 32</h6>
-                        </div>
-                    </div>
-                    <div className="row pt-2">
-                      <div className="col-8 text-left">
-                          <img className="rounded mx-auto d-block" width="40" height="40" src="mainpagebadge.png" alt="badge" />
+                        <div className="col-8">
+                            <h5>Sadiq Khan</h5>
                         </div>
                         <div className="col-4 text-right">
-                            <span className="badge badge-pill badge-success">123 points</span>
+                                <span className="badge badge-pill badge-success">123 points</span>
                         </div>
-                    </div>
+                    </div>                    
                 </div>
                 <ul className="nav flex-column">
                     <li><hr/></li>
