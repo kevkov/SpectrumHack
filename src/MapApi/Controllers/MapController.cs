@@ -440,27 +440,17 @@
             StringBuilder sb = new StringBuilder();
             foreach (var route in routeOptions.EnrichedRoute)
             {
-                sb.AppendLine(String.Format(styleMapString, $"line-{route.GreenScore}-{route.Cost}-{route.Colour}"));
+              
                 sb.AppendLine(String.Format(styleString, $"line-{route.GreenScore}-{route.Cost}-{route.Colour}", route.Colour.ToLower()));
             }
 
             return sb.ToString();
         }
 
-        private string styleMapString =
-            "<StyleMap id =\"{0}\">" +
-            "<Pair>" +
-            "<key>normal</key>" +
-            "<styleUrl>#{0}-normal</styleUrl>" +
-            "</Pair>" +
-            "<Pair>" +
-            "<key>highlight</key>" +
-            "<styleUrl>#{0}-highlight</styleUrl>" +
-            "</Pair>" +
-            "</StyleMap>";
+      
 
         private string styleString =
-            "<Style id =\"{0}-normal\">" +
+            "<Style id =\"{0}\">" +
             "<LineStyle>" +
             "<color>{1}</color>" +
             "<width>5</width>" +
@@ -468,16 +458,8 @@
             "<LabelStyle>" +
             "<scale>0</scale>" +
             "</LabelStyle>" +
-            "</Style>" +
-            "<Style id =\"{0}-highlight\">" +
-            "<LineStyle>" +
-            "<color>ff000000</color>" +
-            "<width>13</width>" +
-            "</LineStyle>" +
-            "<LabelStyle>" +
-            "<scale>1</scale>" +
-            "</LabelStyle>" +
             "</Style>";
+           
 
         private string GetRoutes(RouteOptions routeOptions)
         {
