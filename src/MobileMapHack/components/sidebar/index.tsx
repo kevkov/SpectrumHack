@@ -9,7 +9,7 @@ import {
 import {Image} from "react-native";
 import {DrawerItemsProps, SectionList} from "react-navigation";
 import Constants from 'expo-constants';
-import {Journey} from "../../domain/types";
+import {Journey, myJourneys} from "../../domain/types";
 // @ts-ignore
 import PersonImg from "../../assets/sadiqKhan.jpg"
 
@@ -18,37 +18,6 @@ interface Section {
     title: string,
     data: Journey[]
 }
-
-const myJourneys: Journey[] = [
-    {
-        id: 1,
-        name: "Home to Work",
-        icon: "business",
-        start: {
-            latitude: 51.4511732, longitude: -0.2138706
-        },
-        startName: "North Greenwich",
-        end: {
-            latitude: 51.5250836, longitude: -0.0769465
-        },
-        endName: "Westminster",
-        startTime: "08:30"
-    },
-    {
-        id: 2,
-        name: "Work to Heathrow",
-        icon: "business",
-        start: {
-            latitude: 51.4511731, longitude: -0.2138706
-        },
-        startName: "North Greenwich",
-        end: {
-            latitude: 51.5250836, longitude: -0.0769465
-        },
-        endName: "Heathrow",
-        startTime: "08:30"
-    }
-];
 
 const menuItems: Section[] = [
     {title: 'Pay', data: []},
@@ -60,6 +29,17 @@ const menuItems: Section[] = [
     {title: 'Feedback', data: []},
     {title: 'Logout', data: []},
 ];
+
+function getRouteForSection(sectionTitle: string) {
+    switch(sectionTitle) {
+        case 'Help':
+            return 'Help';
+        case 'Places':
+            return 'Route';
+        default:
+            return 'Home';
+    }
+}
 
 export const SideBar = (props: DrawerItemsProps) => {
     return (
@@ -109,11 +89,11 @@ export const SideBar = (props: DrawerItemsProps) => {
                                  )}
                              renderSectionHeader=
                                  {({section: {title}}) => (
-                                     <Text 
+                                     <Text
                                         style={{padding: 10, fontWeight: 'bold'}}
                                         onPress={() => {
                                             props.navigation.closeDrawer();
-                                            props.navigation.navigate( title === "Help" ? "Help" : "Home");
+                                            props.navigation.navigate(getRouteForSection(title));
                                         }}>
                                      {title}
                                      </Text>)}

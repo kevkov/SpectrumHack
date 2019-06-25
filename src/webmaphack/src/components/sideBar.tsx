@@ -1,15 +1,14 @@
 import React from 'react';
 import './sideBar.css';
 import { Link } from 'react-router-dom';
-import mainPageBadge from './mainpagebadge.png';
 
 const SideBar: React.FC = () => {
   return (
     <nav className="col-md-2 d-none d-md-block bg-light">
             <div>
                 <div className="container">
-                    <div className="row">
-                        <img className="rounded mx-auto d-block" width="250" height="300" src="https://upload.wikimedia.org/wikipedia/commons/5/56/Sadiq_Khan_November_2016.jpg" alt="Sadiq Khan" />
+                  <div className="row">
+                      <img className="mx-auto d-block img-round" width="250" height="300" src="https://upload.wikimedia.org/wikipedia/commons/5/56/Sadiq_Khan_November_2016.jpg" alt="Sadiq Khan" />
                     </div>
                     <div className="row pt-2">
                         <div className="col-7">
@@ -20,8 +19,8 @@ const SideBar: React.FC = () => {
                         </div>
                     </div>
                     <div className="row pt-2">
-                      <div className="col-8">
-                          <img className="rounded mx-auto d-block" width="40" height="40" src="{mainPageBadge}" alt="badge" />
+                      <div className="col-8 text-left">
+                          <img className="rounded mx-auto d-block" width="40" height="40" src="mainpagebadge.png" alt="badge" />
                         </div>
                         <div className="col-4 text-right">
                             <span className="badge badge-pill badge-success">123 points</span>

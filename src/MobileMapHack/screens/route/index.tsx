@@ -3,18 +3,21 @@ import {Body, Button, Container, Header, Icon, Left, Right, Title} from "native-
 import { Map } from '../../components/map';
 import Constants from "expo-constants";
 import JourneyContext from '../../context/JourneyContext';
-import { JourneySettings } from '../../domain/types';
+import {Journey, JourneySettings} from '../../domain/types';
 
 export const Route = (props) => {
-    const [showPollution, togglePollution] = useState(() => false);
-    const [showSchools, toggleSchools] = useState(() => false);
+    const [journey, setJourney] = useState<Journey>(null);
+    const [showPollution, togglePollution] = useState(() => true);
+    const [showSchools, toggleSchools] = useState(() => true);
     const [startTime, setStartTime] = useState(() => '12:00');
     const [showSearch, toggleSearch] = useState(false);
 
     const context: JourneySettings = {
+        journey,
         showPollution,
         showSchools,
         startTime,
+        setJourney,
         togglePollution,
         toggleSchools,
         setStartTime

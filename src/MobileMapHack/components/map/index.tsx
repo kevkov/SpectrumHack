@@ -44,15 +44,9 @@ function calculateMapRegion(journey: Journey): { centre:LatLng, size: {latDelta:
 }
 
 export const Map = (props: any | {showSearch: boolean}) => {
-    let journey: Journey | null = props.navigation.getParam("journey");
-
-    // should maybe based on map feature extents
-    let region = fromNullable(journey)
-        .map(j => calculateMapRegion(j))
-        .getOrElse({centre: {latitude: 51.509864, longitude: -0.118092}, size: {latDelta: 0.0922, lonDelta: 0.0421}});
 
     const [fabActive, setFabActive] = useState(() => false);
-    const {showPollution, showSchools, togglePollution, toggleSchools, startTime} = useContext(JourneyContext);
+    const {journey, showPollution, showSchools, setJourney, togglePollution, toggleSchools, startTime} = useContext(JourneyContext);
     const [mapData, setMapData] = useState<MapData>();
     const mapRef = useRef<MapView>();
     const [selectedRouteIndex, setSelectedRouteIndex] = useState<number>(() => -1);
@@ -67,8 +61,17 @@ export const Map = (props: any | {showSearch: boolean}) => {
         "four": FourImg
     };
 
+    setJourney(props.navigation.getParam("journey") || journey);
+
+    // should maybe based on map feature extents
+    let region = fromNullable(journey)
+        .map(j => calculateMapRegion(j))
+        .getOrElse({centre: {latitude: 51.509864, longitude: -0.118092}, size: {latDelta: 0.0922, lonDelta: 0.0421}});
+
     useEffect(() => {
-        if (journey != null) {
+        console.log(`journey is ${journey}`);
+        if (journey != null)
+        {
             const url = `https://spectrummapapi.azurewebsites.net/api/map/mobile/${journey.id}?showPollution=${showPollution}&showSchools=${showSchools}&startTime=${startTime}`;
             console.log('Calling api at: ' + url);
 
@@ -112,7 +115,7 @@ export const Map = (props: any | {showSearch: boolean}) => {
         return 0.5;
     }
 
-    console.log("*********** rendering");
+    console.log("*********** rendering map");
     return (
         <View style={{flex: 1}}>
             <MapView
@@ -150,7 +153,13 @@ export const Map = (props: any | {showSearch: boolean}) => {
                 )}
             </MapView>
             <SearchPanel show={props.showSearch} journey={journey} />
-            <Animated.View style={{position: "absolute", top: useSlideInOutAnimation(showDetails, 50, 750), bottom: 100, left: 20, right: 20 }}>
+            <Animated.View
+                style={{
+                    position: "absolute",
+                    top: useSlideInOutAnimation(showDetails, 50, 750),
+                    bottom: 100,
+                    left: 20,
+                    right: 20 }}>
                 <JourneyDetails/>
             </Animated.View>
             <Fab
