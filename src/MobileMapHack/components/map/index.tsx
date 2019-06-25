@@ -8,7 +8,7 @@ import StartImg from "../../assets/start.png"
 // @ts-ignore
 import FinishImg from "../../assets/finish.png"
 // @ts-ignore
-import SchoolImg from "../../assets/school.png"
+import SchoolImg from "../../assets/placemark_circle.png"
 // @ts-ignore
 import OneImg from "../../assets/one.png"
 // @ts-ignore
@@ -18,10 +18,10 @@ import ThreeImg from "../../assets/three.png"
 // @ts-ignore
 import FourImg from "../../assets/four.png"
 import {api} from "../../api"
-import { fromNullable } from "fp-ts/lib/Option";
+import {fromNullable} from "fp-ts/lib/Option";
 import JourneyContext from "../../context/JourneyContext";
-import { SearchPanel } from "./searchPanel"
-import { JourneyDetails } from "../../screens/route/journeyDetails";
+import {SearchPanel} from "./searchPanel"
+import {JourneyDetails} from "../../screens/route/journeyDetails";
 import {useSlideInOutAnimation} from "../../hooks/animation";
 import {Animated} from "react-native";
 import {Marker as DomainMarker} from '../../domain/types';
@@ -103,10 +103,10 @@ export const Map = (props: any | {showSearch: boolean}) => {
         }
 
         // Selected route exists and marker intersects with selected route
-        if (marker.intersectingRouteIndices != null && 
+        if (marker.intersectingRouteIndices != null &&
             marker.intersectingRouteIndices.includes(selectedRouteIndex)) {
                 return 1.0;
-        } 
+        }
 
         // Selected route exists, but marker doesn't intersect
         return 0.5;
