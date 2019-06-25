@@ -72,7 +72,7 @@ const ChargingCalculation: React.FC = () => {
                     <Alert.Heading>Green Score Calculation</Alert.Heading>
                     <p></p>
                     <p>
-                      Green Score = 100 - (Pollution + School)
+                      Green Score = 100 - (Air Quality + School)
                   
   </p>
 
@@ -89,11 +89,11 @@ const ChargingCalculation: React.FC = () => {
 
                   </Alert>
                   <Alert variant="success" >
-                  <Alert.Heading>Weightinns</Alert.Heading>
+                  <Alert.Heading>Weightings</Alert.Heading>
                     <p></p>
 
                     <p>
-                      Pollution = 20 per air quality index point
+                      Air Quality = 20 per air quality index point
   </p>
                     <p>
                       Schools = 40 per school on journey
