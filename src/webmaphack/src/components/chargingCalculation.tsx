@@ -105,9 +105,7 @@ const ChargingCalculation: React.FC = () => {
                   </Alert>
 
                 </div>
-                <div className="container">
-                  <h4>Travelling via a less polluting car may significantly reduce your cost by up to 30%.</h4>
-                </div>
+              
               </main>
             </div>
           </div>
