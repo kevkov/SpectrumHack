@@ -14,6 +14,7 @@ export interface Marker {
     title: string;
     image: string;
     coordinates: LatLng;
+    intersectingRouteIndices: number[]
 }
 
 export interface MapData {
