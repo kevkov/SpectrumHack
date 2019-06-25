@@ -44,15 +44,9 @@ function calculateMapRegion(journey: Journey): { centre:LatLng, size: {latDelta:
 }
 
 export const Map = (props: any | {showSearch: boolean}) => {
-    let journey: Journey | null = props.navigation.getParam("journey");
-
-    // should maybe based on map feature extents
-    let region = fromNullable(journey)
-        .map(j => calculateMapRegion(j))
-        .getOrElse({centre: {latitude: 51.509864, longitude: -0.118092}, size: {latDelta: 0.0922, lonDelta: 0.0421}});
 
     const [fabActive, setFabActive] = useState(() => false);
-    const {showPollution, showSchools, togglePollution, toggleSchools, startTime} = useContext(JourneyContext);
+    const {journey, showPollution, showSchools, setJourney, togglePollution, toggleSchools, startTime} = useContext(JourneyContext);
     const [mapData, setMapData] = useState<MapData>();
     const mapRef = useRef<MapView>();
     const [selectedRouteIndex, setSelectedRouteIndex] = useState<number>(() => -1);
@@ -67,8 +61,16 @@ export const Map = (props: any | {showSearch: boolean}) => {
         "four": FourImg
     };
 
+    setJourney(props.navigation.getParam("journey"));
+
+    // should maybe based on map feature extents
+    let region = fromNullable(journey)
+        .map(j => calculateMapRegion(j))
+        .getOrElse({centre: {latitude: 51.509864, longitude: -0.118092}, size: {latDelta: 0.0922, lonDelta: 0.0421}});
+
     useEffect(() => {
-        if (journey != null) {
+        if (journey != null)
+        {
             const url = `https://spectrummapapi.azurewebsites.net/api/map/mobile/${journey.id}?showPollution=${showPollution}&showSchools=${showSchools}&startTime=${startTime}`;
             console.log('Calling api at: ' + url);
 
@@ -180,92 +182,4 @@ export const Map = (props: any | {showSearch: boolean}) => {
                 </Button>
             </Fab>
         </View>)
-};
-
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-
-const SearchPanel = (props:{show:boolean}) => {
-
-    const {show} = props;
-    const [visible, setVisible] = useState(false);
-    const [time, setTime] = useState("08:00");
-
-    const showTop = 10;
-    const hideTop = -290;
-    let hidingTop = new Animated.Value(hideTop);
-    let showingTop = new Animated.Value(showTop);
-    let top = (visible ? showingTop : hidingTop);
-
-    useEffect(() => {
-        if (show == true && visible === false) {
-            Animated.timing(
-                hidingTop,
-                {
-                    toValue: showTop,
-                    duration: 500,
-                }
-            ).start(() => setVisible(true));
-        }
-        else if (visible === true && show === false)
-        {
-            Animated.timing(
-                showingTop,
-                {
-                    toValue: hideTop,
-                    duration: 500,
-                }
-            ).start(() => setVisible(false));
-        }
-    });
-
-    const range = new Array(47).fill(0);
-    return (
-        <Animated.View style={{top: top, position: 'absolute', right: 10, left: 10}}>
-        <Card style={{borderRadius: 5}}>
-            <CardItem>
-                <GooglePlacesAutocomplete
-                    nearbyPlacesAPI='GoogleReverseGeocoding'
-                    placeholder="From"
-                    minLength={2}
-                    autoFocus={false}
-                    listViewDisplayed="false"
-                    fetchDetails={false}
-                    renderDescription={row => row.description} // custom description render
-                    onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
-                        console.log(data, details);
-                    }}
-
-                    getDefaultValue={() => ''}
-                    query={{
-                        // available options: https://developers.google.com/places/web-service/autocomplete
-                        key: 'AIzaSyB5rjbqMTTV_XntRSwXb4wxzC3pUW5l6tg',
-                        language: 'en', // language of the results
-                        types: 'geocode' // '(cities)'
-                    }}
-                />
-            </CardItem>
-            <CardItem>
-                <Input placeholder="To" style={{flex: 4, borderWidth: 1, borderRadius: 5, borderColor: "#CCCCCC"}}/>
-            </CardItem>
-            <CardItem>
-                <Label style={{marginRight: 5}}>Time</Label>
-                <Picker
-                    mode="dropdown"
-                    onValueChange={(value) => setTime(value)}
-                    selectedValue={time}
-                >
-                    {range.map((_, index) => {
-                        const hour = Math.floor(index / 2);
-                        const mins = index % 2 == 0 ? "00" : "30";
-                        const timeOption = `${hour < 10 ? "0" + hour : hour.toString()}:${mins}`;
-                        return (<Picker.Item label={timeOption} value={timeOption} key={timeOption}/>);
-                    })}
-                </Picker>
-                <Button primary style={{width:50, height:50, borderRadius:25, alignItems:"center", justifyContent:"center"}}>
-                    <Icon name="search" type="MaterialIcons" />
-                </Button>
-            </CardItem>
-        </Card>
-        </Animated.View>
-    )
 };

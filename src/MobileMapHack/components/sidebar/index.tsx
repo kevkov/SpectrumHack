@@ -9,7 +9,7 @@ import {
 import {Image} from "react-native";
 import {DrawerItemsProps, SectionList} from "react-navigation";
 import Constants from 'expo-constants';
-import {Journey} from "../../domain/types";
+import {Journey, myJourneys} from "../../domain/types";
 // @ts-ignore
 import PersonImg from "../../assets/sadiqKhan.jpg"
 
@@ -18,37 +18,6 @@ interface Section {
     title: string,
     data: Journey[]
 }
-
-const myJourneys: Journey[] = [
-    {
-        id: 1,
-        name: "Home to Work",
-        icon: "business",
-        start: {
-            latitude: 51.4511732, longitude: -0.2138706
-        },
-        startName: "Westminster",
-        end: {
-            latitude: 51.5250836, longitude: -0.0769465
-        },
-        endName: "North Greenwich",
-        startTime: "08:30"
-    },
-    {
-        id: 2,
-        name: "Work to Heathrow",
-        icon: "business",
-        start: {
-            latitude: 51.4511731, longitude: -0.2138706
-        },
-        startName: "North Greenwich",
-        end: {
-            latitude: 51.5250836, longitude: -0.0769465
-        },
-        endName: "Heathrow",
-        startTime: "08:30"
-    }
-];
 
 const menuItems: Section[] = [
     {title: 'Pay', data: []},
