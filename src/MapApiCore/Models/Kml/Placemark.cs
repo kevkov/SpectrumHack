@@ -8,6 +8,9 @@
         [XmlElement(ElementName = "name")]
         public string Name { get; set; }
 
+        [XmlElement(ElementName = "description")]
+        public string Description { get; set; }
+
         [XmlElement(ElementName = "styleUrl")]
         public string StyleUrl { get; set; }
 
