@@ -44,26 +44,25 @@ export const SearchPanel = (props:{show:boolean, journey:Journey | null}) => {
             <Card style={{borderRadius: 5}}>
                 <CardItem>
                     <GooglePlacesAutocomplete
-                        nearbyPlacesAPI='GoogleReverseGeocoding'
                         placeholder="From"
                         minLength={2}
                         autoFocus={false}
                         listViewDisplayed="false"
-                        fetchDetails={false}
+                        fetchDetails={true}
                         renderDescription={row => row.description} // custom description render
                         getDefaultValue={() => journeyDetails.startName}
                         query={queryParams}
                         styles={autoCompleteStyles}
+                        onPress={(rowData, details) => console.log(details.geometry.location)}
                     />
                 </CardItem>
                 <CardItem>
                     <GooglePlacesAutocomplete
-                        nearbyPlacesAPI='GoogleReverseGeocoding'
                         placeholder="To"
                         minLength={2}
                         autoFocus={false}
                         listViewDisplayed="false"
-                        fetchDetails={false}
+                        fetchDetails={true}
                         renderDescription={row => row.description} // custom description render
                         getDefaultValue={() => journeyDetails.endName}
                         query={queryParams}
