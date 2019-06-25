@@ -1,15 +1,14 @@
-import {Animated} from "react-native";
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE} from "react-native-maps";
 //import MapViewDirections from "react-native-maps-directions";
 import React, {useEffect, useRef, useState, useContext} from "react";
 import {MapData, LatLng, Journey} from "../../domain/types";
-import {Button, Fab, Icon, Input, Card, Toast, CardItem, Label, Picker, View} from "native-base";
+import {Button, Fab, Icon, Toast, View} from "native-base";
 // @ts-ignore
 import StartImg from "../../assets/start.png"
 // @ts-ignore
 import FinishImg from "../../assets/finish.png"
 // @ts-ignore
-import SchoolImg from "../../assets/school.png"
+import SchoolImg from "../../assets/placemark_circle.png"
 // @ts-ignore
 import OneImg from "../../assets/one.png"
 // @ts-ignore
@@ -19,8 +18,13 @@ import ThreeImg from "../../assets/three.png"
 // @ts-ignore
 import FourImg from "../../assets/four.png"
 import {api} from "../../api"
-import { fromNullable } from "fp-ts/lib/Option";
+import {fromNullable} from "fp-ts/lib/Option";
 import JourneyContext from "../../context/JourneyContext";
+import {SearchPanel} from "./searchPanel"
+import {JourneyDetails} from "../../screens/route/journeyDetails";
+import {useSlideInOutAnimation} from "../../hooks/animation";
+import {Animated} from "react-native";
+import {Marker as DomainMarker} from '../../domain/types';
 
 const GOOGLE_MAPS_APIKEY = '';
 
@@ -39,7 +43,7 @@ function calculateMapRegion(journey: Journey): { centre:LatLng, size: {latDelta:
     return { centre, size: {latDelta, lonDelta} };
 }
 
-export const Map = (props) => {
+export const Map = (props: any | {showSearch: boolean}) => {
     let journey: Journey | null = props.navigation.getParam("journey");
 
     // should maybe based on map feature extents
@@ -51,8 +55,8 @@ export const Map = (props) => {
     const {showPollution, showSchools, togglePollution, toggleSchools, startTime} = useContext(JourneyContext);
     const [mapData, setMapData] = useState<MapData>();
     const mapRef = useRef<MapView>();
-    const [showSearch, toggleSearch] = useState(() => false);
-
+    const [selectedRouteIndex, setSelectedRouteIndex] = useState<number>(() => -1);
+    const [showDetails, setShowDetails] = useState(false);
     const imgs = {
         "start": StartImg,
         "finish": FinishImg,
@@ -81,7 +85,32 @@ export const Map = (props) => {
                     Toast.show({text: "There was a problem getting the route details", position: "bottom", type: "warning"});
                 });
         }
-    }, [journey, showPollution, showSchools]);
+    }, [journey, showPollution, showSchools, startTime]);
+
+    function getRouteStrokeWidth(defaultWidth: number, index:number): number {
+        if (index === selectedRouteIndex) {
+            return defaultWidth + 3;
+        }
+        else {
+            return defaultWidth;
+        }
+    }
+
+    function getMarkerOpacity(marker: DomainMarker) : number {
+        // No selected route
+        if (selectedRouteIndex === -1) {
+            return 1.0;
+        }
+
+        // Selected route exists and marker intersects with selected route
+        if (marker.intersectingRouteIndices != null &&
+            marker.intersectingRouteIndices.includes(selectedRouteIndex)) {
+                return 1.0;
+        }
+
+        // Selected route exists, but marker doesn't intersect
+        return 0.5;
+    }
 
     console.log("*********** rendering");
     return (
@@ -96,7 +125,6 @@ export const Map = (props) => {
                     latitudeDelta: 1.05 * region.size.latDelta,
                     longitudeDelta: 1.05 * region.size.lonDelta
                 }}
-                onPress={() => toggleSearch(!showSearch)}
                 onMapReady={() => {
                     console.log("*********** map ready");
                 }}
@@ -105,8 +133,10 @@ export const Map = (props) => {
                     <Polyline
                         key={"line" + index}
                         coordinates={line.coordinates}
-                        strokeWidth={line.strokeWidth}
+                        strokeWidth={getRouteStrokeWidth(line.strokeWidth, index)}
                         strokeColor={line.strokeColor}
+                        tappable={true}
+                        onPress={() => setSelectedRouteIndex(index)}
                     />
                 )}
                 {mapData && mapData.markers.map((marker, index) =>
@@ -115,16 +145,29 @@ export const Map = (props) => {
                         title={marker.title}
                         image={imgs[marker.image]}
                         coordinate={marker.coordinates}
+                        opacity={getMarkerOpacity(marker)}
                     />
                 )}
             </MapView>
-            <SearchPanel show={showSearch} />
+            <SearchPanel show={props.showSearch} journey={journey} />
+            <Animated.View style={{position: "absolute", top: useSlideInOutAnimation(showDetails, 50, 750), bottom: 100, left: 20, right: 20 }}>
+                <JourneyDetails/>
+            </Animated.View>
+            <Fab
+                position="bottomLeft"
+            >
+                <Icon
+                    name="list"
+                    type="MaterialIcons"
+                    onPress={() => setShowDetails(!showDetails)}
+                />
+            </Fab>
             <Fab
                 direction="up"
                 position="bottomRight"
                 active={fabActive}
                 onPress={() => setFabActive(!fabActive)}>
-                <Icon name="playlist-add-check" type="MaterialIcons"/>
+                <Icon name="settings" type="MaterialIcons"/>
                 <Button
                     onPress={() => togglePollution(!showPollution)}
                     style={{backgroundColor: showPollution ? "#B5651D" : "#CCCCCC"}}>

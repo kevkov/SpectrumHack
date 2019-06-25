@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -36,6 +37,8 @@ namespace MapApi.ViewModels
         public string Image { get; set; }
 
         public LatLng Coordinates { get; set; }
+
+        public int[] IntersectingRouteIndices { get; set; }
     }
 
     public class Map

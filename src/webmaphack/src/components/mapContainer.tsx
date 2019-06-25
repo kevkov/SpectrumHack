@@ -4,16 +4,28 @@ import { RouteInfo } from '../domain/Types';
 import SideBar from './sideBar';
 import RouteMap from './routeMap';
 
+import {
+    Accordion,
+    AccordionItem,
+    AccordionItemHeading,
+    AccordionItemButton,
+    AccordionItemPanel,
+} from 'react-accessible-accordion';
+
+// Demo styles, see 'Styles' section below for some notes on use.
+import 'react-accessible-accordion/dist/fancy-example.css';
+
 const MapContainer: React.FC = () => {
-    const googleApiKey = 'YOUR_API_KEY';
+    const googleApiKey = 'AIzaSyCmLOoMOOcDlU9zIoKH0_UfAsUUlCE6PRM';
     const journeyId = 1;
     const [showPollution, togglePollution] = useState(() => false);
     const [showSchools, toggleSchools] = useState(() => false);
     const [startTime, setStartTime] = useState(() => '12:00');
+    const [showHeatmap, toggleHeatmap] = useState(() => false);
     const [routeInfoItems, setRouteInfoItems] = useState<RouteInfo[]>(() => []);
 
     useEffect(() => {
-        var uri = "http://spectrummapapi.azurewebsites.net/api/map/routes/1/" +
+        var uri = "http://spectrummapapi.azurewebsites.net/api/map/routes/1/" +        
         showPollution + "/" +
         showSchools + "/" +
         startTime;
@@ -92,8 +104,9 @@ const MapContainer: React.FC = () => {
                         <h3>Route Map</h3>
                         <div className="btn-toolbar mb-2 mb-md-0">
                             <div className="btn-group mr-2">
-                                <button type="button" id="btnPollution" className={"btn btn-sm " + (showPollution ? 'btn-primary' : 'btn-outline-primary')} onClick={() => togglePollution(!showPollution)}>Air Quality Index</button>
                                 <button type="button" id="btnSchools" className={"btn btn-sm " + (showSchools ? 'btn-primary' : 'btn-outline-primary')} onClick={() => toggleSchools(!showSchools)}>Schools</button>
+                                <button type="button" id="btnHeatmap" className={"btn btn-sm " + (showHeatmap ? 'btn-primary' : 'btn-outline-primary')} onClick={() => toggleHeatmap(!showHeatmap)}>Air Quality Heatmap</button>
+                                <button type="button" id="btnPollution" className={"btn btn-sm " + (showPollution ? 'btn-primary' : 'btn-outline-primary')} onClick={() => togglePollution(!showPollution)}>Air Quality Index</button>
                             </div>
                         </div>
                     </div>
@@ -105,31 +118,63 @@ const MapContainer: React.FC = () => {
                         mapElement={<div style={{ height: `100%` }} />}
                         showPollution={showPollution}
                         showSchools={showSchools}
-                        startTime={startTime}                                                
-                    />
+                        startTime={startTime}
+                        showHeatmap={showHeatmap}
+                              />
 
-                    <h6>&nbsp;</h6>
-                    <div className="container ">
-                        <div className="card-deck mb-3 text">
-                            
-                            {routeInfoItems.map((item) => {
-                                return <div key={item.routeLabel} className="card border-secondary mb-4 shadow-sm">
-                                    <div className="card-header" style={{backgroundColor: item.colorInHex}}>
-                                        <h4> {item.routeLabel} ({item.modeOfTransport}) </h4>
+                    <div className="row">
+                             
+                        <div className="container">
+                            <div className="card-deck mb-3 text">
+                                
+                                {routeInfoItems.map((item) => {
+                                    return <div key={item.routeLabel} className="card border-secondary mb-4 shadow-sm">
+                                        <div className="card-header" style={{backgroundColor: item.colorInHex}}>
+                                            <h4> {item.routeLabel} ({item.modeOfTransport}) </h4>
+                                        </div>
+                                        <div className="card-body bg-light">
+                                            <ul className="list-unstyled mt-3 mb-4">
+                                                <li><h6>Green score: {item.pollutionPoint}</h6></li>
+                                                <li><h6>Schools: {item.schoolCount === null || item.schoolCount === undefined ? "N/A" : item.schoolCount}</h6></li>
+                                                <li><h6>Distance: {item.distance} miles</h6></li>
+                                                <li><h6>Average Air Quality: {item.pollutionZone === null || item.pollutionZone === undefined ? "N/A" : item.pollutionZone.toFixed(2)}</h6></li>
+                                                <li><h6>Travel time: {item.duration}</h6></li>
+                                                <li><h6>Travel cost: £{item.travelCost.toFixed(2)}</h6></li>
+                                                <div>
+                                                    <Accordion allowZeroExpanded={true}>
+                                                        <AccordionItem>
+                                                            <AccordionItemHeading>
+                                                                <AccordionItemButton>
+                                                                    <i>Calculation</i>
+                                                                </AccordionItemButton>
+                                                            </AccordionItemHeading>
+                                                            <AccordionItemPanel>
+                                                                <p>
+                                                                    Green score is capped at 75 for cars.
+                                                                    <br />
+                                                                    <br />
+                                                                    Green Score = <br />
+                                                                    Start: 100 <br />
+                                                                    Pollution: - ({item.pollutionZone === null || item.pollutionZone === undefined ? "0" : item.pollutionZone.toFixed(2)} * 20) =
+                                                                                 {item.pollutionZone === null || item.pollutionZone === undefined ? "0" : (parseInt(item.pollutionZone.toFixed(2)) * 20)}<br />
+                                                                    - Schools: - ({item.schoolCount === null || item.schoolCount === undefined ? "0" : item.schoolCount} * 40) = {item.pollutionPoint} <br />
+                                                                    <br />
+                                                                    Cost = <br />
+                                                                    Start: 10 <br />
+                                                                    Green Factor: - {item.pollutionPoint} / 10 <br />
+                                                                    Distance: * {item.distance} (miles) = <br />
+                                                                    {item.travelCost.toFixed(2)}
+                                                                </p>
+                                                            </AccordionItemPanel>
+                                                        </AccordionItem>
+                                                    </Accordion>
+                                                </div>
+                                            </ul>
+                                        </div>
                                     </div>
-                                    <div className="card-body bg-light">
-                                        <ul className="list-unstyled mt-3 mb-4">
-                                            <li><h6>Green score: {item.pollutionPoint}</h6></li>
-                                            <li><h6>Schools: {item.schoolCount === 0 ? "N/A" : item.schoolCount}</h6></li>
-                                            <li><h6>Distance: {item.distance} miles</h6></li>
-                                            <li><h6>Average Air Quality: {item.pollutionZone}</h6></li>
-                                            <li><h6>Travel time: {item.duration}</h6></li>
-                                            <li><h6>Travel cost: £{item.travelCost}</h6></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                })
-                            }                    
+                                    })
+                                }                    
+                            </div>
                         </div>
                     </div>
 
