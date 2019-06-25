@@ -10,7 +10,6 @@ import Autocomplete from 'react-google-autocomplete';
 import 'react-accessible-accordion/dist/fancy-example.css';
 
 const MapContainer: React.FC = () => {
-    const googleApiKey = 'AIzaSyBoUQ0ymaQRt_Fxci5SI0EZvv_lDRBNdWM';
     const[fromMap, setFromMap]=useState(()=>"North Greenwich");
     const[toMap, setToMap]=useState(()=>"Westminster");
     const [startLatitude, setStartLatitude] = useState(() => 0.0);    
@@ -23,9 +22,6 @@ const MapContainer: React.FC = () => {
     const [showHeatmap, toggleHeatmap] = useState(() => false);
     const [routeInfoItems, setRouteInfoItems] = useState<RouteInfo[]>(() => []);
     // set Google Maps Geocoding API for purposes of quota management. Its optional but recommended.
-    
-
-    
 
     useEffect(() => {
         var uri = "http://spectrummapapi.azurewebsites.net/api/map/routes/1/" +
@@ -113,22 +109,22 @@ const MapContainer: React.FC = () => {
                     <option>23:00</option>
                 </select>
                 <span className="navbar-text text-white pl-2 pr-2">From:</span>
-                {/* <input className="form-control mr-sm-2" type="text" placeholder="From" aria-label="From" onChange={()=>setFromMap(fromMap)} value={fromMap} readOnly /> */}
-                <Autocomplete
+                <input className="form-control mr-sm-2" type="text" placeholder="From" aria-label="From" onChange={()=>setFromMap(fromMap)} value={fromMap} readOnly />
+                {/* <Autocomplete
                     className={"form-control mr-sm-2"}
                    
                     onPlaceSelected={(place:any) => startPlaceSelected(place)}
                     types={['geocode']}
                     componentRestrictions={{country: "uk"}}
-                />
+                /> */}
                 <span className="navbar-text text-white pl-2 pr-2">To:</span>
-                {/* <input className="form-control mr-sm-2" type="text" placeholder="To" aria-label="To" onChange={()=>setToMap(fromMap)} value={toMap} readOnly /> */}
-                <Autocomplete
+                <input className="form-control mr-sm-2" type="text" placeholder="To" aria-label="To" onChange={()=>setToMap(fromMap)} value={toMap} readOnly />
+                {/* <Autocomplete
                     className={"form-control mr-sm-2"}                   
                     onPlaceSelected={(place:any) => endPlaceSelected(place)}
                     types={['geocode']}
                     componentRestrictions={{country: "uk"}}
-                />
+                /> */}
                 <button className="btn btn-success my-2 my-sm-0" type="submit">Show Route</button>
             </form>
         </div>
@@ -153,7 +149,6 @@ const MapContainer: React.FC = () => {
                     </div>
                     
                     <RouteMap
-                        googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${googleApiKey}&v=3.exp&libraries=geometry,drawing,places,visualization`}
                         loadingElement={<div style={{ height: `100%` }} />}
                         containerElement={<div style={{ height: `400px` }} />}
                         mapElement={<div style={{ height: `100%` }} />}
