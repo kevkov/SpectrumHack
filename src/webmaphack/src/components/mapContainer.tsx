@@ -3,20 +3,29 @@ import { api } from '../api';
 import { RouteInfo } from '../domain/Types';
 import SideBar from './sideBar';
 import RouteMap from './routeMap';
+import Autocomplete from 'react-google-autocomplete';
+import Geocode from 'react-geocode';
 
 // Demo styles, see 'Styles' section below for some notes on use.
 import 'react-accessible-accordion/dist/fancy-example.css';
 
 const MapContainer: React.FC = () => {
-    const googleApiKey = 'Your Api Key';
-    const journeyId = 1;
+    const googleApiKey = 'AIzaSyBoUQ0ymaQRt_Fxci5SI0EZvv_lDRBNdWM';
     const[fromMap, setFromMap]=useState(()=>"North Greenwich");
     const[toMap, setToMap]=useState(()=>"Westminster");
+    const [startLatitude, setStartLatitude] = useState(() => 0.0);    
+    const [startLongitude, setStartLongitude] = useState(() => 0.0);
+    const [endLatitude, setEndLatitude] = useState(() => 0.0);
+    const [endLongitude, setEndLongitude] = useState(() => 0.0);
     const [showPollution, togglePollution] = useState(() => false);
     const [showSchools, toggleSchools] = useState(() => false);
     const [startTime, setStartTime] = useState(() => '12:00');
     const [showHeatmap, toggleHeatmap] = useState(() => false);
     const [routeInfoItems, setRouteInfoItems] = useState<RouteInfo[]>(() => []);
+    // set Google Maps Geocoding API for purposes of quota management. Its optional but recommended.
+    Geocode.setApiKey(googleApiKey);
+
+    
 
     useEffect(() => {
         var uri = "http://spectrummapapi.azurewebsites.net/api/map/routes/1/" +
@@ -24,6 +33,15 @@ const MapContainer: React.FC = () => {
             showSchools + "/" +
             startTime;
 
+        // var uri =  "http://spectrummapapi.azurewebsites.net/api/map/routes/1/" +
+        //            'showPollution='+showPollution + 
+        //            '&showSchools='+showSchools+
+        //            '&startTime'+startTime+
+        //            '&startName=NorthGreenwich&startLongitude='+startLongitude +
+        //            '&startLatitude=' + startLatitude +
+        //            '&endName=Westminster&endLongitude=' + endLongitude +
+        //            '&endLatitude=' + endLatitude +                
+        //            '&rand=' + Math.random();
         console.log('Calling api at: ' + uri);
 
         api<RouteInfo[]>(uri)
@@ -31,7 +49,23 @@ const MapContainer: React.FC = () => {
                 console.log(`api callback in journey details ${uri}`);
                 setRouteInfoItems(data);
             });
-    }, [showPollution, showSchools, startTime]);
+    }, [showPollution, showSchools, startTime, startLongitude, startLatitude,endLongitude,endLongitude]);
+
+    const startPlaceSelected = (place: any) => {
+        const latitude = place.geometry.location.lat();        
+        const longitude = place.geometry.location.lng();
+
+        setStartLatitude(latitude);
+        setStartLongitude(longitude);
+    }
+
+    const endPlaceSelected = (place: any) => {
+        const latitude = place.geometry.location.lat();        
+        const longitude = place.geometry.location.lng();
+
+        setEndLatitude(latitude);
+        setEndLongitude(longitude);
+    }
 
   return (
     <div>    
@@ -79,9 +113,22 @@ const MapContainer: React.FC = () => {
                     <option>23:00</option>
                 </select>
                 <span className="navbar-text text-white pl-2 pr-2">From:</span>
-                <input className="form-control mr-sm-2" type="text" placeholder="From" aria-label="From" onChange={()=>setFromMap(fromMap)} value={fromMap} readOnly />
+                {/* <input className="form-control mr-sm-2" type="text" placeholder="From" aria-label="From" onChange={()=>setFromMap(fromMap)} value={fromMap} readOnly /> */}
+                <Autocomplete
+                    className={"form-control mr-sm-2"}
+                   
+                    onPlaceSelected={(place:any) => startPlaceSelected(place)}
+                    types={['geocode']}
+                    componentRestrictions={{country: "uk"}}
+                />
                 <span className="navbar-text text-white pl-2 pr-2">To:</span>
-                <input className="form-control mr-sm-2" type="text" placeholder="To" aria-label="To" onChange={()=>setToMap(fromMap)} value={toMap} readOnly />
+                {/* <input className="form-control mr-sm-2" type="text" placeholder="To" aria-label="To" onChange={()=>setToMap(fromMap)} value={toMap} readOnly /> */}
+                <Autocomplete
+                    className={"form-control mr-sm-2"}                   
+                    onPlaceSelected={(place:any) => endPlaceSelected(place)}
+                    types={['geocode']}
+                    componentRestrictions={{country: "uk"}}
+                />
                 <button className="btn btn-success my-2 my-sm-0" type="submit">Show Route</button>
             </form>
         </div>
@@ -106,7 +153,7 @@ const MapContainer: React.FC = () => {
                     </div>
                     
                     <RouteMap
-                        googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${googleApiKey}&v=3.exp&libraries=geometry,drawing,places,visualization,drawing,places`}
+                        googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${googleApiKey}&v=3.exp&libraries=geometry,drawing,places,visualization`}
                         loadingElement={<div style={{ height: `100%` }} />}
                         containerElement={<div style={{ height: `400px` }} />}
                         mapElement={<div style={{ height: `100%` }} />}
@@ -114,6 +161,10 @@ const MapContainer: React.FC = () => {
                         showSchools={showSchools}
                         startTime={startTime}
                         showHeatmap={showHeatmap}
+                        startLongitude={startLongitude}                        
+                        startLatitude={startLatitude}
+                        endLongitude={endLongitude}
+                        endLatitude={endLatitude}
                               />
 
                     <div className="row pt-3">

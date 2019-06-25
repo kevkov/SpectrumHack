@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { api } from '../api';
-import { RouteInfo } from '../domain/Types';
+import React from 'react';
 import SideBar from './sideBar';
 import Alert from 'react-bootstrap/Alert';
 
@@ -8,29 +6,7 @@ import Alert from 'react-bootstrap/Alert';
 import 'react-accessible-accordion/dist/fancy-example.css';
 
 const ChargingCalculation: React.FC = () => {
-  const googleApiKey = 'AIzaSyBoUQ0ymaQRt_Fxci5SI0EZvv_lDRBNdWM';
-  const journeyId = 1;
-  const [showPollution, togglePollution] = useState(() => false);
-  const [showSchools, toggleSchools] = useState(() => false);
-  const [startTime, setStartTime] = useState(() => '12:00');
-  const [showHeatmap, toggleHeatmap] = useState(() => false);
-  const [routeInfoItems, setRouteInfoItems] = useState<RouteInfo[]>(() => []);
-
-  useEffect(() => {
-    var uri = "http://spectrummapapi.azurewebsites.net/api/map/routes/1/" +
-      showPollution + "/" +
-      showSchools + "/" +
-      startTime;
-
-    console.log('Calling api at: ' + uri);
-
-    api<RouteInfo[]>(uri)
-      .then(data => {
-        console.log(`api callback in journey details ${uri}`);
-        setRouteInfoItems(data);
-      });
-  }, [showPollution, showSchools, startTime]);
-
+  
   return (
     <div>
       <header>
