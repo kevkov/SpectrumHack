@@ -106,11 +106,17 @@ export const SideBar = (props: DrawerItemsProps) => {
                                              {item.name}
                                          </Text>
                                      </View>
-
                                  )}
                              renderSectionHeader=
                                  {({section: {title}}) => (
-                                     <Text style={{padding: 10, fontWeight: 'bold'}}>{title}</Text>)}
+                                     <Text 
+                                        style={{padding: 10, fontWeight: 'bold'}}
+                                        onPress={() => {
+                                            props.navigation.closeDrawer();
+                                            props.navigation.navigate( title === "Help" ? "Help" : "Home");
+                                        }}>
+                                     {title}
+                                     </Text>)}
                 />
             </Content>
         </Container>
