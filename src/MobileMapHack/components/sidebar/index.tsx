@@ -33,15 +33,11 @@ function getRouteForSection(sectionTitle: string) {
 export const SideBar = (props: DrawerItemsProps) => {
 
         const [openSections, setOpenSections] = useState<string[]>([]);
-        const renderBadge = ({item, index, section}) => {
+        const renderBadge = ({item, section}) => {
             if (openSections.includes(section.title)) {
                 return (
-                    <View style={{marginLeft: 10, padding: 10, flexDirection: 'row'}}>
-                        <Text
-                            style={{paddingTop: 5}}
-                        >
-                            {item.title}
-                        </Text>
+                    <View style={{marginLeft: 10, paddingLeft: 10, paddingBottom: 10, flexDirection: 'row', alignItems: "center"}}>
+                        <Text>{item.title}</Text>
                         <Icon
                             active
                             name={item.icon}
@@ -58,7 +54,7 @@ export const SideBar = (props: DrawerItemsProps) => {
         const renderJourney = ({item, section}) => {
             if (openSections.includes(section.title)) {
                 return (
-                    <View style={{marginLeft: 10, padding: 10, flexDirection: 'row'}}>
+                    <View style={{marginLeft: 10, paddingLeft: 10, paddingBottom: 10, flexDirection: 'row', alignItems: "center"}}>
                         <Icon
                             onPress={() => {
                                 props.navigation.closeDrawer();
@@ -68,7 +64,7 @@ export const SideBar = (props: DrawerItemsProps) => {
                             active
                             type={"MaterialIcons"}
                             name={item.icon}
-                            style={{color: "#777", fontSize: 26, width: 30}}
+                            style={{color: "#A0522D", fontSize: 26, width: 30}}
                         />
                         <Text
                             style={{paddingTop: 5}}
@@ -92,6 +88,12 @@ export const SideBar = (props: DrawerItemsProps) => {
                 icon: "trophy-award" ,
                 iconType: "MaterialCommunityIcons",
                 iconColour: "#ffd700"
+            },
+            {
+                title: "Silver Surfer",
+                icon: "trophy-variant" ,
+                iconType: "MaterialCommunityIcons",
+                iconColour: "#C0C0C0"
             }
         ];
 
@@ -147,7 +149,7 @@ export const SideBar = (props: DrawerItemsProps) => {
                                  renderSectionFooter={({section}) =>
                                      (section.title === "Badges" && openSections.includes(section.title)
                                          ? <Text
-                                             style={{marginLeft: 10, padding: 10}}
+                                             style={{marginLeft: 10, paddingLeft: 10, paddingBottom: 10}}
                                          >All badges ...</Text>
                                          : null)}
                     />
