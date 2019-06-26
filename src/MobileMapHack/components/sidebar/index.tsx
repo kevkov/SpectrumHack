@@ -133,7 +133,7 @@ export const SideBar = (props: DrawerItemsProps) => {
                                          <Text
                                              style={{padding: 10, fontWeight: 'bold'}}
                                              onPress={() => {
-                                                 if (section.data) {
+                                                 if (section.data && section.data.length > 0) {
                                                      if (openSections.includes(section.title)) {
                                                          setOpenSections(openSections.filter((s) => s !== section.title));
                                                      } else {
