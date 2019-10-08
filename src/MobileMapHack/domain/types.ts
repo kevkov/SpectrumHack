@@ -106,18 +106,22 @@ export interface Achievement {
     iconColour: string
 }
 
-export interface BusLeg {
+export interface Leg {
+    mode: string
+}
+
+export interface BusLeg extends Leg {
     startBusStopName: string,
     endBusStopName: string,
     busRouteNumber: string
 }
 
-export interface WalkingLeg {
+export interface WalkingLeg extends Leg {
     details: string,
     distance: number
 }
 
 export interface JourneyAlternative {
     totalDuration: number,
-    legs: [BusLeg|WalkingLeg]
+    legs: [Leg]
 }

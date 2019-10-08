@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useContext} from 'react';
-import {Card, CardItem, Content, Text, Body, View, Toast, Button} from "native-base";
+import {Card, CardItem, Content, Text, Body, View, Toast, Button, Icon} from "native-base";
 import { FlatList, StyleSheet } from 'react-native';
-import {JourneyAlternative, RouteInfo} from '../../domain/types';
+import {BusLeg, JourneyAlternative, RouteInfo, WalkingLeg} from '../../domain/types';
 import { api } from '../../api';
 import JourneyContext from '../../context/JourneyContext';
 
@@ -44,6 +44,40 @@ export const JourneyPlannerAlternative = () => {
             });
     }, [journeyPlannerParams]);
 
+    const renderBusLeg = (leg: BusLeg) => {
+        return (<Card>
+            <CardItem bordered>
+                <Icon name="bus" />
+                <Text style={styles.headerText}>Bus</Text>
+            </CardItem>
+            <CardItem style={{backgroundColor: '#eeeeee'}}>
+                <Body>
+                    <View>
+                        <Text style={styles.detailItem}>Route: {leg.busRouteNumber}</Text>
+                        <Text style={styles.detailItem}>Get on at : {leg.startBusStopName}</Text>
+                        <Text style={styles.detailItem}>Get off at : {leg.endBusStopName}</Text>
+                    </View>
+                </Body>
+            </CardItem>
+        </Card>);
+    };
+
+    const renderWalkingLeg = (leg: WalkingLeg) => {
+        return (<Card>
+            <CardItem bordered>
+                <Icon name="walk" />
+                <Text style={styles.headerText}>Walking</Text>
+            </CardItem>
+            <CardItem style={{backgroundColor: '#eeeeee'}}>
+                <Body>
+                    <View>
+                        <Text style={styles.detailItem}>Instruction: {leg.details}</Text>
+                        <Text style={styles.detailItem}>Distance: {leg.distance} m</Text>
+                    </View>
+                </Body>
+            </CardItem>
+        </Card>);
+    };
 
     console.log("rendering")
     if (alternativeJourney == null){
@@ -72,24 +106,8 @@ export const JourneyPlannerAlternative = () => {
                 data={alternativeJourney.legs}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={datum =>
-                    <Card>
-                        <CardItem bordered>
-                            <Text style={styles.headerText}>datum</Text>
-                        </CardItem>
-                        <CardItem style={{backgroundColor: '#eeeeee'}}>
-                            <Body>
-                                <View>
-                                    <Text style={styles.detailItem}>Green score: </Text>
-                                    <Text style={styles.detailItem}>Schools: </Text>
-                                    <Text style={styles.detailItem}>Distance: miles</Text>
-                                    <Text style={styles.detailItem}>Average Air Quality: </Text>
-                                    <Text style={styles.detailItem}>Travel time: </Text>
-                                    <Text style={styles.detailItem}>Travel cost: </Text>
-                                </View>
-                            </Body>
-                        </CardItem>
-                    </Card>
-                }/> }
+                    datum.item.mode == 'Bus' ? renderBusLeg(datum.item as BusLeg) : (datum.item.mode == 'Walking' ? renderWalkingLeg(datum.item as WalkingLeg) : null) }
+                /> }
         </Content>)
     }
 };
