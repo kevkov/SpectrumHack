@@ -45,15 +45,25 @@ export interface RouteInfo {
     modeOfTransport: string
 }
 
+export interface JourneyPlannerParams  {
+    startDatetime: Date,
+    startLatitude: number,
+    startLongitude: number,
+    endLatitude: number,
+    endLongitude: number
+}
+
 export interface JourneySettings {
     journey: Journey | null
     showPollution: boolean,
     showSchools: boolean,
     startTime: string,
+    journeyPlannerParams: JourneyPlannerParams | null
     setJourney: (journey: Journey) => void,
     togglePollution: (showPollution: boolean) => void,
     toggleSchools: (showSchools: boolean) => void,
     setStartTime: (startTime: string) => void
+    setJourneyPlannerParams: (journeyPlannerParams: JourneyPlannerParams) => void
 }
 
 export const theOneGoodJourney = {
@@ -94,4 +104,20 @@ export interface Achievement {
     icon: string,
     iconType: string,
     iconColour: string
+}
+
+export interface BusLeg {
+    startBusStopName: string,
+    endBusStopName: string,
+    busRouteNumber: string
+}
+
+export interface WalkingLeg {
+    details: string,
+    distance: number
+}
+
+export interface JourneyAlternative {
+    totalDuration: number,
+    legs: [BusLeg|WalkingLeg]
 }
