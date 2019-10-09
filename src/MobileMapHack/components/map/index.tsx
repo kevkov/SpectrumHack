@@ -1,7 +1,7 @@
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE} from "react-native-maps";
 //import MapViewDirections from "react-native-maps-directions";
 import React, {useEffect, useRef, useState, useContext} from "react";
-import {MapData, LatLng, Journey, JourneyAlternative} from "../../domain/types";
+import {MapData, LatLng, Journey, JourneyAlternative, JourneyPlannerParams, allJourneyParams} from "../../domain/types";
 import {Button, Fab, Icon, Toast, View} from "native-base";
 // @ts-ignore
 import StartImg from "../../assets/start.png"
@@ -62,6 +62,8 @@ export const Map = (props: any | {showSearch: boolean}) => {
         "three": ThreeImg,
         "four": FourImg
     };
+
+    const [journeyParamsIndex, setJourneyParamsIndex] = useState(0);
 
     setJourney(props.navigation.getParam("journey") || journey);
 
@@ -182,7 +184,8 @@ export const Map = (props: any | {showSearch: boolean}) => {
                     type="MaterialIcons"
                     onPress={() => {
                         if (!showAlternative) {
-                            setJourneyPlannerParams(null);
+                            setJourneyPlannerParams(allJourneyParams[journeyParamsIndex]);
+                            setJourneyParamsIndex((journeyParamsIndex + 1) % 3)
                         }
                         setShowAlternative(!showAlternative);
                     }}

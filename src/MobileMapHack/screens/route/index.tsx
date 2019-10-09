@@ -3,7 +3,7 @@ import {Body, Button, Container, Header, Icon, Left, Right, Title} from "native-
 import { Map } from '../../components/map';
 import Constants from "expo-constants";
 import JourneyContext from '../../context/JourneyContext';
-import {Journey, JourneyPlannerParams, JourneySettings} from '../../domain/types';
+import {allJourneyParams, Journey, JourneyPlannerParams, JourneySettings} from '../../domain/types';
 
 export const Route = (props) => {
     const [journey, setJourney] = useState<Journey>(null);
@@ -11,7 +11,7 @@ export const Route = (props) => {
     const [showSchools, toggleSchools] = useState(() => false);
     const [startTime, setStartTime] = useState(() => '12:00');
     const [showSearch, toggleSearch] = useState(false);
-    const [journeyPlannerParams, setJourneyPlannerParams] = useState<JourneyPlannerParams>(null);
+    const [journeyPlannerParams, setJourneyPlannerParams] = useState<JourneyPlannerParams>(allJourneyParams[0]);
 
     const context: JourneySettings = {
         journey,
