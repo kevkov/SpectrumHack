@@ -178,17 +178,17 @@ export const Map = (props: any | {showSearch: boolean}) => {
             <Fab
                 position="bottomLeft"
                 style={{backgroundColor: 'red'}}
+                onPress={() => {
+                    if (!showAlternative) {
+                        setJourneyPlannerParams(allJourneyParams[journeyParamsIndex]);
+                        setJourneyParamsIndex((journeyParamsIndex + 1) % 3)
+                    }
+                    setShowAlternative(!showAlternative);
+                }}
             >
                 <Icon
                     name="stop"
                     type="MaterialIcons"
-                    onPress={() => {
-                        if (!showAlternative) {
-                            setJourneyPlannerParams(allJourneyParams[journeyParamsIndex]);
-                            setJourneyParamsIndex((journeyParamsIndex + 1) % 3)
-                        }
-                        setShowAlternative(!showAlternative);
-                    }}
                 />
             </Fab>
             <Fab

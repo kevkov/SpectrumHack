@@ -95,7 +95,6 @@ export const JourneyPlannerAlternative = () => {
                             <Text style={styles.detailItem}>Distance: 12.3 miles</Text>
                             <Text style={styles.detailItem}>Travel Cost: £5.40</Text>
                             <Text style={styles.detailItem}>Travel time: 33 min</Text>
-                            <Text style={styles.detailItem}>Green score: 12</Text>
                         </View>
                     </Body>
                 </CardItem>
