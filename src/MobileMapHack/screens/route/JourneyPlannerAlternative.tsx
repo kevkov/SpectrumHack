@@ -24,7 +24,7 @@ export const JourneyPlannerAlternative = () => {
     });
 
     useEffect(() => {
-        const url = `http://10.0.2.2:7071/api/OptionalJourney?startDateTime=2019-10-04T10:00:00&startLongitude=0.1858&startLatitude=51.5751&endLongitude=-0.118092&endLatitude=51.509865`;
+        const url = `https://gladysint-insights-func.azurewebsites.net/api/OptionalJourney?code=Qa7a602gQhSdO8i4oCgAf5gv9flmxNUKCqyfa3rAakhwUOPiAuIkHw==&startDateTime=2019-10-04T10:00:00&startLongitude=0.1858&startLatitude=51.5751&endLongitude=-0.118092&endLatitude=51.509865`;
         console.log('Calling api at: ' + url);
 
         api<JourneyAlternative>(url)
