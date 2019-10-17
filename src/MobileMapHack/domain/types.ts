@@ -118,14 +118,16 @@ export interface Leg {
 }
 
 export interface BusLeg extends Leg {
-    startBusStopName: string,
-    endBusStopName: string,
-    busRouteNumber: string
+    startPoint: string,
+    finishPoint: string,
+    routeNumber: string,
+    duration: number
 }
 
 export interface WalkingLeg extends Leg {
     details: string,
     distance: number
+    duration: number
 }
 
 export interface JourneyAlternative {

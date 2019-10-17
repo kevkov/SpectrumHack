@@ -24,7 +24,8 @@ export const JourneyPlannerAlternative = () => {
     });
 
     useEffect(() => {
-        const url = `https://gladysint-insights-func.azurewebsites.net/api/OptionalJourney?code=Qa7a602gQhSdO8i4oCgAf5gv9flmxNUKCqyfa3rAakhwUOPiAuIkHw==&startDateTime=2019-10-04T10:00:00&startLongitude=${journeyPlannerParams.startLongitude}&startLatitude=${journeyPlannerParams.startLatitude}&endLongitude=${journeyPlannerParams.endLongitude}&endLatitude=${journeyPlannerParams.endLatitude}`;
+        // https://gladysint-insights-func.azurewebsites.net/api/JourneyOptions?code=Qa7a602gQhSdO8i4oCgAf5gv9flmxNUKCqyfa3rAakhwUOPiAuIkHw==&startDateTime=2019-10-04T10:00:00&startLongitude=${journeyPlannerParams.startLongitude}&startLatitude=${journeyPlannerParams.startLatitude}&endLongitude=${journeyPlannerParams.endLongitude}&endLatitude=${journeyPlannerParams.endLatitude}&mode=bus`;
+        const url = `http://10.0.2.2:7071/api/JourneyOptions?startDateTime=${new Date().toISOString()}&startLongitude=${journeyPlannerParams.startLongitude}&startLatitude=${journeyPlannerParams.startLatitude}&endLongitude=${journeyPlannerParams.endLongitude}&endLatitude=${journeyPlannerParams.endLatitude}&mode=bus`;
         console.log('Calling api at: ' + url);
 
         api<JourneyAlternative>(url)
@@ -35,7 +36,7 @@ export const JourneyPlannerAlternative = () => {
             })
             .catch(reason => {
                 console.log(`***********  error calling map api: ${reason}`);
-                // todo: can't have any other position that bottom does not show up
+                // todo: toast does not show immediately
                 Toast.show({
                     text: "There was a problem getting the route details",
                     position: "bottom",
@@ -53,9 +54,9 @@ export const JourneyPlannerAlternative = () => {
             <CardItem style={{backgroundColor: '#eeeeee'}}>
                 <Body>
                     <View>
-                        <Text style={styles.detailItem}>Route: {leg.busRouteNumber}</Text>
-                        <Text style={styles.detailItem}>Get on at : {leg.startBusStopName}</Text>
-                        <Text style={styles.detailItem}>Get off at : {leg.endBusStopName}</Text>
+                        <Text style={styles.detailItem}>Route: {leg.routeNumber}</Text>
+                        <Text style={styles.detailItem}>Get on at : {leg.startPoint}</Text>
+                        <Text style={styles.detailItem}>Get off at : {leg.finishPoint}</Text>
                     </View>
                 </Body>
             </CardItem>
@@ -105,7 +106,9 @@ export const JourneyPlannerAlternative = () => {
                 data={alternativeJourney.legs}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={datum =>
-                    datum.item.mode == 'Bus' ? renderBusLeg(datum.item as BusLeg) : (datum.item.mode == 'Walking' ? renderWalkingLeg(datum.item as WalkingLeg) : null) }
+                    datum.item.mode == 'bus' ? renderBusLeg(datum.item as BusLeg)
+                        : (datum.item.mode == 'walking' ? renderWalkingLeg(datum.item as WalkingLeg)
+                        : null) }
                 /> }
         </Content>)
     }
