@@ -1,8 +1,8 @@
 import React, {useEffect, useState, useContext} from 'react';
-import {Card, CardItem, Content, Text, Body, View, Toast, Button, Icon} from "native-base";
-import { FlatList, StyleSheet } from 'react-native';
+import {Card, CardItem, Content, Text, Body, View, Toast, Button, Icon, Spinner} from "native-base";
+import {FlatList, StyleSheet} from 'react-native';
 import {allJourneyParams, BusLeg, JourneyAlternative, WalkingLeg} from '../../domain/types';
-import { api } from '../../api';
+import {api} from '../../api';
 import JourneyContext from '../../context/JourneyContext';
 import {fromNullable} from "fp-ts/lib/Option";
 
@@ -10,6 +10,8 @@ export const JourneyPlannerAlternative = () => {
 
     const {journeyPlannerParams, setJourneyPlannerParams} = useContext(JourneyContext);
     const [alternativeJourney, setAlternativeJourney] = useState<JourneyAlternative>(null);
+    const [modeIndex, setModeIndex] = useState<number | undefined>();
+    const [loading, setLoading] = useState(false);
 
     const styles = StyleSheet.create({
         headerText: {
@@ -34,6 +36,7 @@ export const JourneyPlannerAlternative = () => {
                     console.log("*********** called api, setting journey planner data.");
                     console.log(data.legs);
                     setAlternativeJourney(data);
+                    setLoading(false);
                 })
                 .catch(reason => {
                     console.log(`***********  error calling map api: ${reason}`);
@@ -43,6 +46,7 @@ export const JourneyPlannerAlternative = () => {
                         position: "bottom",
                         type: "warning"
                     });
+                    setLoading(false);
                 });
         }
     }, [journeyPlannerParams]);
@@ -50,7 +54,7 @@ export const JourneyPlannerAlternative = () => {
     const renderBusLeg = (leg: BusLeg) => {
         return (<Card>
             <CardItem bordered>
-                <Icon name="bus" />
+                <Icon name="bus"/>
                 <Text style={styles.headerText}>Bus</Text>
             </CardItem>
             <CardItem style={{backgroundColor: '#eeeeee'}}>
@@ -68,8 +72,8 @@ export const JourneyPlannerAlternative = () => {
     const renderWalkingLeg = (leg: WalkingLeg) => {
         return (<Card>
             <CardItem bordered>
-                <Icon name="walk" />
-                <Text style={styles.headerText}>Walking</Text>
+                <Icon name="walk"/>
+                <Text style={styles.headerText}>Walk</Text>
             </CardItem>
             <CardItem style={{backgroundColor: '#eeeeee'}}>
                 <Body>
@@ -83,6 +87,18 @@ export const JourneyPlannerAlternative = () => {
     };
 
     console.log("rendering")
+
+    const modeSelected = index => {
+        setJourneyPlannerParams(allJourneyParams[index]);
+        setModeIndex(index);
+        setAlternativeJourney(null);
+        setLoading(true);
+    }
+
+    function getJourneyTitle() {
+        const titles = ["Bus", "Tube", "Cycle"]
+        return <Card><CardItem><Text>{titles[modeIndex]} Journey</Text></CardItem></Card>;
+    }
 
     return (
         <Content style={styles.content}>
@@ -103,29 +119,34 @@ export const JourneyPlannerAlternative = () => {
                     <Text>Alternative Journey</Text>
                 </CardItem>
                 <CardItem style={{justifyContent: 'space-between'}}>
-                    <Button iconLeft small light onPress={() => setJourneyPlannerParams(allJourneyParams[0])}>
-                        <Icon name='bus' style={{color: "red" }}/>
+                    <Button iconLeft small bordered={modeIndex == 0} onPress={() => modeSelected(0)}
+                            style={{backgroundColor: "lightgray"}}>
+                        <Icon name='bus' style={{color: "red"}}/>
                         <Text>Bus</Text>
                     </Button>
-                    <Button iconLeft small light onPress={() => setJourneyPlannerParams(allJourneyParams[1])}>
-                        <Icon name='train' style={{color: "blue" }} />
+                    <Button iconLeft small bordered={modeIndex == 1} onPress={() => modeSelected(1)}
+                            style={{backgroundColor: "lightgray"}}>
+                        <Icon name='train' style={{color: "blue"}}/>
                         <Text>Tube</Text>
                     </Button>
-                    <Button iconLeft small light onPress={() => setJourneyPlannerParams(allJourneyParams[2])}>
-                        <Icon name='bicycle' style={{color: "green" }} />
+                    <Button iconLeft small bordered={modeIndex == 2} onPress={() => modeSelected(2)}
+                            style={{backgroundColor: "lightgray"}}>
+                        <Icon name='bicycle' style={{color: "green"}}/>
                         <Text>Cycle</Text>
                     </Button>
                 </CardItem>
             </Card>
-            { alternativeJourney &&
-            <FlatList
-                data={alternativeJourney.legs}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={datum =>
-                    datum.item.mode == 'bus' ? renderBusLeg(datum.item as BusLeg)
-                        : (datum.item.mode == 'walking' ? renderWalkingLeg(datum.item as WalkingLeg)
-                        : null) }
-                /> }
+            {loading ? (<View style={{justifyContent: 'center', backgroundColor: "transparent"}}><Spinner /></View>) :
+                alternativeJourney &&
+                <FlatList
+                    ListHeaderComponent={(() => getJourneyTitle())}
+                    data={alternativeJourney.legs}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={datum =>
+                        datum.item.mode == 'bus' ? renderBusLeg(datum.item as BusLeg)
+                            : (datum.item.mode == 'walking' ? renderWalkingLeg(datum.item as WalkingLeg)
+                            : null)}
+                />}
         </Content>)
 
 };
