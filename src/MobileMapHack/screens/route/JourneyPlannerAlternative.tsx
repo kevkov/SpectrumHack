@@ -1,15 +1,15 @@
 import React, {useEffect, useState, useContext} from 'react';
 import {Card, CardItem, Content, Text, Body, View, Toast, Button, Icon} from "native-base";
 import { FlatList, StyleSheet } from 'react-native';
-import {BusLeg, JourneyAlternative, RouteInfo, WalkingLeg} from '../../domain/types';
+import {allJourneyParams, BusLeg, JourneyAlternative, WalkingLeg} from '../../domain/types';
 import { api } from '../../api';
 import JourneyContext from '../../context/JourneyContext';
+import {fromNullable} from "fp-ts/lib/Option";
 
 export const JourneyPlannerAlternative = () => {
 
-    const {journeyPlannerParams} = useContext(JourneyContext);
+    const {journeyPlannerParams, setJourneyPlannerParams} = useContext(JourneyContext);
     const [alternativeJourney, setAlternativeJourney] = useState<JourneyAlternative>(null);
-    const [showAlternativeJourney, toggleShowAlternativeJourney] = useState(false);
 
     const styles = StyleSheet.create({
         headerText: {
@@ -24,25 +24,27 @@ export const JourneyPlannerAlternative = () => {
     });
 
     useEffect(() => {
-        // https://gladysint-insights-func.azurewebsites.net/api/JourneyOptions?code=Qa7a602gQhSdO8i4oCgAf5gv9flmxNUKCqyfa3rAakhwUOPiAuIkHw==&startDateTime=2019-10-04T10:00:00&startLongitude=${journeyPlannerParams.startLongitude}&startLatitude=${journeyPlannerParams.startLatitude}&endLongitude=${journeyPlannerParams.endLongitude}&endLatitude=${journeyPlannerParams.endLatitude}&mode=bus`;
-        const url = `http://10.0.2.2:7071/api/JourneyOptions?startDateTime=${new Date().toISOString()}&startLongitude=${journeyPlannerParams.startLongitude}&startLatitude=${journeyPlannerParams.startLatitude}&endLongitude=${journeyPlannerParams.endLongitude}&endLatitude=${journeyPlannerParams.endLatitude}&mode=bus`;
-        console.log('Calling api at: ' + url);
+        if (journeyPlannerParams != null) {
+            // https://gladysint-insights-func.azurewebsites.net/api/JourneyOptions?code=Qa7a602gQhSdO8i4oCgAf5gv9flmxNUKCqyfa3rAakhwUOPiAuIkHw==&startDateTime=2019-10-04T10:00:00&startLongitude=${journeyPlannerParams.startLongitude}&startLatitude=${journeyPlannerParams.startLatitude}&endLongitude=${journeyPlannerParams.endLongitude}&endLatitude=${journeyPlannerParams.endLatitude}&mode=bus`;
+            const url = `http://10.0.2.2:7071/api/JourneyOptions?startDateTime=${new Date().toISOString()}&startLongitude=${journeyPlannerParams.startLongitude}&startLatitude=${journeyPlannerParams.startLatitude}&endLongitude=${journeyPlannerParams.endLongitude}&endLatitude=${journeyPlannerParams.endLatitude}&mode=bus`;
+            console.log('Calling api at: ' + url);
 
-        api<JourneyAlternative>(url)
-            .then(data => {
-                console.log("*********** called api, setting journey planner data.");
-                console.log(data.legs);
-                setAlternativeJourney(data);
-            })
-            .catch(reason => {
-                console.log(`***********  error calling map api: ${reason}`);
-                // todo: toast does not show immediately
-                Toast.show({
-                    text: "There was a problem getting the route details",
-                    position: "bottom",
-                    type: "warning"
+            api<JourneyAlternative>(url)
+                .then(data => {
+                    console.log("*********** called api, setting journey planner data.");
+                    console.log(data.legs);
+                    setAlternativeJourney(data);
+                })
+                .catch(reason => {
+                    console.log(`***********  error calling map api: ${reason}`);
+                    // todo: toast does not show immediately
+                    Toast.show({
+                        text: "There was a problem getting the route details",
+                        position: "bottom",
+                        type: "warning"
+                    });
                 });
-            });
+        }
     }, [journeyPlannerParams]);
 
     const renderBusLeg = (leg: BusLeg) => {
@@ -81,10 +83,8 @@ export const JourneyPlannerAlternative = () => {
     };
 
     console.log("rendering")
-    if (alternativeJourney == null){
-        return null;
-    } else {
-        return (
+
+    return (
         <Content style={styles.content}>
             <Card>
                 <CardItem bordered style={{backgroundColor: 'red'}}>
@@ -99,9 +99,25 @@ export const JourneyPlannerAlternative = () => {
                         </View>
                     </Body>
                 </CardItem>
-                <CardItem button onPress={() => toggleShowAlternativeJourney(!showAlternativeJourney)}><Text>Alternative Journey</Text></CardItem>
+                <CardItem style={{justifyContent: 'center'}}>
+                    <Text>Alternative Journey</Text>
+                </CardItem>
+                <CardItem style={{justifyContent: 'space-between'}}>
+                    <Button iconLeft small light onPress={() => setJourneyPlannerParams(allJourneyParams[0])}>
+                        <Icon name='bus' style={{color: "red" }}/>
+                        <Text>Bus</Text>
+                    </Button>
+                    <Button iconLeft small light onPress={() => setJourneyPlannerParams(allJourneyParams[1])}>
+                        <Icon name='train' style={{color: "blue" }} />
+                        <Text>Tube</Text>
+                    </Button>
+                    <Button iconLeft small light onPress={() => setJourneyPlannerParams(allJourneyParams[2])}>
+                        <Icon name='bicycle' style={{color: "green" }} />
+                        <Text>Cycle</Text>
+                    </Button>
+                </CardItem>
             </Card>
-            { showAlternativeJourney &&
+            { alternativeJourney &&
             <FlatList
                 data={alternativeJourney.legs}
                 keyExtractor={(item, index) => index.toString()}
@@ -111,5 +127,5 @@ export const JourneyPlannerAlternative = () => {
                         : null) }
                 /> }
         </Content>)
-    }
+
 };

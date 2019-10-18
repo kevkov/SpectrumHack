@@ -11,7 +11,7 @@ export const Route = (props) => {
     const [showSchools, toggleSchools] = useState(() => false);
     const [startTime, setStartTime] = useState(() => '12:00');
     const [showSearch, toggleSearch] = useState(false);
-    const [journeyPlannerParams, setJourneyPlannerParams] = useState<JourneyPlannerParams>(allJourneyParams[0]);
+    const [journeyPlannerParams, setJourneyPlannerParams] = useState<JourneyPlannerParams>(null);
 
     const context: JourneySettings = {
         journey,

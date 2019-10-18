@@ -68,8 +68,8 @@ export interface JourneySettings {
 
 let now = new Date();
 export const allJourneyParams:Array<JourneyPlannerParams> = [
-    { startDatetime: now, startLatitude: 51.551385, startLongitude: 0.056778, endLatitude: 51.549571, endLongitude: 0.050898 },
     { startDatetime: now, startLatitude: 51.553840, startLongitude: 0.060039, endLatitude: 51.549170, endLongitude: 0.044461 },
+    { startDatetime: now, startLatitude: 51.551385, startLongitude: 0.056778, endLatitude: 51.549571, endLongitude: 0.050898 },
     { startDatetime: now, startLatitude: 51.553840, startLongitude: 0.060039, endLatitude: 51.536072, endLongitude: 0.029826 },
 ];
 

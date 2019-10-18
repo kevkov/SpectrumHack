@@ -47,8 +47,8 @@ function calculateMapRegion(journey: Journey): { centre:LatLng, size: {latDelta:
 export const Map = (props: any | {showSearch: boolean}) => {
 
     const [fabActive, setFabActive] = useState(() => false);
-    const {journey, showPollution, showSchools, journeyPlannerParams, setJourney,
-        togglePollution, toggleSchools, startTime, setJourneyPlannerParams} = useContext(JourneyContext);
+    const {journey, showPollution, showSchools, setJourney,
+        togglePollution, toggleSchools, startTime} = useContext(JourneyContext);
     const [mapData, setMapData] = useState<MapData>();
     const mapRef = useRef<MapView>();
     const [selectedRouteIndex, setSelectedRouteIndex] = useState<number>(() => -1);
@@ -62,8 +62,6 @@ export const Map = (props: any | {showSearch: boolean}) => {
         "three": ThreeImg,
         "four": FourImg
     };
-
-    const [journeyParamsIndex, setJourneyParamsIndex] = useState(0);
 
     setJourney(props.navigation.getParam("journey") || journey);
 
@@ -179,10 +177,6 @@ export const Map = (props: any | {showSearch: boolean}) => {
                 position="bottomLeft"
                 style={{backgroundColor: 'red'}}
                 onPress={() => {
-                    if (!showAlternative) {
-                        setJourneyPlannerParams(allJourneyParams[journeyParamsIndex]);
-                        setJourneyParamsIndex((journeyParamsIndex + 1) % 3)
-                    }
                     setShowAlternative(!showAlternative);
                 }}
             >
