@@ -28,7 +28,7 @@ export const JourneyPlannerAlternative = () => {
     useEffect(() => {
         if (journeyPlannerParams != null) {
             // https://gladysint-insights-func.azurewebsites.net/api/JourneyOptions?code=Qa7a602gQhSdO8i4oCgAf5gv9flmxNUKCqyfa3rAakhwUOPiAuIkHw==&startDateTime=2019-10-04T10:00:00&startLongitude=${journeyPlannerParams.startLongitude}&startLatitude=${journeyPlannerParams.startLatitude}&endLongitude=${journeyPlannerParams.endLongitude}&endLatitude=${journeyPlannerParams.endLatitude}&mode=bus`;
-            const url = `http://10.0.2.2:7071/api/JourneyOptions?startDateTime=${new Date().toISOString()}&startLongitude=${journeyPlannerParams.startLongitude}&startLatitude=${journeyPlannerParams.startLatitude}&endLongitude=${journeyPlannerParams.endLongitude}&endLatitude=${journeyPlannerParams.endLatitude}&mode=${journeyPlannerParams.mode}`;
+            const url = `https://gladystest-insights-func.azurewebsites.net/api/JourneyOptions?code=JQRdUTTSpg10FHk0hHiBWloMsRcGZa1ErdcCtFd96uZ2vqzcI9jvug==&startDateTime=${new Date().toISOString()}&startLongitude=${journeyPlannerParams.startLongitude}&startLatitude=${journeyPlannerParams.startLatitude}&endLongitude=${journeyPlannerParams.endLongitude}&endLatitude=${journeyPlannerParams.endLatitude}&mode=${journeyPlannerParams.mode}`;
             console.log('Calling api at: ' + url);
 
             api<JourneyAlternative>(url)
@@ -108,7 +108,7 @@ export const JourneyPlannerAlternative = () => {
         return (<Card>
             <CardItem bordered>
                 <Icon name="train" style={{color: 'blue'}}/>
-                <Text style={styles.headerText}>Bus</Text>
+                <Text style={styles.headerText}>Tube</Text>
             </CardItem>
             <CardItem style={{backgroundColor: '#eeeeee'}}>
                 <Body>
