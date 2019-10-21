@@ -46,6 +46,7 @@ export interface RouteInfo {
 }
 
 export interface JourneyPlannerParams  {
+    mode: string,
     startDatetime: Date,
     startLatitude: number,
     startLongitude: number,
@@ -68,9 +69,9 @@ export interface JourneySettings {
 
 let now = new Date();
 export const allJourneyParams:Array<JourneyPlannerParams> = [
-    { startDatetime: now, startLatitude: 51.553840, startLongitude: 0.060039, endLatitude: 51.549170, endLongitude: 0.044461 },
-    { startDatetime: now, startLatitude: 51.551385, startLongitude: 0.056778, endLatitude: 51.549571, endLongitude: 0.050898 },
-    { startDatetime: now, startLatitude: 51.553840, startLongitude: 0.060039, endLatitude: 51.536072, endLongitude: 0.029826 },
+    { mode: 'bus', startDatetime: now, startLatitude: 51.553840, startLongitude: 0.060039, endLatitude: 51.549170, endLongitude: 0.044461 },
+    { mode: 'tube', startDatetime: now, startLatitude: 51.551385, startLongitude: 0.056778, endLatitude: 51.549571, endLongitude: 0.050898 },
+    { mode: 'cycle', startDatetime: now, startLatitude: 51.485733, startLongitude: -0.096645, endLatitude: 51.496635, endLongitude: -0.143337},
 ];
 
 export const theOneGoodJourney = {
@@ -115,19 +116,25 @@ export interface Achievement {
 
 export interface Leg {
     mode: string
+    duration: number | null;
 }
 
 export interface BusLeg extends Leg {
     startPoint: string,
     finishPoint: string,
     routeNumber: string,
-    duration: number
 }
 
 export interface WalkingLeg extends Leg {
     details: string,
     distance: number
-    duration: number
+}
+
+export interface CycleLeg extends Leg {
+    startPoint: string;
+    arrivalPoint: string;
+    details: string;
+    distance: number;
 }
 
 export interface JourneyAlternative {

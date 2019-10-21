@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useContext} from 'react';
 import {Card, CardItem, Content, Text, Body, View, Toast, Button, Icon, Spinner} from "native-base";
 import {FlatList, StyleSheet} from 'react-native';
-import {allJourneyParams, BusLeg, JourneyAlternative, WalkingLeg} from '../../domain/types';
+import {allJourneyParams, BusLeg, CycleLeg, JourneyAlternative, WalkingLeg} from '../../domain/types';
 import {api} from '../../api';
 import JourneyContext from '../../context/JourneyContext';
 import {fromNullable} from "fp-ts/lib/Option";
@@ -28,7 +28,7 @@ export const JourneyPlannerAlternative = () => {
     useEffect(() => {
         if (journeyPlannerParams != null) {
             // https://gladysint-insights-func.azurewebsites.net/api/JourneyOptions?code=Qa7a602gQhSdO8i4oCgAf5gv9flmxNUKCqyfa3rAakhwUOPiAuIkHw==&startDateTime=2019-10-04T10:00:00&startLongitude=${journeyPlannerParams.startLongitude}&startLatitude=${journeyPlannerParams.startLatitude}&endLongitude=${journeyPlannerParams.endLongitude}&endLatitude=${journeyPlannerParams.endLatitude}&mode=bus`;
-            const url = `http://10.0.2.2:7071/api/JourneyOptions?startDateTime=${new Date().toISOString()}&startLongitude=${journeyPlannerParams.startLongitude}&startLatitude=${journeyPlannerParams.startLatitude}&endLongitude=${journeyPlannerParams.endLongitude}&endLatitude=${journeyPlannerParams.endLatitude}&mode=bus`;
+            const url = `http://10.0.2.2:7071/api/JourneyOptions?startDateTime=${new Date().toISOString()}&startLongitude=${journeyPlannerParams.startLongitude}&startLatitude=${journeyPlannerParams.startLatitude}&endLongitude=${journeyPlannerParams.endLongitude}&endLatitude=${journeyPlannerParams.endLatitude}&mode=${journeyPlannerParams.mode}`;
             console.log('Calling api at: ' + url);
 
             api<JourneyAlternative>(url)
@@ -79,6 +79,24 @@ export const JourneyPlannerAlternative = () => {
                 <Body>
                     <View>
                         <Text style={styles.detailItem}>Instruction: {leg.details}</Text>
+                        <Text style={styles.detailItem}>Distance: {leg.distance} m</Text>
+                    </View>
+                </Body>
+            </CardItem>
+        </Card>);
+    };
+
+    const renderCycleLeg = (leg: CycleLeg) => {
+        return (<Card>
+            <CardItem bordered>
+                <Icon name="bicycle"/>
+                <Text style={styles.headerText}>Cycle</Text>
+            </CardItem>
+            <CardItem style={{backgroundColor: '#eeeeee'}}>
+                <Body>
+                    <View>
+                        <Text style={styles.detailItem}>From : {leg.startPoint}</Text>
+                        <Text style={styles.detailItem}>To : {leg.arrivalPoint}</Text>
                         <Text style={styles.detailItem}>Distance: {leg.distance} m</Text>
                     </View>
                 </Body>
@@ -145,7 +163,8 @@ export const JourneyPlannerAlternative = () => {
                     renderItem={datum =>
                         datum.item.mode == 'bus' ? renderBusLeg(datum.item as BusLeg)
                             : (datum.item.mode == 'walking' ? renderWalkingLeg(datum.item as WalkingLeg)
-                            : null)}
+                            : (datum.item.mode == 'cycle' ? renderCycleLeg(datum.item as CycleLeg)
+                            : null))}
                 />}
         </Content>)
 
