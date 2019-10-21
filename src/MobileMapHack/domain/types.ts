@@ -70,8 +70,8 @@ export interface JourneySettings {
 let now = new Date();
 export const allJourneyParams:Array<JourneyPlannerParams> = [
     { mode: 'bus', startDatetime: now, startLatitude: 51.553840, startLongitude: 0.060039, endLatitude: 51.549170, endLongitude: 0.044461 },
-    { mode: 'tube', startDatetime: now, startLatitude: 51.551385, startLongitude: 0.056778, endLatitude: 51.549571, endLongitude: 0.050898 },
-    { mode: 'cycle', startDatetime: now, startLatitude: 51.485733, startLongitude: -0.096645, endLatitude: 51.496635, endLongitude: -0.143337},
+    { mode: 'tube', startDatetime: now, startLatitude: 51.485733, startLongitude: -0.096645, endLatitude: 51.496635, endLongitude: -0.143337 },
+    { mode: 'cycle', startDatetime: now, startLatitude: 51.485733, startLongitude: -0.096645, endLatitude: 51.496635, endLongitude: -0.143337 },
 ];
 
 export const theOneGoodJourney = {
@@ -135,6 +135,13 @@ export interface CycleLeg extends Leg {
     arrivalPoint: string;
     details: string;
     distance: number;
+}
+
+export interface TubeLeg extends Leg {
+    startPoint: string;
+    finishPoint: string;
+    routeName: string;
+    directions: string;
 }
 
 export interface JourneyAlternative {

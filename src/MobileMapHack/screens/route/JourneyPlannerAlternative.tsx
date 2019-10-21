@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useContext} from 'react';
 import {Card, CardItem, Content, Text, Body, View, Toast, Button, Icon, Spinner} from "native-base";
 import {FlatList, StyleSheet} from 'react-native';
-import {allJourneyParams, BusLeg, CycleLeg, JourneyAlternative, WalkingLeg} from '../../domain/types';
+import {allJourneyParams, BusLeg, CycleLeg, JourneyAlternative, TubeLeg, WalkingLeg} from '../../domain/types';
 import {api} from '../../api';
 import JourneyContext from '../../context/JourneyContext';
 import {fromNullable} from "fp-ts/lib/Option";
@@ -104,17 +104,35 @@ export const JourneyPlannerAlternative = () => {
         </Card>);
     };
 
-    console.log("rendering")
+    const renderTubeLeg = (leg: TubeLeg) => {
+        return (<Card>
+            <CardItem bordered>
+                <Icon name="train"/>
+                <Text style={styles.headerText}>Bus</Text>
+            </CardItem>
+            <CardItem style={{backgroundColor: '#eeeeee'}}>
+                <Body>
+                    <View>
+                        <Text style={styles.detailItem}>Route: {leg.routeName}</Text>
+                        <Text style={styles.detailItem}>Get on at : {leg.startPoint}</Text>
+                        <Text style={styles.detailItem}>Get off at : {leg.finishPoint}</Text>
+                    </View>
+                </Body>
+            </CardItem>
+        </Card>);
+    };
+
+    console.log("rendering");
 
     const modeSelected = index => {
         setJourneyPlannerParams(allJourneyParams[index]);
         setModeIndex(index);
         setAlternativeJourney(null);
         setLoading(true);
-    }
+    };
 
     function getJourneyTitle() {
-        const titles = ["Bus", "Tube", "Cycle"]
+        const titles = ["Bus", "Tube", "Cycle"];
         return <Card><CardItem><Text>{titles[modeIndex]} Journey</Text></CardItem></Card>;
     }
 
@@ -164,7 +182,8 @@ export const JourneyPlannerAlternative = () => {
                         datum.item.mode == 'bus' ? renderBusLeg(datum.item as BusLeg)
                             : (datum.item.mode == 'walking' ? renderWalkingLeg(datum.item as WalkingLeg)
                             : (datum.item.mode == 'cycle' ? renderCycleLeg(datum.item as CycleLeg)
-                            : null))}
+                            : (datum.item.mode == 'tube' ? renderTubeLeg(datum.item as TubeLeg)
+                            : null)))}
                 />}
         </Content>)
 
