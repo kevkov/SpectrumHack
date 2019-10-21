@@ -54,7 +54,7 @@ export const JourneyPlannerAlternative = () => {
     const renderBusLeg = (leg: BusLeg) => {
         return (<Card>
             <CardItem bordered>
-                <Icon name="bus"/>
+                <Icon name="bus" style={{color: 'red'}}/>
                 <Text style={styles.headerText}>Bus</Text>
             </CardItem>
             <CardItem style={{backgroundColor: '#eeeeee'}}>
@@ -72,7 +72,7 @@ export const JourneyPlannerAlternative = () => {
     const renderWalkingLeg = (leg: WalkingLeg) => {
         return (<Card>
             <CardItem bordered>
-                <Icon name="walk"/>
+                <Icon name="walk" />
                 <Text style={styles.headerText}>Walk</Text>
             </CardItem>
             <CardItem style={{backgroundColor: '#eeeeee'}}>
@@ -89,7 +89,7 @@ export const JourneyPlannerAlternative = () => {
     const renderCycleLeg = (leg: CycleLeg) => {
         return (<Card>
             <CardItem bordered>
-                <Icon name="bicycle"/>
+                <Icon name="bicycle"  style={{color: 'green'}}/>
                 <Text style={styles.headerText}>Cycle</Text>
             </CardItem>
             <CardItem style={{backgroundColor: '#eeeeee'}}>
@@ -107,7 +107,7 @@ export const JourneyPlannerAlternative = () => {
     const renderTubeLeg = (leg: TubeLeg) => {
         return (<Card>
             <CardItem bordered>
-                <Icon name="train"/>
+                <Icon name="train" style={{color: 'blue'}}/>
                 <Text style={styles.headerText}>Bus</Text>
             </CardItem>
             <CardItem style={{backgroundColor: '#eeeeee'}}>
