@@ -68,7 +68,7 @@ export const Map = (props: any | {showSearch: boolean}) => {
     // should maybe based on map feature extents
     let region = fromNullable(journey)
         .map(j => calculateMapRegion(j))
-        .getOrElse({centre: {latitude: 51.509864, longitude: -0.118092}, size: {latDelta: 0.0922, lonDelta: 0.0421}});
+        .getOrElse({centre: {latitude: 51.504864, longitude: -0.118092}, size: {latDelta: 0.0922, lonDelta: 0.0421}});
 
     let useCannedAlternativeJourneys = () => {
         useEffect(() => {
@@ -167,10 +167,11 @@ export const Map = (props: any | {showSearch: boolean}) => {
             <Animated.View
                 style={{
                     position: "absolute",
-                    top: useSlideInOutAnimation(showAlternative, 50, 750),
-                    bottom: 100,
+                    top: useSlideInOutAnimation(showAlternative, 0, 750),
+                    bottom: 80,
                     left: 20,
-                    right: 20 }}>
+                    right: 20,
+                    paddingBottom: 10}}>
                 <JourneyPlannerAlternative />
             </Animated.View>
             <Fab

@@ -69,7 +69,7 @@ export interface JourneySettings {
 
 let now = new Date();
 export const allJourneyParams:Array<JourneyPlannerParams> = [
-    { mode: 'bus', startDatetime: now, startLatitude: 51.553840, startLongitude: 0.060039, endLatitude: 51.549170, endLongitude: 0.044461 },
+    { mode: 'bus', startDatetime: now, startLatitude: 51.485733, startLongitude: -0.096645, endLatitude: 51.496635, endLongitude: -0.143337 },
     { mode: 'tube', startDatetime: now, startLatitude: 51.485733, startLongitude: -0.096645, endLatitude: 51.496635, endLongitude: -0.143337 },
     { mode: 'cycle', startDatetime: now, startLatitude: 51.485733, startLongitude: -0.096645, endLatitude: 51.496635, endLongitude: -0.143337 },
 ];

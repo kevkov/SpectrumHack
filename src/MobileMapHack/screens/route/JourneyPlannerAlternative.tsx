@@ -18,7 +18,7 @@ export const JourneyPlannerAlternative = () => {
             fontWeight: '600'
         },
         content: {
-            padding: 10
+            padding: 10,
         },
         detailItem: {
             padding: 5
@@ -98,6 +98,7 @@ export const JourneyPlannerAlternative = () => {
                         <Text style={styles.detailItem}>From : {leg.startPoint}</Text>
                         <Text style={styles.detailItem}>To : {leg.arrivalPoint}</Text>
                         <Text style={styles.detailItem}>Distance: {leg.distance} m</Text>
+                        <Text style={styles.detailItem}>Duration: {leg.duration} min</Text>
                     </View>
                 </Body>
             </CardItem>
@@ -145,9 +146,11 @@ export const JourneyPlannerAlternative = () => {
                 <CardItem style={{backgroundColor: '#eeeeee'}}>
                     <Body>
                         <View>
-                            <Text style={styles.detailItem}>Distance: 12.3 miles</Text>
-                            <Text style={styles.detailItem}>Travel Cost: £5.40</Text>
-                            <Text style={styles.detailItem}>Travel time: 33 min</Text>
+                            <Text style={styles.detailItem}>From: 24 Sutherland Square</Text>
+                            <Text style={styles.detailItem}>To: 144 Queen Victoria St</Text>
+                            <Text style={styles.detailItem}>Distance: 2.5 miles</Text>
+                            <Text style={styles.detailItem}>Cost: £5.40</Text>
+                            <Text style={styles.detailItem}>Duration: 18 min</Text>
                         </View>
                     </Body>
                 </CardItem>
