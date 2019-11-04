@@ -28,7 +28,7 @@ export const JourneyPlannerAlternative = () => {
     useEffect(() => {
         if (journeyPlannerParams != null) {
             // https://gladysint-insights-func.azurewebsites.net/api/JourneyOptions?code=Qa7a602gQhSdO8i4oCgAf5gv9flmxNUKCqyfa3rAakhwUOPiAuIkHw==&startDateTime=2019-10-04T10:00:00&startLongitude=${journeyPlannerParams.startLongitude}&startLatitude=${journeyPlannerParams.startLatitude}&endLongitude=${journeyPlannerParams.endLongitude}&endLatitude=${journeyPlannerParams.endLatitude}&mode=bus`;
-            const url = `https://gladystest-insights-func.azurewebsites.net/api/JourneyOptions?code=JQRdUTTSpg10FHk0hHiBWloMsRcGZa1ErdcCtFd96uZ2vqzcI9jvug==&startDateTime=${new Date().toISOString()}&startLongitude=${journeyPlannerParams.startLongitude}&startLatitude=${journeyPlannerParams.startLatitude}&endLongitude=${journeyPlannerParams.endLongitude}&endLatitude=${journeyPlannerParams.endLatitude}&mode=${journeyPlannerParams.mode}`;
+            const url = `http://10.0.2.2:7071/api/JourneyOptions?startDateTime=${new Date().toISOString()}&startLongitude=${journeyPlannerParams.startLongitude}&startLatitude=${journeyPlannerParams.startLatitude}&endLongitude=${journeyPlannerParams.endLongitude}&endLatitude=${journeyPlannerParams.endLatitude}&mode=${journeyPlannerParams.mode}`;
             console.log('Calling api at: ' + url);
 
             api<JourneyAlternative>(url)
@@ -116,7 +116,7 @@ export const JourneyPlannerAlternative = () => {
                     <View>
                         <Text style={styles.detailItem}>Route: {leg.routeName}</Text>
                         <Text style={styles.detailItem}>Get on at : {leg.startPoint}</Text>
-                        <Text style={styles.detailItem}>Get off at : {leg.finishPoint}</Text>
+                        <Text style={styles.detailItem}>Get off at : {leg.arrivalPoint}</Text>
                     </View>
                 </Body>
             </CardItem>
@@ -132,9 +132,11 @@ export const JourneyPlannerAlternative = () => {
         setLoading(true);
     };
 
-    function getJourneyTitle() {
+    function getJourneyHeader() {
         const titles = ["Bus", "Tube", "Cycle"];
-        return <Card><CardItem><Text>{titles[modeIndex]} Journey</Text></CardItem></Card>;
+        let header = `${titles[modeIndex]} Journey `;
+        if (alternativeJourney.totalCosts) header +=  `: Total cost £${alternativeJourney.totalCosts}`
+        return <Card><CardItem><Text>{header}</Text></CardItem></Card>;
     }
 
     return (
@@ -178,7 +180,7 @@ export const JourneyPlannerAlternative = () => {
             {loading ? (<View style={{justifyContent: 'center', backgroundColor: "transparent"}}><Spinner /></View>) :
                 alternativeJourney &&
                 <FlatList
-                    ListHeaderComponent={(() => getJourneyTitle())}
+                    ListHeaderComponent={(() => getJourneyHeader())}
                     data={alternativeJourney.legs}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={datum =>

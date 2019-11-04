@@ -139,12 +139,13 @@ export interface CycleLeg extends Leg {
 
 export interface TubeLeg extends Leg {
     startPoint: string;
-    finishPoint: string;
+    arrivalPoint: string;
     routeName: string;
     directions: string;
 }
 
 export interface JourneyAlternative {
     totalDuration: number,
-    legs: [Leg]
+    legs: [Leg],
+    totalCosts: string | undefined
 }
