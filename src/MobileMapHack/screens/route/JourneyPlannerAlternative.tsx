@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useContext} from 'react';
-import {Card, CardItem, Content, Text, Body, View, Toast, Button, Icon, Spinner} from "native-base";
+import {Card, CardItem, Content, Text, Body, View, Toast, Button, Icon, Spinner, CheckBox} from "native-base";
 import {FlatList, StyleSheet} from 'react-native';
-import {allJourneyParams, BusLeg, CycleLeg, JourneyAlternative, TubeLeg, WalkingLeg} from '../../domain/types';
+import {JourneyParams, BusLeg, CycleLeg, JourneyAlternative, TubeLeg, WalkingLeg} from '../../domain/types';
 import {api} from '../../api';
 import JourneyContext from '../../context/JourneyContext';
 import {fromNullable} from "fp-ts/lib/Option";
@@ -9,8 +9,15 @@ import {fromNullable} from "fp-ts/lib/Option";
 export const JourneyPlannerAlternative = () => {
 
     const {journeyPlannerParams, setJourneyPlannerParams} = useContext(JourneyContext);
+    const [showAlternativeJourney, setShowAlternativeJourney] = useState(false);
+    const [useBus, setUseBus] = useState(true);
+    const [useTube, setUseTube] = useState(true);
+    const [useOverground, setUseOverground] = useState(true);
+    const [useDlr, setUseDlr] = useState(true);
+    const [useNationalRail, setUseNationalRail] = useState(true);
+    const [useTram, setUseTram] = useState(true);
+    const [useRiverBus, setUseRiverBus] = useState(true);
     const [alternativeJourney, setAlternativeJourney] = useState<JourneyAlternative>(null);
-    const [modeIndex, setModeIndex] = useState<number | undefined>();
     const [loading, setLoading] = useState(false);
 
     const styles = StyleSheet.create({
@@ -25,12 +32,27 @@ export const JourneyPlannerAlternative = () => {
         }
     });
 
+    const defaultModes = ['walking'];
+
+    function calculateModes(): string {
+        let modes = new Array(...defaultModes);
+        if (useBus) modes.push("bus");
+        if (useTube) modes.push("tube");
+        if (useOverground) modes.push("overground");
+        if (useDlr) modes.push("dlr");
+        if (useNationalRail) modes.push("national-rail");
+        if (useTram) modes.push("tram");
+        if (useRiverBus) modes.push("river-bus");
+        return modes.join(",");
+    }
+
     useEffect(() => {
         if (journeyPlannerParams != null) {
             // https://gladysint-insights-func.azurewebsites.net/api/JourneyOptions?code=Qa7a602gQhSdO8i4oCgAf5gv9flmxNUKCqyfa3rAakhwUOPiAuIkHw==&startDateTime=2019-10-04T10:00:00&startLongitude=${journeyPlannerParams.startLongitude}&startLatitude=${journeyPlannerParams.startLatitude}&endLongitude=${journeyPlannerParams.endLongitude}&endLatitude=${journeyPlannerParams.endLatitude}&mode=bus`;
-            const url = `https://gladystest-insights-func.azurewebsites.net/api/JourneyOptions?code=JQRdUTTSpg10FHk0hHiBWloMsRcGZa1ErdcCtFd96uZ2vqzcI9jvug==&startDateTime=${new Date().toISOString()}&startLongitude=${journeyPlannerParams.startLongitude}&startLatitude=${journeyPlannerParams.startLatitude}&endLongitude=${journeyPlannerParams.endLongitude}&endLatitude=${journeyPlannerParams.endLatitude}&mode=${journeyPlannerParams.mode}`;
+            const url = `http://10.0.2.2:7071/api/JourneyOptions?code=JQRdUTTSpg10FHk0hHiBWloMsRcGZa1ErdcCtFd96uZ2vqzcI9jvug==&startDateTime=${new Date().toISOString()}&startLongitude=${journeyPlannerParams.startLongitude}&startLatitude=${journeyPlannerParams.startLatitude}&endLongitude=${journeyPlannerParams.endLongitude}&endLatitude=${journeyPlannerParams.endLatitude}&mode=${calculateModes()}`;
             console.log('Calling api at: ' + url);
 
+            setLoading(true);
             api<JourneyAlternative>(url)
                 .then(data => {
                     console.log("*********** called api, setting journey planner data.");
@@ -49,7 +71,18 @@ export const JourneyPlannerAlternative = () => {
                     setLoading(false);
                 });
         }
-    }, [journeyPlannerParams]);
+    }, [journeyPlannerParams, useBus, useTube, useOverground, useNationalRail]);
+
+    function modeChecks() {
+        return (
+            <View style={{flexDirection: "row", justifyContent: "center"}}>
+                <View style={{flexDirection: "column", justifyContent: "center", backgroundColor: "pink"}}><CheckBox checked={useBus} onPress={() => setUseBus(!useBus)} style={{backgroundColor: "yellow"}}/><Text>Bus</Text></View>
+                <View><CheckBox checked={useTube} onPress={() => setUseTube(!useTube)} /><Text>Tube</Text></View>
+                <View style={{alignItems: "center"}}><CheckBox checked={useOverground} onPress={() => setUseOverground(!useOverground)} style={{alignSelf: "center"}} /><Text style={{textAlign: "center"}}>Overground</Text></View>
+                <View><CheckBox checked={useNationalRail} onPress={() => setUseNationalRail(!useNationalRail)} /><Text>Rail</Text></View>
+            </View>
+        );
+    }
 
     const renderBusLeg = (leg: BusLeg) => {
         return (<Card>
@@ -62,7 +95,7 @@ export const JourneyPlannerAlternative = () => {
                     <View>
                         <Text style={styles.detailItem}>Route: {leg.routeNumber}</Text>
                         <Text style={styles.detailItem}>Get on at : {leg.startPoint}</Text>
-                        <Text style={styles.detailItem}>Get off at : {leg.finishPoint}</Text>
+                        <Text style={styles.detailItem}>Get off at : {leg.arrivalPoint}</Text>
                     </View>
                 </Body>
             </CardItem>
@@ -116,26 +149,32 @@ export const JourneyPlannerAlternative = () => {
                     <View>
                         <Text style={styles.detailItem}>Route: {leg.routeName}</Text>
                         <Text style={styles.detailItem}>Get on at : {leg.startPoint}</Text>
-                        <Text style={styles.detailItem}>Get off at : {leg.finishPoint}</Text>
+                        <Text style={styles.detailItem}>Get off at : {leg.arrivalPoint}</Text>
                     </View>
                 </Body>
             </CardItem>
         </Card>);
     };
 
-    console.log("rendering");
-
-    const modeSelected = index => {
-        setJourneyPlannerParams(allJourneyParams[index]);
-        setModeIndex(index);
-        setAlternativeJourney(null);
-        setLoading(true);
+    const renderUnknownLeg = (mode: string) => {
+        return (<Card>
+            <CardItem bordered>
+                <Text style={styles.headerText}>{mode}</Text>
+            </CardItem>
+        </Card>);
     };
 
-    function getJourneyTitle() {
-        const titles = ["Bus", "Tube", "Cycle"];
-        return <Card><CardItem><Text>{titles[modeIndex]} Journey</Text></CardItem></Card>;
-    }
+    const toggleAlternativeJourney = () => {
+
+        if (journeyPlannerParams === null) {
+            setJourneyPlannerParams(JourneyParams);
+            setAlternativeJourney(null);
+            setLoading(true);
+        }
+        setShowAlternativeJourney(!showAlternativeJourney);
+    };
+
+    console.log("rendering journey card");
 
     return (
         <Content style={styles.content}>
@@ -154,40 +193,27 @@ export const JourneyPlannerAlternative = () => {
                         </View>
                     </Body>
                 </CardItem>
-                <CardItem style={{justifyContent: 'center'}}>
-                    <Text>Alternative Journey</Text>
-                </CardItem>
-                <CardItem style={{justifyContent: 'space-between'}}>
-                    <Button iconLeft small bordered={modeIndex == 0} onPress={() => modeSelected(0)}
-                            style={{backgroundColor: "lightgray"}}>
-                        <Icon name='bus' style={{color: "red"}}/>
-                        <Text>Bus</Text>
-                    </Button>
-                    <Button iconLeft small bordered={modeIndex == 1} onPress={() => modeSelected(1)}
-                            style={{backgroundColor: "lightgray"}}>
-                        <Icon name='train' style={{color: "blue"}}/>
-                        <Text>Tube</Text>
-                    </Button>
-                    <Button iconLeft small bordered={modeIndex == 2} onPress={() => modeSelected(2)}
-                            style={{backgroundColor: "lightgray"}}>
-                        <Icon name='bicycle' style={{color: "green"}}/>
-                        <Text>Cycle</Text>
+                <CardItem button style={{justifyContent: 'center'}}>
+                    <Button iconLeft small onPress={() => toggleAlternativeJourney()}>
+                        <Text>Alternative Journey</Text>
                     </Button>
                 </CardItem>
+                {showAlternativeJourney ? modeChecks() : null}
             </Card>
             {loading ? (<View style={{justifyContent: 'center', backgroundColor: "transparent"}}><Spinner /></View>) :
-                alternativeJourney &&
-                <FlatList
-                    ListHeaderComponent={(() => getJourneyTitle())}
-                    data={alternativeJourney.legs}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={datum =>
-                        datum.item.mode == 'bus' ? renderBusLeg(datum.item as BusLeg)
-                            : (datum.item.mode == 'walking' ? renderWalkingLeg(datum.item as WalkingLeg)
-                            : (datum.item.mode == 'cycle' ? renderCycleLeg(datum.item as CycleLeg)
-                            : (datum.item.mode == 'tube' ? renderTubeLeg(datum.item as TubeLeg)
-                            : null)))}
-                />}
+                showAlternativeJourney && alternativeJourney &&
+                <View>
+                    <FlatList
+                        data={alternativeJourney.legs}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={datum =>
+                            datum.item.mode == 'bus' ? renderBusLeg(datum.item as BusLeg)
+                                : (datum.item.mode == 'walking' ? renderWalkingLeg(datum.item as WalkingLeg)
+                                : (datum.item.mode == 'cycle' ? renderCycleLeg(datum.item as CycleLeg)
+                                : (datum.item.mode == 'tube' ? renderTubeLeg(datum.item as TubeLeg)
+                                : renderUnknownLeg(datum.item.mode))))}
+                    />
+                </View>}
         </Content>)
 
 };

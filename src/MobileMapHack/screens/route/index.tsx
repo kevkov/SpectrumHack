@@ -3,7 +3,7 @@ import {Body, Button, Container, Header, Icon, Left, Right, Title} from "native-
 import { Map } from '../../components/map';
 import Constants from "expo-constants";
 import JourneyContext from '../../context/JourneyContext';
-import {allJourneyParams, Journey, JourneyPlannerParams, JourneySettings} from '../../domain/types';
+import {Journey, JourneyPlannerParams, JourneySettings} from '../../domain/types';
 
 export const Route = (props) => {
     const [journey, setJourney] = useState<Journey>(null);
