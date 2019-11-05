@@ -286,7 +286,7 @@ export const JourneyPlannerAlternative = () => {
                     <Body>
                         <View>
                             <Text style={styles.detailItem}>From: 128 Beddington Ln, Croydon</Text>
-                            <Text style={styles.detailItem}>To: 1 Barrier Point Rd, Royal Docks</Text>
+                            <Text style={styles.detailItem}>To: 355 North Woolwich Road, Silvertown</Text>
                             <Text style={styles.detailItem}>Distance: 19.4 miles</Text>
                             <Text style={styles.detailItem}>Cost: £17.60</Text>
                             <Text style={styles.detailItem}>Duration: 1 hr 3min</Text>
