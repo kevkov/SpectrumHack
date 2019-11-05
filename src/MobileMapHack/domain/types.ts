@@ -156,6 +156,19 @@ export interface DlrLeg extends Leg {
     summary: string;
 }
 
+export interface TramLeg extends Leg {
+    startPoint: string;
+    arrivalPoint: string;
+    detailed: string;
+    summary: string;
+}
+
+export interface OvergroundLeg extends Leg {
+    startPoint: string;
+    arrivalPoint: string;
+    detailed: string;
+    summary: string;
+}
 
 export interface JourneyAlternative {
     totalDuration: number,
