@@ -8,7 +8,7 @@ import {
     JourneyAlternative,
     TubeLeg,
     WalkingLeg,
-    NationalRailLeg, DlrLeg, TramLeg, OvergroundLeg
+    NationalRailLeg, DlrLeg, TramLeg, OvergroundLeg, RiverBusLeg
 } from '../../domain/types';
 import {api} from '../../api';
 import JourneyContext from '../../context/JourneyContext';
@@ -238,6 +238,24 @@ export const JourneyPlannerAlternative = () => {
         </Card>);
     };
 
+    const renderRiverBusLeg = (leg: RiverBusLeg) => {
+        return (<Card>
+            <CardItem bordered>
+                <Icon name="train" style={{color: 'black'}}/>
+                <Text style={styles.headerText}>River Bus</Text>
+            </CardItem>
+            <CardItem style={{backgroundColor: '#eeeeee'}}>
+                <Body>
+                    <View>
+                        <Text style={styles.detailItem}>Route: {leg.summary}</Text>
+                        <Text style={styles.detailItem}>Get on at : {leg.startPoint}</Text>
+                        <Text style={styles.detailItem}>Get off at : {leg.arrivalPoint}</Text>
+                    </View>
+                </Body>
+            </CardItem>
+        </Card>);
+    };
+
     const renderUnknownLeg = (mode: string) => {
         return (<Card>
             <CardItem bordered>
@@ -297,7 +315,8 @@ export const JourneyPlannerAlternative = () => {
                                 : (datum.item.mode == 'dlr' ? renderDlrLeg(datum.item as DlrLeg)
                                 : (datum.item.mode == 'tram' ? renderTramLeg(datum.item as TramLeg)
                                 : (datum.item.mode == 'overground' ? renderOvergroundLeg(datum.item as OvergroundLeg)
-                                : renderUnknownLeg(datum.item.mode))))))))}
+                                : (datum.item.mode == 'river-bus' ? renderRiverBusLeg(datum.item as RiverBusLeg)
+                                : renderUnknownLeg(datum.item.mode)))))))))}
                     />
                 </View>}
         </Content>)

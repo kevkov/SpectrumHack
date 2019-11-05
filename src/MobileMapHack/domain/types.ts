@@ -170,6 +170,13 @@ export interface OvergroundLeg extends Leg {
     summary: string;
 }
 
+export interface RiverBusLeg extends Leg {
+    startPoint: string;
+    arrivalPoint: string;
+    detailed: string;
+    summary: string;
+}
+
 export interface JourneyAlternative {
     totalDuration: number,
     legs: [Leg]
