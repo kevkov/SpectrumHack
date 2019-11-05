@@ -8,7 +8,7 @@ import {
     JourneyAlternative,
     TubeLeg,
     WalkingLeg,
-    NationalRailLeg
+    NationalRailLeg, DlrLeg
 } from '../../domain/types';
 import {api} from '../../api';
 import JourneyContext from '../../context/JourneyContext';
@@ -88,6 +88,7 @@ export const JourneyPlannerAlternative = () => {
                 <ListItem><CheckBox checked={useTube} onPress={() => setUseTube(!useTube)} /><Text>Tube</Text></ListItem>
                 <ListItem><CheckBox checked={useOverground} onPress={() => setUseOverground(!useOverground)} /><Text>Overground</Text></ListItem>
                 <ListItem><CheckBox checked={useNationalRail} onPress={() => setUseNationalRail(!useNationalRail)} /><Text>Rail</Text></ListItem>
+                <ListItem><CheckBox checked={useDlr} onPress={() => setUseDlr(!useDlr)} /><Text>DLR</Text></ListItem>
             </View>
         );
     }
@@ -182,6 +183,24 @@ export const JourneyPlannerAlternative = () => {
         </Card>);
     };
 
+    const renderDlrLeg = (leg: DlrLeg) => {
+        return (<Card>
+            <CardItem bordered>
+                <Icon name="train" style={{color: 'black'}}/>
+                <Text style={styles.headerText}>DLR</Text>
+            </CardItem>
+            <CardItem style={{backgroundColor: '#eeeeee'}}>
+                <Body>
+                    <View>
+                        <Text style={styles.detailItem}>Route: {leg.summary}</Text>
+                        <Text style={styles.detailItem}>Get on at : {leg.startPoint}</Text>
+                        <Text style={styles.detailItem}>Get off at : {leg.arrivalPoint}</Text>
+                    </View>
+                </Body>
+            </CardItem>
+        </Card>);
+    };
+
     const renderUnknownLeg = (mode: string) => {
         return (<Card>
             <CardItem bordered>
@@ -238,7 +257,8 @@ export const JourneyPlannerAlternative = () => {
                                 : (datum.item.mode == 'cycle' ? renderCycleLeg(datum.item as CycleLeg)
                                 : (datum.item.mode == 'tube' ? renderTubeLeg(datum.item as TubeLeg)
                                 : (datum.item.mode == 'national-rail' ? renderRailLeg(datum.item as NationalRailLeg)
-                                : renderUnknownLeg(datum.item.mode)))))}
+                                : (datum.item.mode == 'dlr' ? renderRailLeg(datum.item as DlrLeg)
+                                : renderUnknownLeg(datum.item.mode))))))}
                     />
                 </View>}
         </Content>)

@@ -69,7 +69,7 @@ export interface JourneySettings {
 
 let now = new Date();
 export const JourneyParams:JourneyPlannerParams =
-    { mode: '', startDatetime: now, startLatitude: 51.485733, startLongitude: -0.096645, endLatitude: 51.496635, endLongitude: -0.143337 };
+    { mode: '', startDatetime: now, startLatitude: 51.383119, startLongitude: -0.137439, endLatitude: 51.502209, endLongitude: 0.033349 };
 
 
 export const theOneGoodJourney = {
@@ -143,6 +143,13 @@ export interface TubeLeg extends Leg {
 }
 
 export interface NationalRailLeg extends Leg {
+    startPoint: string;
+    arrivalPoint: string;
+    detailed: string;
+    summary: string;
+}
+
+export interface DlrLeg extends Leg {
     startPoint: string;
     arrivalPoint: string;
     detailed: string;
