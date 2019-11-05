@@ -79,7 +79,7 @@ export const JourneyPlannerAlternative = () => {
                     setLoading(false);
                 });
         }
-    }, [journeyPlannerParams, useBus, useTube, useOverground, useNationalRail]);
+    }, [journeyPlannerParams, useBus, useTube, useOverground, useNationalRail, useDlr, useTram]);
 
     function modeChecks() {
         return (
