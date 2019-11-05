@@ -142,6 +142,14 @@ export interface TubeLeg extends Leg {
     directions: string;
 }
 
+export interface NationalRailLeg extends Leg {
+    startPoint: string;
+    arrivalPoint: string;
+    detailed: string;
+    summary: string;
+}
+
+
 export interface JourneyAlternative {
     totalDuration: number,
     legs: [Leg]

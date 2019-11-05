@@ -1,7 +1,15 @@
 import React, {useEffect, useState, useContext} from 'react';
-import {Card, CardItem, Content, Text, Body, View, Toast, Button, Icon, Spinner, CheckBox} from "native-base";
+import {Card, CardItem, Content, Text, Body, View, Toast, Button, Icon, Spinner, CheckBox, ListItem} from "native-base";
 import {FlatList, StyleSheet} from 'react-native';
-import {JourneyParams, BusLeg, CycleLeg, JourneyAlternative, TubeLeg, WalkingLeg} from '../../domain/types';
+import {
+    JourneyParams,
+    BusLeg,
+    CycleLeg,
+    JourneyAlternative,
+    TubeLeg,
+    WalkingLeg,
+    NationalRailLeg
+} from '../../domain/types';
 import {api} from '../../api';
 import JourneyContext from '../../context/JourneyContext';
 import {fromNullable} from "fp-ts/lib/Option";
@@ -75,11 +83,11 @@ export const JourneyPlannerAlternative = () => {
 
     function modeChecks() {
         return (
-            <View style={{flexDirection: "row", justifyContent: "center"}}>
-                <View style={{flexDirection: "column", justifyContent: "center", backgroundColor: "pink"}}><CheckBox checked={useBus} onPress={() => setUseBus(!useBus)} style={{backgroundColor: "yellow"}}/><Text>Bus</Text></View>
-                <View><CheckBox checked={useTube} onPress={() => setUseTube(!useTube)} /><Text>Tube</Text></View>
-                <View style={{alignItems: "center"}}><CheckBox checked={useOverground} onPress={() => setUseOverground(!useOverground)} style={{alignSelf: "center"}} /><Text style={{textAlign: "center"}}>Overground</Text></View>
-                <View><CheckBox checked={useNationalRail} onPress={() => setUseNationalRail(!useNationalRail)} /><Text>Rail</Text></View>
+            <View style={{flexDirection: "row", justifyContent: "flex-start", flexWrap: "wrap"}}>
+                <ListItem style={{margin: 0}}><CheckBox checked={useBus} onPress={() => setUseBus(!useBus)} /><Text>Bus</Text></ListItem>
+                <ListItem><CheckBox checked={useTube} onPress={() => setUseTube(!useTube)} /><Text>Tube</Text></ListItem>
+                <ListItem><CheckBox checked={useOverground} onPress={() => setUseOverground(!useOverground)} /><Text>Overground</Text></ListItem>
+                <ListItem><CheckBox checked={useNationalRail} onPress={() => setUseNationalRail(!useNationalRail)} /><Text>Rail</Text></ListItem>
             </View>
         );
     }
@@ -156,6 +164,24 @@ export const JourneyPlannerAlternative = () => {
         </Card>);
     };
 
+    const renderRailLeg = (leg: NationalRailLeg) => {
+        return (<Card>
+            <CardItem bordered>
+                <Icon name="train" style={{color: 'black'}}/>
+                <Text style={styles.headerText}>National Rail</Text>
+            </CardItem>
+            <CardItem style={{backgroundColor: '#eeeeee'}}>
+                <Body>
+                    <View>
+                        <Text style={styles.detailItem}>Route: {leg.summary}</Text>
+                        <Text style={styles.detailItem}>Get on at : {leg.startPoint}</Text>
+                        <Text style={styles.detailItem}>Get off at : {leg.arrivalPoint}</Text>
+                    </View>
+                </Body>
+            </CardItem>
+        </Card>);
+    };
+
     const renderUnknownLeg = (mode: string) => {
         return (<Card>
             <CardItem bordered>
@@ -211,7 +237,8 @@ export const JourneyPlannerAlternative = () => {
                                 : (datum.item.mode == 'walking' ? renderWalkingLeg(datum.item as WalkingLeg)
                                 : (datum.item.mode == 'cycle' ? renderCycleLeg(datum.item as CycleLeg)
                                 : (datum.item.mode == 'tube' ? renderTubeLeg(datum.item as TubeLeg)
-                                : renderUnknownLeg(datum.item.mode))))}
+                                : (datum.item.mode == 'national-rail' ? renderRailLeg(datum.item as NationalRailLeg)
+                                : renderUnknownLeg(datum.item.mode)))))}
                     />
                 </View>}
         </Content>)
