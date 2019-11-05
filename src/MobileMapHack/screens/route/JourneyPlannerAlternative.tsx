@@ -202,11 +202,11 @@ export const JourneyPlannerAlternative = () => {
         </Card>);
     };
 
-    const renderTramLeg = (leg: DlrLeg) => {
+    const renderTramLeg = (leg: TramLeg) => {
         return (<Card>
             <CardItem bordered>
                 <Icon name="train" style={{color: 'black'}}/>
-                <Text style={styles.headerText}>Overground</Text>
+                <Text style={styles.headerText}>Tram</Text>
             </CardItem>
             <CardItem style={{backgroundColor: '#eeeeee'}}>
                 <Body>
@@ -224,7 +224,7 @@ export const JourneyPlannerAlternative = () => {
         return (<Card>
             <CardItem bordered>
                 <Icon name="train" style={{color: 'black'}}/>
-                <Text style={styles.headerText}>Tram</Text>
+                <Text style={styles.headerText}>Overground</Text>
             </CardItem>
             <CardItem style={{backgroundColor: '#eeeeee'}}>
                 <Body>
