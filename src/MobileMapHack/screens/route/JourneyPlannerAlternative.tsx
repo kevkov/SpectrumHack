@@ -285,11 +285,11 @@ export const JourneyPlannerAlternative = () => {
                 <CardItem style={{backgroundColor: '#eeeeee'}}>
                     <Body>
                         <View>
-                            <Text style={styles.detailItem}>From: 24 Sutherland Square</Text>
-                            <Text style={styles.detailItem}>To: 144 Queen Victoria St</Text>
-                            <Text style={styles.detailItem}>Distance: 2.5 miles</Text>
-                            <Text style={styles.detailItem}>Cost: £5.40</Text>
-                            <Text style={styles.detailItem}>Duration: 18 min</Text>
+                            <Text style={styles.detailItem}>From: 128 Beddington Ln, Croydon</Text>
+                            <Text style={styles.detailItem}>To: 1 Barrier Point Rd, Royal Docks</Text>
+                            <Text style={styles.detailItem}>Distance: 19.4 miles</Text>
+                            <Text style={styles.detailItem}>Cost: £17.60</Text>
+                            <Text style={styles.detailItem}>Duration: 1 hr 3min</Text>
                         </View>
                     </Body>
                 </CardItem>
